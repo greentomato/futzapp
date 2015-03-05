@@ -1,0 +1,46 @@
+.field-info {
+	overflow: hidden;
+	padding: 1rem;
+	.text {
+		float: left;
+		h4{
+			font-weight: bold;
+			margin: 0;
+		}
+		p{
+			font-size: rem-calc(14);
+			margin: 0;
+		}
+	}
+
+	.picture{
+		margin: 0 0 10px 10px;
+
+		a {
+			display: block;
+			height: 40px;
+			width: 40px;
+			border: 1px solid $lightPrimaryColor;
+			text-align: center;
+
+			i{
+				line-height: 40px;
+
+			}	
+		}
+	}
+
+	.star-rating {
+		color: $starRating;
+
+		ul{
+			list-style-type: none;
+			margin: 0;
+			display: block;
+		}
+	}
+}
+
+// .field-map {
+// 	height: 100vh;
+// }

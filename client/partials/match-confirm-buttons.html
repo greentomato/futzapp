@@ -1,0 +1,51 @@
+<zf-modal id="playerConfirm" overlay="true" class="tiny modal-with-header">
+		<a class="close-button" zf-close="">×</a>
+		<div class="modal-content">
+		<section class="grid-content ">
+		<header><i class="fa fa-soccer-ball-o"></i> ¿No estarás por de baja no?</header>
+			<a class="success expand hollow button" zf-close=""><i class="fa fa-thumbs-up"></i>&nbsp; Confirmado</a>
+			
+			<a class="alert expand hollow button" zf-close="" ><i class="fa fa-times"></i>&nbsp; No puedo jugar</a>
+		</section>
+		</div>
+	</zf-modal>
+
+<zf-modal id="playerReject" overlay="true" class="tiny modal-with-header">
+		<a class="close-button" zf-close="">×</a>
+		<div class="modal-content">
+		<section class="grid-content">
+		<header><i class="fa fa-soccer-ball-o"></i> ¿Estas seguro tu decisión?</header>
+			<a class="success expand hollow button" zf-close=""><i class="fa fa-thumbs-up"></i>&nbsp; Quiero jugar</a>
+			
+			<a class="alert expand hollow button" zf-close=""><i class="fa fa-times"></i>&nbsp; Sigo con miedo</a>
+			
+			<a href="#" class="secondary expand button forget-match">Olvidar este partido</a>
+		</section>
+		</div>
+	</zf-modal>
+
+<!-- <div ng-show="playerConfirmation == null">
+<ul class="tiny success button-group segmented align-justify">
+	<li><a href="#" ng-click="playerConfirmation = 'valid'"><i class="fa fa-thumbs-up"></i> Juego</a></li>
+	<li><a href="#" ng-click="playerConfirmation = 'rejected'"><i class="fa fa-thumbs-down"></i> No Puedo</a></li>
+</ul>
+</div> -->
+
+<div ng-show="playerConfirmation == null" class="grid-block">
+	<div class="grid-content small-12">
+		<a href="#" class="success expand button" ng-click="playerConfirmation = 'valid'"><i class="fa fa-thumbs-up"></i> Juego</a>
+	</div>
+	<div class="grid-content small-12">
+		<a href="#" class="add-player expand hollow button" ng-click="playerConfirmation = 'rejected'"><i class="fa fa-thumbs-down"></i> No Puedo</a>
+	</div>
+</div>
+
+<div ng-show="playerConfirmation == 'valid'">
+	<a class="success expand hollow button" zf-open="playerConfirm"><i class="fa fa-thumbs-up"></i>&nbsp; Confirmado</a>
+	<a href="#" class="small-action" zf-open="playerConfirm"><i class="fa fa-refresh"></i> Cambié de opinion</a>
+</div>
+
+<div ng-show="playerConfirmation == 'rejected'">
+	<a class="add-player expand hollow button" zf-open="playerReject"><i class="fa fa-thumbs-down"></i>&nbsp; No juego</a>
+	<a href="#" class="small-action" zf-open="playerReject"><i class="fa fa-refresh"></i> Cambié de opinion</a>
+</div>

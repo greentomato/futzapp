@@ -1,0 +1,36 @@
+//Fonts
+$text-color: #444;
+$text-color-hover: #384859;
+$text-color-light: #99A0A9;
+
+
+$title-bar-height: rem-calc(48px);
+
+// Material Pallete
+$darkPrimaryColor:   darken(#455A64,10);
+$primaryColor:       #607D8B;
+$lightPrimaryColor:  #CFD8DC;
+$textPrimaryColor:   #FFFFFF;
+$accentColor:        #4CAF50;
+$primaryTextColor:   #212121;
+$secondaryTextColor: #727272;
+$dividerColor:       #B6B6B6;
+$accentColorAlt:     #f89406;
+
+$starRating: 		#f1c40f;
+$dangerColor:		#e74c3c;
+
+$darkerBackground: darken($darkPrimaryColor, 10);
+$background-dark: $darkPrimaryColor;
+
+// Team Colors
+$teamAColor:#9b59b6;
+$teamBColor:#e67e22;
+$teamCColor:#2ecc71;
+$teamDColor:#3498db;
+$teamEColor:#34495e;
+$teamFColor:#f1c40f;
+$teamGColor:#e74c3c;
+$teamHColor:#ecf0f1;
+$teamIColor:#1abc9c;
+$teamJColor:$lightPrimaryColor;

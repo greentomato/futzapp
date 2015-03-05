@@ -1,0 +1,52 @@
+.invite-card {
+
+	.card.wa {
+		background: $accentColor;
+		border-color: lighten($accentColor, 10);
+		color:#fff;
+
+		&:hover {
+			background: darken($accentColor, 5);
+		}
+			h4{
+				color:#fff;
+				
+			}
+
+		}
+
+	.card.fb {
+			h4{
+				color:$primaryColor;
+				&:hover {
+					color: darken($primaryColor, 10)
+				}
+			}
+		}
+
+	.invite-logo{
+		float: left;
+		width: 50px;
+		height: 50px;
+		text-align: center;
+		margin-top: -1px;
+	}
+	.invite-text{
+		margin-left: 80px;
+
+		h4 {
+			font-weight: bold;
+			margin: 0;
+			color: $accentColor;
+		}
+
+		p{
+			margin: 0;
+			font-size: 14px;
+		}
+
+		
+
+		
+	}
+}

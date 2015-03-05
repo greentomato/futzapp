@@ -1,0 +1,55 @@
+.splash-bg {
+	background: url(../img/ftz-splash-bg.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	height: 100vh;
+	width: 100%;
+	text-align: center;
+	-moz-background-attachment: inherit;
+	-webkit-background-attachment: inherit;
+	background-attachment: inherit;
+
+
+	h1{
+		color: #fff;
+		font-weight: bold;
+		font-size: 3rem;
+		text-shadow: 1px 1px 5px rgba(40, 40, 40, 0.7);
+		margin-bottom: rem-calc(10);
+
+	}
+
+	h3{
+		color: #fff;
+		text-shadow: 1px 2px 5px rgba(40, 40, 40, 0.9);
+		margin: 0 auto;
+		max-width: 620px;
+		font-weight: bold;
+	}
+
+	.subheader{
+	}
+
+	.button{
+		margin: rem-calc(20) 0 0;
+		font-size: rem-calc(18);
+		font-weight: bold;
+		min-width: 300px;
+	}
+}
+
+.app-logo {
+	padding: rem-calc(10) 0;
+	max-width: 40%;
+	margin: 0 auto;
+}
+
+.iphone-mockup{
+	position: absolute;
+	height: auto;
+	max-width: 800px;
+	right: -300px;
+	bottom: -30px;
+}

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" ng-app="application">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Futzapp</title>
+    <link href="assets/css/app.css" rel="stylesheet" type="text/css">
+    
+    <script src="assets/js/foundation.js"></script>
+    <script src="assets/js/routes.js"></script>
+    <script src="assets/js/app.js"></script>
+  </head>
+  <body>
+    <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '595124713922940',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "http://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/sdk.js#xfbml=1&appId=595124713922940&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+    <div ng-class="['ui-animation']" ui-view class="main-content">
+      <!-- View Content goes here -->
+    </div>
+  
+  </body>
+</html>

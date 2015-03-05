@@ -1,0 +1,45 @@
+.ftz-title-bar {
+	// Extend the base selector to get core structural styles
+	@extend %title-bar;
+	// Add visual styles with this mixin
+	@include title-bar-style(
+	$background: $darkPrimaryColor, // Background color
+	$color: #fff, // Text color
+	$border: lightPrimaryColor,
+	$padding: 0px
+	);
+
+	a {
+		color: #fff;
+		line-height: 48px;
+		padding: 1rem;
+		// &:hover {
+		// 	color: $accentColorAlt;
+		// }
+		.badge {
+			position: absolute;
+			top: 10px;
+			right: 5px;
+			font-size: rem-calc(12);
+			font-weight: bold;
+			height: 16px;
+			padding: 0.3rem;
+			min-width: 0;
+			-webkit-box-shadow: 0px 0px 5px 0px rgba(43,48,59,0.7);
+			-moz-box-shadow: 0px 0px 5px 0px rgba(43,48,59,0.7);
+			box-shadow: 0px 0px 5px 0px rgba(43,48,59,0.7);
+		}
+	}
+	.text-link {font-size: rem-calc(14);}
+	.app-logo-title {
+		img {
+			margin: -1.2rem 0 -1rem;
+			height: 30px;
+			width: auto;
+		}
+		span {
+			font-size: rem-calc(10);
+			color: $primaryColor;
+		}
+	}
+}

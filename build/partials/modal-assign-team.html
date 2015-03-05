@@ -1,0 +1,19 @@
+
+<zf-modal id="assignToTeam" overlay="true" class="tiny modal-with-header">
+<a class="close-button" zf-close="">×</a>
+<div class="modal-content">
+	<section class="grid-content">
+		<header><i class="fa fa-soccer-ball-o"></i> Elegí un jugador para esta posición:</header>
+		<section class="ftz-block-list player-list">
+			<ul>
+				<li ng-repeat="player in vars.players">
+					<a href="#">
+						<img src="assets/img/face1.jpg" alt="">
+						<span>{{ player }}</span>
+					</a>				
+				</li>
+			</ul>
+		</section>
+	</section>
+</div>
+</zf-modal>

@@ -1,0 +1,49 @@
+.close-button {
+	background: rgba(255,255,255, 0.9);
+	left: 0;
+	right: 0;
+	top: 0;
+	padding: 1rem;
+	text-align: right;
+	span{
+		font-size: 1rem;
+		font-weight: bold;
+		line-height: 16px;
+		text-transform: uppercase;
+		vertical-align: middle;
+	}
+}
+.modal-content {
+	width:100%;
+	padding: 54px 0 0;
+	height: 100vh;
+  	overflow-y: auto;
+}
+.modal-with-header {
+	a.button {margin-bottom: 20px;}
+	
+	.forget-match {
+		text-align: center;
+		font-size: rem-calc(14);
+	}
+}
+.panel{
+	$darkBackgroundColor: darken($darkPrimaryColor, 10);
+	background: rgba($darkBackgroundColor, 0.97);
+	margin-top: 48px;
+	width: 100%;
+}
+.modal {
+	background: rgba(255,255,255, 0.9);
+}
+
+
+@media only screen and (min-width: 40em){
+	.panel{
+		width: 300px;
+	}
+	.modal-content {
+		height: auto;
+		overflow-y: auto;
+	}
+}

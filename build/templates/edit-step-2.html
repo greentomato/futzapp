@@ -1,0 +1,51 @@
+<div ng-include="" src="'partials/edit-match-menu.html'"></div>
+<div class="grid-content collapse">
+	<progress  class="new-match-steps-progress" value="60" max="90"></progress>
+</div>
+
+<div class="grid-content grid-container">
+	<form>
+		<!-- <h4 class="form-header"><span>Paso 2/3</span></h4>
+		<hr> -->
+		<header>Elegí el tipo de Partido</header>
+		
+		<div class="grid-block">
+
+			<div class="small-12 medium-6 grid-content">
+				<label><i class="fa fa-soccer-ball-o"></i> Cantidad de jugadores</label>
+				<select name="" id="">
+					<option value="">Futbol 5 (10)</option>
+					<option value="">Futbol 6 (12)</option>
+					<option value="">Futbol 7 (14)</option>
+					<option value="">Futbol 8 (16)</option>
+					<option value="">Futbol 11 (22)</option>
+				</select>
+			</div>
+		</div>
+		
+		<hr>
+		<header>Cuándo se juega</header>
+		
+		<div class="grid-block">
+
+			<div class="small-6 grid-content">
+				<label>
+					<i class="fa fa-calendar-o"></i> Fecha
+					<input type="date">
+
+				</label>
+			</div>
+			<div class="small-6 grid-content">
+				<label>
+					<i class="fa fa-clock-o"></i> Horario
+					<input type="time">
+			</div>
+		</div>
+		<div>
+			<br>
+			<a class="success expand button" ui-sref="edit-match.step-3"><i class="fa fa-bullhorn"></i>&nbsp; Convocar Jugadores</a>
+		</div>
+	
+</form>
+</div>
+

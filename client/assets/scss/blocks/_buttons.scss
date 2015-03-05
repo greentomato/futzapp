@@ -1,0 +1,19 @@
+.label {
+	letter-spacing: 1;
+}
+
+.small-action{
+	font-size: rem-calc(12);
+	&:hover{
+		color:$accentColor;
+	}
+	i {
+		margin-right: 5px;
+	}
+}
+
+.fa.edit-icon {
+	margin: 5px 0;
+	float: right;
+
+}

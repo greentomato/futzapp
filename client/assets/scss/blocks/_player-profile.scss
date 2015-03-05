@@ -1,0 +1,43 @@
+.profile-card {
+	margin: 1rem 0 0;
+	text-align: center;
+}
+
+.player-profile-picture{
+	-webkit-border-radius: 100%;
+	-moz-border-radius: 100%;
+	border-radius: 100%;
+	overflow: hidden;
+	width: 120px;
+	height: 120px;
+	margin: 0 auto 20px;
+	border: 1px solid $lightPrimaryColor;
+}
+.player-profile-info{
+	h4 {
+		font-weight: bold;
+	}
+}
+
+.player-stats {
+	text-align: center;
+	display: block;
+	span {
+		font-weight: bold;
+		font-size: rem-calc(18);
+		&.matches-played{
+			color: $accentColor;
+		}
+		&.matches-created{
+			color: $accentColorAlt;
+		}
+	}
+	p{
+		font-size: rem-calc(12);
+		line-height: rem-calc(15);
+		margin: 5px 0 0;
+	}
+	i{
+		font-size: rem-calc(18);
+	}
+}

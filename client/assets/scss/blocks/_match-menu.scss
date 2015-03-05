@@ -1,0 +1,40 @@
+.ftz-menu-bar {
+	// This placeholder selector gets you the core structural styles for the menu
+	@extend %menu-bar;
+	margin: 0;
+	margin-top: 1px solid $text-color-light;
+	// Set the orientation and sizing of the menu bar
+	@include menu-bar-layout(
+	$orientation: horizontal, // Can be horizontal or vertical
+	$stretch: true // Set to false for a condensed menu
+	);
+	// Add styles for the menu bar items and text
+	@include menu-bar-style(
+	$background: #fff, // Background color of items
+	$background-hover: #fafafa, // Background color of item on hover
+	$color: $primaryColor, // Text color of items
+	$color-hover: $accentColorAlt, // Text color of item on hover
+	$color-active:$accentColorAlt, // Text color of item when active
+	$autocolor: false // When true, all the above colors will be derived from $background
+	);
+	// Add support for icons
+	@include menu-bar-icons(
+	$position: top, // Can be top, right, bottom, or left
+	$size: 20px // Can be px, em, or rem
+	);
+	
+	.match-menu-active {
+		a {color: $accentColorAlt;}
+	}
+	
+
+	li a {
+		font-size: rem-calc(12);
+		font-weight: bold;
+		padding: 0.625rem;
+		i {
+			margin-bottom: 8px;
+			font-size: 16px;
+		}
+	}
+}

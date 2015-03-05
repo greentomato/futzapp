@@ -1,0 +1,158 @@
+.soccer-field {
+	position: relative;
+	.team-player {
+		text-align: center;
+		width: 50px;
+		height: 50px;
+		position: absolute;
+		overflow: hidden;
+		border-radius: 100%;
+		-webkit-border-radius: 100%;
+		-moz-border-radius: 100%;
+		border: 2px solid;
+		background-color: rgba(#fff, 0.4);
+		&.team-a {
+			border-color: $teamAColor;
+			a{color: $teamAColor;}
+		}
+
+		&.team-b {
+			border-color: $teamBColor;
+			a {color: $teamBColor;}
+		}
+
+		a {
+			display: block;
+			line-height: 48px;
+			font-size: rem-calc(20);
+			
+			&:hover {
+				color: $accentColor;
+			}
+
+		}
+	}
+}
+.team-list {
+	border-right: 1px solid $lightPrimaryColor;
+	border-top: 1px solid $lightPrimaryColor;
+
+
+	header{
+		padding: 1rem;
+		margin: 0;
+	}
+
+	.team-color{
+		height: 20px;
+		width: 20px;
+	}
+
+	
+
+
+	.empty-player {
+		color: $dividerColor;
+	}
+}
+
+.team-color-list{
+	list-style: none;
+}
+.team-color{
+	padding: 10px;
+	display: inline-block;
+}
+
+// TEAM COLORS
+.team-a {
+	color: $teamAColor;
+}
+
+.team-b {
+	color: $teamBColor;
+}
+
+.team-c {
+	color: $teamCColor;
+}
+
+.team-d {
+	color: $teamDColor;
+}
+
+.team-e {
+	color: $teamEColor;
+}
+
+.team-f {
+	color: $teamFColor;
+}
+
+.team-g {
+	color: $teamGColor;
+}
+
+.team-h {
+	color: $teamHColor;
+}
+
+.team-i {
+	color: $teamIColor;
+}
+
+.team-j {
+	color: $teamJColor;
+}
+
+// FIELD POSITIONS
+
+// 10 Player Match
+
+// TEAM A
+.f5.team-a.player-1{
+	left: 20%;
+	top: 18%;
+}
+.f5.team-a.player-2{
+	left: 50%;
+	top: 10%;
+	margin-left: -25px;
+}
+.f5.team-a.player-3{
+	right: 20%;
+	top: 18%;
+}
+.f5.team-a.player-4{
+	left: 30%;
+	top: 32%;
+	
+}
+.f5.team-a.player-5{
+	right: 30%;
+	top: 32%;
+}
+
+// TEAM B
+.f5.team-b.player-1{
+	left: 20%;
+	bottom: 18%;
+}
+.f5.team-b.player-2{
+	left: 50%;
+	bottom: 10%;
+	margin-left: -25px;
+}
+.f5.team-b.player-3{
+	right: 20%;
+	bottom: 18%;
+}
+.f5.team-b.player-4{
+	left: 30%;
+	bottom: 32%;
+	
+}
+.f5.team-b.player-5{
+	right: 30%;
+	bottom: 32%;
+}

@@ -1,0 +1,96 @@
+---
+name: my-match
+url: /my-match
+title: Mi Futzapp
+matchType: Fútbol 5
+matchOwner: Daieg Ferveyra
+players:
+- Daieg Ferveyra
+- Rod Sampera
+- Fran Ries
+- Manu Marengo
+- Lucho Zazzarino
+- Tomas Meabe
+teamAplayers:
+- Daieg Ferveyra
+- Rod Sampera
+- Fran Ries
+teamBplayers:
+- Manu Marengo
+- Lucho Zazzarino
+- Tomas Meabe
+---
+
+
+<div class="grid-frame vertical">
+	<div ng-include="" src="'partials/modal-invite-players.html'"></div>
+	<div ng-include="" src="'partials/modal-add-player.html'"></div>
+	<div ng-include="" src="'partials/modal-assign-team.html'"></div>
+	<div ng-include="" src="'partials/modal-team-colors.html'"></div>
+	<div ng-include="" src="'partials/modal-player-profile.html'"></div>
+	<div ng-include="" src="'partials/modal-field.html'"></div>
+
+	<!-- TitleBar -->
+	<div ng-include="" src="'partials/match-title-bar.html'"></div>
+
+	<!-- Match Container -->
+	<div class="grid-block vertical medium-horizontal grid-container match-container">	
+
+		<!-- Match Info -->
+		<div class="grid-block shrink medium-5 large-3">
+			<div class="grid-content">
+				<div class="match-header">
+					<div class="ribbon ribbon ribbon-orange">
+						<div class="banner">
+							<div class="text"><i class="fa fa-soccer-ball-o"></i></div>
+						</div>
+					</div>
+					<h2>{{ vars.matchType }} <a ui-sref="edit-match.step-1" class="small-action"><i class="fa fa-pencil-square-o"></i>Editar</a></h2>
+
+				</div>
+
+				<div class="match-info">
+					<div class="date-block">
+						<div class="day">24</div>
+						<div class="month">ENE</div>
+					</div>
+					<div class="text">
+						<p>Jueves a las <strong>6:30 pm</strong></p>
+						<p><a zf-open="fieldInfo"><i class="fa fa-map-marker"></i><strong>San Isidro Fútbol</strong>, Martinez</a></p>
+					</div>
+				</div>
+
+				<div class="match-actions">
+					<a class="warning expand button" zf-open="invitePlayers"><i class="fa fa-bullhorn"></i>&nbsp; Convocar jugadores</a>
+
+					<a href="#" class="small-action" zf-open="addPlayers"><i class="fa fa-plus"></i> Agregar jugador a mano</a>
+				</div>
+
+				<hr>
+				<p class="match-owner"><i class="fa fa-bullhorn"></i> 245 convocados por <strong>Vos</strong> (Organizador)</p>
+			</div>
+		</div>
+
+		<!-- Match Players -->
+		<div class="grid-block shrink medium-4 large-6 border-block">
+			<div class="grid-content">
+				<div class="match-confirmation-meter">
+					<meter min="0" max="10" low="3" high="8" optimum="10" value="5"></meter>
+					<span><i class="fa fa-thumbs-up"></i>&nbsp; 5/10 Jugadores confirmaron</span>
+				</div>
+
+				<div ng-include="" src="'partials/owner-teams.html'"></div>
+			</div>
+		</div>
+
+		<!-- Match Comments -->
+		<div class="grid-block shrink medium-3 large-3">
+			<div class="grid-content">
+				<div ng-include="" src="'partials/comments.html'"></div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+

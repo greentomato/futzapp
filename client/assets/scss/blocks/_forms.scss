@@ -1,0 +1,23 @@
+
+
+
+form {
+	height: 100vh - $title-bar-height - 4px;
+
+	
+	.button {
+		font-weight: bold;
+		font-size: rem-calc(16);
+	}
+}
+
+h4.form-header {
+		font-weight: bold;
+		span{
+			color: $accentColorAlt;
+		}
+	}
+
+input[type="checkbox"] + label, input[type="radio"] + label{
+	margin-bottom: 10px;
+}
