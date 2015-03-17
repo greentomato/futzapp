@@ -91,7 +91,7 @@
 			$rootScope.fbUser = null;
 			$rootScope.user = null;
 			
-			$rootScope.fbAppId = "1450926871846457";
+			$rootScope.fbAppId = "1517377388534738";
 			$rootScope.activePage = "/";
 			
 			$rootScope.fields = Fields.query();
@@ -994,7 +994,8 @@ fulboFilters.filter('getById', function() {
 'use strict';
 
 /* Services */
-var serverURL = "http://futzapp.com/back/public/";
+//var serverURL = "http://futzapp.com/back/public/";
+var serverURL = "http://futbolizados.dev/";
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 

@@ -1,7 +1,8 @@
 'use strict';
 
 /* Services */
-var serverURL = "http://futzapp.com/back/public/";
+//var serverURL = "http://futzapp.com/back/public/";
+var serverURL = "http://futbolizados.dev/";
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 

@@ -6934,7 +6934,7 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     font-size: 0.75rem;
     font-weight: bold;
     padding: 0.625rem; }
-    .ftz-menu-bar li a .disabled {
+    .ftz-menu-bar li a.disabled {
       opacity: 0.5;
       cursor: default;
       pointer-events: none; }
