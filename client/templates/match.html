@@ -41,7 +41,7 @@
 					</div>
 					<div class="text">
 						<p>{{match.date | dateFormat:'dddd'}} a las <strong>{{match.date | dateFormat:'hh:mm a'}}</strong></p>
-						<p><a zf-open="fieldInfo"><i class="fa fa-map-marker"></i><strong>{{match.field.name}}</strong>, {{($root.fields | getById:match.fieldId).town.name}}</a></p>
+						<p><a ng-click="renderGoogleMap()" zf-open="fieldInfo"><i class="fa fa-map-marker"></i><strong>{{match.field.name}}</strong>, {{($root.fields | getById:match.fieldId).town.name}}</a></p>
 					</div>
 				</div>
 

@@ -292,21 +292,6 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 							$scope.teamB.positions.push(position);
 						}
 					}
-					
-					//field map
-					var fieldPos = new google.maps.LatLng($scope.match.field.latitude, $scope.match.field.longitude);
-					var mapOptions = {
-						center: fieldPos,
-						zoom: 14,
-						mapTypeId: google.maps.MapTypeId.ROADMAP
-					};
-					var map = new google.maps.Map(document.getElementById("map_canvas"),
-									mapOptions); 
-					var marker = new google.maps.Marker({
-						position: fieldPos,
-						map: map,
-						title: '$scope.match.field.name'
-					});
 				});
 			});	
 		};
@@ -320,6 +305,23 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 					}
 				}
 			});
+		};
+		
+		$scope.renderGoogleMap = function(){
+			//field map
+					var fieldPos = new google.maps.LatLng($scope.match.field.latitude, $scope.match.field.longitude);
+					var mapOptions = {
+						center: fieldPos,
+						zoom: 14,
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+					};
+					var map = new google.maps.Map(document.getElementById("map_canvas"),
+									mapOptions); 
+					var marker = new google.maps.Marker({
+						position: fieldPos,
+						map: map,
+						title: '$scope.match.field.name'
+					});
 		};
 		
 		$scope.match = $scope.renderMatch();

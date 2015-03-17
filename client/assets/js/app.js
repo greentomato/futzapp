@@ -91,7 +91,7 @@
 			$rootScope.fbUser = null;
 			$rootScope.user = null;
 			
-			$rootScope.fbAppId = "1517377388534738";
+			$rootScope.fbAppId = "1450926871846457";
 			$rootScope.activePage = "/";
 			
 			$rootScope.fields = Fields.query();

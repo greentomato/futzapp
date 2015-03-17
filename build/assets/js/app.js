@@ -91,7 +91,7 @@
 			$rootScope.fbUser = null;
 			$rootScope.user = null;
 			
-			$rootScope.fbAppId = "1517377388534738";
+			$rootScope.fbAppId = "1450926871846457";
 			$rootScope.activePage = "/";
 			
 			$rootScope.fields = Fields.query();
@@ -575,21 +575,6 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 							$scope.teamB.positions.push(position);
 						}
 					}
-					
-					//field map
-					var fieldPos = new google.maps.LatLng($scope.match.field.latitude, $scope.match.field.longitude);
-					var mapOptions = {
-						center: fieldPos,
-						zoom: 14,
-						mapTypeId: google.maps.MapTypeId.ROADMAP
-					};
-					var map = new google.maps.Map(document.getElementById("map_canvas"),
-									mapOptions); 
-					var marker = new google.maps.Marker({
-						position: fieldPos,
-						map: map,
-						title: '$scope.match.field.name'
-					});
 				});
 			});	
 		};
@@ -603,6 +588,23 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 					}
 				}
 			});
+		};
+		
+		$scope.renderGoogleMap = function(){
+			//field map
+					var fieldPos = new google.maps.LatLng($scope.match.field.latitude, $scope.match.field.longitude);
+					var mapOptions = {
+						center: fieldPos,
+						zoom: 14,
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+					};
+					var map = new google.maps.Map(document.getElementById("map_canvas"),
+									mapOptions); 
+					var marker = new google.maps.Marker({
+						position: fieldPos,
+						map: map,
+						title: '$scope.match.field.name'
+					});
 		};
 		
 		$scope.match = $scope.renderMatch();
@@ -992,7 +994,7 @@ fulboFilters.filter('getById', function() {
 'use strict';
 
 /* Services */
-var serverURL = "http://futbolizados.dev/";
+var serverURL = "http://futzapp.com/back/public/";
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
@@ -1186,7 +1188,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 		},
 		login: function(callback) {
 			FB.login(function(response) {
-		    }, {scope: 'email,user_friends,friends_photos,publish_actions'});
+		    }, {scope: 'email'});/*,user_friends,friends_photos,publish_actions*/
 		},
 		logout: function() {
 			var _self = this;

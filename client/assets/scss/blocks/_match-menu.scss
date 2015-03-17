@@ -27,8 +27,12 @@
 		a {color: $accentColorAlt;}
 	}
 	
-
 	li a {
+		.disabled{
+			  opacity: 0.5;
+			  cursor: default;
+			  pointer-events: none;
+		}
 		font-size: rem-calc(12);
 		font-weight: bold;
 		padding: 0.625rem;

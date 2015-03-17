@@ -1,7 +1,7 @@
 'use strict';
 
 /* Services */
-var serverURL = "http://futbolizados.dev/";
+var serverURL = "http://futzapp.com/back/public/";
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
@@ -195,7 +195,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 		},
 		login: function(callback) {
 			FB.login(function(response) {
-		    }, {scope: 'email,user_friends,friends_photos,publish_actions'});
+		    }, {scope: 'email'});/*,user_friends,friends_photos,publish_actions*/
 		},
 		logout: function() {
 			var _self = this;
