@@ -9,8 +9,8 @@
 		<hr> -->
 		<header><i class="fa fa-bullhorn"></i> Invitá a tus amigos:</header>
 		
-		<<p show-for-medium>Para poder compartir por <strong>WhatsApp</strong> ingresá desde tu smartphone</p>
-		<a href="whatsapp://send" data-text="Sale Futzapp http://futz.app/432" data-href=""  class="invite-card show-for-small-only">
+		<p show-for-medium>Para poder compartir por <strong>WhatsApp</strong> ingresá desde tu smartphone</p>
+		<a href="whatsapp://send" data-text="Sale Futzapp http://{{currentURL}}?token={{match.token}}" data-href="http://{{currentURL}}?token={{match.token}}"  class="invite-card show-for-small-only">
 			<div class="card  wa">
 				<div class="card-section">
 					<div class="invite-logo">
@@ -25,7 +25,7 @@
 			</div>
 		</a>
 
-		<a href="#" class="invite-card">
+		<a href ng-click="shareFB()" class="invite-card">
 			<div class="card fb">
 				<div class="card-section">
 					<div class="invite-logo">

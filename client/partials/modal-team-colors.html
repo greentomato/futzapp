@@ -1,4 +1,4 @@
-<zf-modal id="teamColors" overlay="true" class="tiny modal-with-header">
+<zf-modal id="teamColors" overlay="true" class="modal-with-header">
 		<a class="close-button" zf-close="">×</a>
 
 <div class="modal-content">
@@ -13,50 +13,50 @@
 		
 		<div class="grid-block">
 
-			<div class="small-12 grid-content collapse">
+			<!--<div class="small-12 grid-content collapse">
 				<label>
 					Nombre Equipo A
 					<input type="text" placeholder="Equipo">
 				</label>
-			</div>
+			</div>-->
 			<div class="small-12 grid-content collapse">
 				<label>
 					Color Equipo A
 				</label>
 				<ul class="team-color-list">
-					<li class="team-color"><i class="fa fa-square team-c"></i></li>
-					<li class="team-color"><i class="fa fa-square team-d"></i></li>
-					<li class="team-color"><i class="fa fa-square team-e"></i></li>
-					<li class="team-color"><i class="fa fa-square team-f"></i></li>
-					<li class="team-color"><i class="fa fa-square team-g"></i></li>
-					<li class="team-color"><i class="fa fa-square team-h"></i></li>
-					<li class="team-color"><i class="fa fa-square team-i"></i></li>
-					<li class="team-color"><i class="fa fa-square team-j"></i></li>
+					<li class="team-color" ng-click="setTeamAColor('#2ecc71')"><i class="fa fa-square team-c"></i></li>
+					<li class="team-color" ng-click="setTeamAColor('#3498db')"><i class="fa fa-square team-d"></i></li>
+					<li class="team-color" ng-click="setTeamAColor('#34495e')"><i class="fa fa-square team-e"></i></li>
+					<li class="team-color" ng-click="setTeamAColor('#f1c40f')"><i class="fa fa-square team-f"></i></li>
+					<li class="team-color" ng-click="setTeamAColor('#e74c3c')"><i class="fa fa-square team-g"></i></li>
+					<li class="team-color" ng-click="setTeamAColor('#ecf0f1')"><i class="fa fa-square team-h"></i></li>
+					<li class="team-color" ng-click="setTeamAColor('#1abc9c')"><i class="fa fa-square team-i"></i></li>
+					<li class="team-color" ng-click="setTeamAColor('#CFD8DC')"><i class="fa fa-square team-j"></i></li>
 				</ul>
 			</div>			
 		
 		<hr>
 		
 
-			<div class="small-12 grid-content collapse">
+			<!--<div class="small-12 grid-content collapse">
 				<label>
 					Nombre Equipo A
 					<input type="text" placeholder="Equipo">
 				</label>
-			</div>
+			</div>-->
 			<div class="small-12 grid-content collapse">
 				<label>
-					Color Equipo A
+					Color Equipo B
 				</label>
 				<ul class="team-color-list">
-					<li class="team-color"><i class="fa fa-square team-c"></i></li>
-					<li class="team-color"><i class="fa fa-square team-d"></i></li>
-					<li class="team-color"><i class="fa fa-square team-e"></i></li>
-					<li class="team-color"><i class="fa fa-square team-f"></i></li>
-					<li class="team-color"><i class="fa fa-square team-g"></i></li>
-					<li class="team-color"><i class="fa fa-square team-h"></i></li>
-					<li class="team-color"><i class="fa fa-square team-i"></i></li>
-					<li class="team-color"><i class="fa fa-square team-j"></i></li>
+					<li class="team-color" ng-click="setTeamBColor('#2ecc71')"><i class="fa fa-square team-c"></i></li>
+					<li class="team-color" ng-click="setTeamBColor('#3498db')"><i class="fa fa-square team-d"></i></li>
+					<li class="team-color" ng-click="setTeamBColor('#34495e')"><i class="fa fa-square team-e"></i></li>
+					<li class="team-color" ng-click="setTeamBColor('#f1c40f')"><i class="fa fa-square team-f"></i></li>
+					<li class="team-color" ng-click="setTeamBColor('#e74c3c')"><i class="fa fa-square team-g"></i></li>
+					<li class="team-color" ng-click="setTeamBColor('#ecf0f1')"><i class="fa fa-square team-h"></i></li>
+					<li class="team-color" ng-click="setTeamBColor('#1abc9c')"><i class="fa fa-square team-i"></i></li>
+					<li class="team-color" ng-click="setTeamBColor('#CFD8DC')"><i class="fa fa-square team-j"></i></li>
 				</ul>
 			</div>			
 		</div>

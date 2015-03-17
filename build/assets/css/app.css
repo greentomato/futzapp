@@ -353,7 +353,7 @@ th {
   padding: 0; }
 
 meta.foundation-version {
-  font-family: "1.0.2"; }
+  font-family: "1.0.3"; }
 
 meta.foundation-mq {
   font-family: "small=0&medium=40rem&large=75rem&xlarge=90rem&xxlarge=120rem"; }
@@ -397,6 +397,9 @@ img {
   -ms-interpolation-mode: bicubic;
   display: inline-block;
   vertical-align: middle; }
+
+a, [ui-sref] {
+  cursor: pointer; }
 
 #map_canvas img,
 #map_canvas embed,
@@ -481,7 +484,7 @@ img {
 .action-sheet-container {
   position: relative;
   display: inline-block; }
-  .action-sheet-container .button {
+  .action-sheet-container .button, .action-sheet-container button {
     margin-left: 0;
     margin-right: 0; }
 
@@ -800,10 +803,11 @@ img {
     position: absolute;
     left: -9999px; }
     .block-list li > input[type="checkbox"] + label, .block-list li > input[type="radio"] + label {
+      display: block;
       font-size: 1rem;
       margin: 0; }
     .block-list li > input[type="checkbox"]:checked + label::before, .block-list li > input[type="radio"]:checked + label::before {
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="32" viewBox="0 0 32 32"><path fill="#000" d="M16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zm6.906 8.875l2.219 2.031-12.063 13.281-6.188-6.188 2.125-2.125 3.938 3.938 9.969-10.938z"/></svg>');
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="32" viewBox="0 0 32 32"><path fill="black" d="M16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zm6.906 8.875l2.219 2.031-12.063 13.281-6.188-6.188 2.125-2.125 3.938 3.938 9.969-10.938z"/></svg>');
       content: '';
       background-size: 100% 100%;
       width: 1.5em;
@@ -905,8 +909,7 @@ img {
         margin-left: 0.8rem;
         float: none; }
 
-.button, .button-group > li > a,
-.button-group > li > label {
+.button, button, .button-group > li > a, .button-group > li > label, .button-group > li > button {
   display: inline-block;
   border: 0;
   text-align: center;
@@ -921,238 +924,299 @@ img {
   font-size: 0.9rem;
   border-radius: 0; }
 
-.button {
+.button, button {
   font-size: 0.9rem;
   display: inline-block;
   margin: 0 1rem 1rem 0;
   background: #00558b;
   color: #fff; }
-  .button .iconic {
+  .button .iconic, button .iconic {
     width: 1em;
     height: 1em;
     vertical-align: middle;
     margin-right: 0.25em;
     margin-top: -2px; }
-  .button:hover, .button:focus {
+  .button:hover, button:hover, .button:focus, button:focus {
     background: #004876;
     color: #fff; }
-  .button[data-popup-toggle]::after {
+  .button[data-popup-toggle]::after, button[data-popup-toggle]::after {
     border-top-color: #fff; }
-  .button .iconic * {
+  .button .iconic *, button .iconic * {
     fill: #fff;
     stroke: #fff; }
-    .button .iconic *.iconic-property-accent {
+    .button .iconic *.iconic-property-accent, button .iconic *.iconic-property-accent {
       fill: #fff;
       stroke: #fff; }
-  .button.tiny {
+  .button.tiny, button.tiny {
     font-size: 0.63rem; }
-    .button.tiny .iconic {
+    .button.tiny .iconic, button.tiny .iconic {
       width: 1em;
       height: 1em;
       vertical-align: middle;
       margin-right: 0.25em;
       margin-top: -2px; }
-  .button.small {
+  .button.small, button.small {
     font-size: 0.72rem; }
-    .button.small .iconic {
+    .button.small .iconic, button.small .iconic {
       width: 1em;
       height: 1em;
       vertical-align: middle;
       margin-right: 0.25em;
       margin-top: -2px; }
-  .button.large {
+  .button.large, button.large {
     font-size: 1.17rem; }
-    .button.large .iconic {
+    .button.large .iconic, button.large .iconic {
       width: 1em;
       height: 1em;
       vertical-align: middle;
       margin-right: 0.25em;
       margin-top: -2px; }
-  .button.expand {
+  .button.expand, button.expand {
     display: block;
     margin-left: 0;
     margin-right: 0; }
-  .button.secondary {
+  .button.secondary, button.secondary {
     background: #f1f1f1;
     color: #000; }
-    .button.secondary:hover, .button.secondary:focus {
+    .button.secondary:hover, button.secondary:hover, .button.secondary:focus, button.secondary:focus {
       background: #cdcdcd;
       color: #000; }
-    .button.secondary[data-popup-toggle]::after {
+    .button.secondary[data-popup-toggle]::after, button.secondary[data-popup-toggle]::after {
       border-top-color: #000; }
-    .button.secondary .iconic * {
+    .button.secondary .iconic *, button.secondary .iconic * {
       fill: #000;
       stroke: #000; }
-      .button.secondary .iconic *.iconic-property-accent {
+      .button.secondary .iconic *.iconic-property-accent, button.secondary .iconic *.iconic-property-accent {
         fill: #000;
         stroke: #000; }
-  .button.success {
+  .button.success, button.success {
     background: #4CAF50;
     color: #fff; }
-    .button.success:hover, .button.success:focus {
+    .button.success:hover, button.success:hover, .button.success:focus, button.success:focus {
       background: #419544;
       color: #fff; }
-    .button.success[data-popup-toggle]::after {
+    .button.success[data-popup-toggle]::after, button.success[data-popup-toggle]::after {
       border-top-color: #fff; }
-    .button.success .iconic * {
+    .button.success .iconic *, button.success .iconic * {
       fill: #fff;
       stroke: #fff; }
-      .button.success .iconic *.iconic-property-accent {
+      .button.success .iconic *.iconic-property-accent, button.success .iconic *.iconic-property-accent {
         fill: #fff;
         stroke: #fff; }
-  .button.warning {
+  .button.warning, button.warning {
     background: #f89406;
     color: #fff; }
-    .button.warning:hover, .button.warning:focus {
+    .button.warning:hover, button.warning:hover, .button.warning:focus, button.warning:focus {
       background: #d37e05;
       color: #fff; }
-    .button.warning[data-popup-toggle]::after {
+    .button.warning[data-popup-toggle]::after, button.warning[data-popup-toggle]::after {
       border-top-color: #fff; }
-    .button.warning .iconic * {
+    .button.warning .iconic *, button.warning .iconic * {
       fill: #fff;
       stroke: #fff; }
-      .button.warning .iconic *.iconic-property-accent {
+      .button.warning .iconic *.iconic-property-accent, button.warning .iconic *.iconic-property-accent {
         fill: #fff;
         stroke: #fff; }
-  .button.alert {
+  .button.alert, button.alert {
     background: #e74c3c;
     color: #fff; }
-    .button.alert:hover, .button.alert:focus {
+    .button.alert:hover, button.alert:hover, .button.alert:focus, button.alert:focus {
       background: #dc2d1b;
       color: #fff; }
-    .button.alert[data-popup-toggle]::after {
+    .button.alert[data-popup-toggle]::after, button.alert[data-popup-toggle]::after {
       border-top-color: #fff; }
-    .button.alert .iconic * {
+    .button.alert .iconic *, button.alert .iconic * {
       fill: #fff;
       stroke: #fff; }
-      .button.alert .iconic *.iconic-property-accent {
+      .button.alert .iconic *.iconic-property-accent, button.alert .iconic *.iconic-property-accent {
         fill: #fff;
         stroke: #fff; }
-  .button.hollow {
+  .button.info, button.info {
+    background: #A0D3E8;
+    color: #000; }
+    .button.info:hover, button.info:hover, .button.info:focus, button.info:focus {
+      background: #71bddd;
+      color: #000; }
+    .button.info[data-popup-toggle]::after, button.info[data-popup-toggle]::after {
+      border-top-color: #000; }
+    .button.info .iconic *, button.info .iconic * {
+      fill: #000;
+      stroke: #000; }
+      .button.info .iconic *.iconic-property-accent, button.info .iconic *.iconic-property-accent {
+        fill: #000;
+        stroke: #000; }
+  .button.dark, button.dark {
+    background: #232323;
+    color: #fff; }
+    .button.dark:hover, button.dark:hover, .button.dark:focus, button.dark:focus {
+      background: #1e1e1e;
+      color: #fff; }
+    .button.dark[data-popup-toggle]::after, button.dark[data-popup-toggle]::after {
+      border-top-color: #fff; }
+    .button.dark .iconic *, button.dark .iconic * {
+      fill: #fff;
+      stroke: #fff; }
+      .button.dark .iconic *.iconic-property-accent, button.dark .iconic *.iconic-property-accent {
+        fill: #fff;
+        stroke: #fff; }
+  .button.hollow, button.hollow {
     border: 1px solid #00558b;
     background: transparent;
     color: #00558b; }
-    .button.hollow:hover, .button.hollow:focus {
+    .button.hollow:hover, button.hollow:hover, .button.hollow:focus, button.hollow:focus {
       border-color: #008ee8;
       background: transparent;
       color: #008ee8; }
-    .button.hollow[data-popup-toggle]::after {
+    .button.hollow[data-popup-toggle]::after, button.hollow[data-popup-toggle]::after {
       border-top-color: #00558b; }
-    .button.hollow .iconic * {
+    .button.hollow .iconic *, button.hollow .iconic * {
       fill: #00558b;
       stroke: #00558b; }
-      .button.hollow .iconic *.iconic-property-accent {
+      .button.hollow .iconic *.iconic-property-accent, button.hollow .iconic *.iconic-property-accent {
         fill: #00558b;
         stroke: #00558b; }
-    .button.hollow:hover .iconic * {
+    .button.hollow:hover .iconic *, button.hollow:hover .iconic * {
       fill: #008ee8;
       stroke: #008ee8; }
-      .button.hollow:hover .iconic *.iconic-property-accent {
+      .button.hollow:hover .iconic *.iconic-property-accent, button.hollow:hover .iconic *.iconic-property-accent {
         fill: #008ee8;
         stroke: #008ee8; }
-    .button.hollow.secondary {
+    .button.hollow.secondary, button.hollow.secondary {
       border: 1px solid #f1f1f1;
       background: transparent;
       color: #f1f1f1; }
-      .button.hollow.secondary:hover, .button.hollow.secondary:focus {
+      .button.hollow.secondary:hover, button.hollow.secondary:hover, .button.hollow.secondary:focus, button.hollow.secondary:focus {
         border-color: #f4f4f4;
         background: transparent;
         color: #f4f4f4; }
-      .button.hollow.secondary[data-popup-toggle]::after {
+      .button.hollow.secondary[data-popup-toggle]::after, button.hollow.secondary[data-popup-toggle]::after {
         border-top-color: #f1f1f1; }
-      .button.hollow.secondary .iconic * {
+      .button.hollow.secondary .iconic *, button.hollow.secondary .iconic * {
         fill: #f1f1f1;
         stroke: #f1f1f1; }
-        .button.hollow.secondary .iconic *.iconic-property-accent {
+        .button.hollow.secondary .iconic *.iconic-property-accent, button.hollow.secondary .iconic *.iconic-property-accent {
           fill: #f1f1f1;
           stroke: #f1f1f1; }
-      .button.hollow.secondary:hover .iconic * {
+      .button.hollow.secondary:hover .iconic *, button.hollow.secondary:hover .iconic * {
         fill: #f4f4f4;
         stroke: #f4f4f4; }
-        .button.hollow.secondary:hover .iconic *.iconic-property-accent {
+        .button.hollow.secondary:hover .iconic *.iconic-property-accent, button.hollow.secondary:hover .iconic *.iconic-property-accent {
           fill: #f4f4f4;
           stroke: #f4f4f4; }
-    .button.hollow.success {
+    .button.hollow.success, button.hollow.success {
       border: 1px solid #4CAF50;
       background: transparent;
       color: #4CAF50; }
-      .button.hollow.success:hover, .button.hollow.success:focus {
+      .button.hollow.success:hover, button.hollow.success:hover, .button.hollow.success:focus, button.hollow.success:focus {
         border-color: #78c47b;
         background: transparent;
         color: #78c47b; }
-      .button.hollow.success[data-popup-toggle]::after {
+      .button.hollow.success[data-popup-toggle]::after, button.hollow.success[data-popup-toggle]::after {
         border-top-color: #4CAF50; }
-      .button.hollow.success .iconic * {
+      .button.hollow.success .iconic *, button.hollow.success .iconic * {
         fill: #4CAF50;
         stroke: #4CAF50; }
-        .button.hollow.success .iconic *.iconic-property-accent {
+        .button.hollow.success .iconic *.iconic-property-accent, button.hollow.success .iconic *.iconic-property-accent {
           fill: #4CAF50;
           stroke: #4CAF50; }
-      .button.hollow.success:hover .iconic * {
+      .button.hollow.success:hover .iconic *, button.hollow.success:hover .iconic * {
         fill: #78c47b;
         stroke: #78c47b; }
-        .button.hollow.success:hover .iconic *.iconic-property-accent {
+        .button.hollow.success:hover .iconic *.iconic-property-accent, button.hollow.success:hover .iconic *.iconic-property-accent {
           fill: #78c47b;
           stroke: #78c47b; }
-    .button.hollow.warning {
+    .button.hollow.warning, button.hollow.warning {
       border: 1px solid #f89406;
       background: transparent;
       color: #f89406; }
-      .button.hollow.warning:hover, .button.hollow.warning:focus {
+      .button.hollow.warning:hover, button.hollow.warning:hover, .button.hollow.warning:focus, button.hollow.warning:focus {
         border-color: #faaf44;
         background: transparent;
         color: #faaf44; }
-      .button.hollow.warning[data-popup-toggle]::after {
+      .button.hollow.warning[data-popup-toggle]::after, button.hollow.warning[data-popup-toggle]::after {
         border-top-color: #f89406; }
-      .button.hollow.warning .iconic * {
+      .button.hollow.warning .iconic *, button.hollow.warning .iconic * {
         fill: #f89406;
         stroke: #f89406; }
-        .button.hollow.warning .iconic *.iconic-property-accent {
+        .button.hollow.warning .iconic *.iconic-property-accent, button.hollow.warning .iconic *.iconic-property-accent {
           fill: #f89406;
           stroke: #f89406; }
-      .button.hollow.warning:hover .iconic * {
+      .button.hollow.warning:hover .iconic *, button.hollow.warning:hover .iconic * {
         fill: #faaf44;
         stroke: #faaf44; }
-        .button.hollow.warning:hover .iconic *.iconic-property-accent {
+        .button.hollow.warning:hover .iconic *.iconic-property-accent, button.hollow.warning:hover .iconic *.iconic-property-accent {
           fill: #faaf44;
           stroke: #faaf44; }
-    .button.hollow.alert {
+    .button.hollow.alert, button.hollow.alert {
       border: 1px solid #e74c3c;
       background: transparent;
       color: #e74c3c; }
-      .button.hollow.alert:hover, .button.hollow.alert:focus {
+      .button.hollow.alert:hover, button.hollow.alert:hover, .button.hollow.alert:focus, button.hollow.alert:focus {
         border-color: #ed796d;
         background: transparent;
         color: #ed796d; }
-      .button.hollow.alert[data-popup-toggle]::after {
+      .button.hollow.alert[data-popup-toggle]::after, button.hollow.alert[data-popup-toggle]::after {
         border-top-color: #e74c3c; }
-      .button.hollow.alert .iconic * {
+      .button.hollow.alert .iconic *, button.hollow.alert .iconic * {
         fill: #e74c3c;
         stroke: #e74c3c; }
-        .button.hollow.alert .iconic *.iconic-property-accent {
+        .button.hollow.alert .iconic *.iconic-property-accent, button.hollow.alert .iconic *.iconic-property-accent {
           fill: #e74c3c;
           stroke: #e74c3c; }
-      .button.hollow.alert:hover .iconic * {
+      .button.hollow.alert:hover .iconic *, button.hollow.alert:hover .iconic * {
         fill: #ed796d;
         stroke: #ed796d; }
-        .button.hollow.alert:hover .iconic *.iconic-property-accent {
+        .button.hollow.alert:hover .iconic *.iconic-property-accent, button.hollow.alert:hover .iconic *.iconic-property-accent {
           fill: #ed796d;
           stroke: #ed796d; }
-  .button.disabled {
+    .button.hollow.info, button.hollow.info {
+      border: 1px solid #A0D3E8;
+      background: transparent;
+      color: #A0D3E8; }
+      .button.hollow.info:hover, button.hollow.info:hover, .button.hollow.info:focus, button.hollow.info:focus {
+        border-color: #b8deee;
+        background: transparent;
+        color: #b8deee; }
+      .button.hollow.info[data-popup-toggle]::after, button.hollow.info[data-popup-toggle]::after {
+        border-top-color: #A0D3E8; }
+      .button.hollow.info .iconic *, button.hollow.info .iconic * {
+        fill: #A0D3E8;
+        stroke: #A0D3E8; }
+        .button.hollow.info .iconic *.iconic-property-accent, button.hollow.info .iconic *.iconic-property-accent {
+          fill: #A0D3E8;
+          stroke: #A0D3E8; }
+      .button.hollow.info:hover .iconic *, button.hollow.info:hover .iconic * {
+        fill: #b8deee;
+        stroke: #b8deee; }
+        .button.hollow.info:hover .iconic *.iconic-property-accent, button.hollow.info:hover .iconic *.iconic-property-accent {
+          fill: #b8deee;
+          stroke: #b8deee; }
+    .button.hollow.dark, button.hollow.dark {
+      border: 1px solid #232323;
+      background: transparent;
+      color: #232323; }
+      .button.hollow.dark:hover, button.hollow.dark:hover, .button.hollow.dark:focus, button.hollow.dark:focus {
+        border-color: #5a5a5a;
+        background: transparent;
+        color: #5a5a5a; }
+      .button.hollow.dark[data-popup-toggle]::after, button.hollow.dark[data-popup-toggle]::after {
+        border-top-color: #232323; }
+      .button.hollow.dark .iconic *, button.hollow.dark .iconic * {
+        fill: #232323;
+        stroke: #232323; }
+        .button.hollow.dark .iconic *.iconic-property-accent, button.hollow.dark .iconic *.iconic-property-accent {
+          fill: #232323;
+          stroke: #232323; }
+      .button.hollow.dark:hover .iconic *, button.hollow.dark:hover .iconic * {
+        fill: #5a5a5a;
+        stroke: #5a5a5a; }
+        .button.hollow.dark:hover .iconic *.iconic-property-accent, button.hollow.dark:hover .iconic *.iconic-property-accent {
+          fill: #5a5a5a;
+          stroke: #5a5a5a; }
+  .button.disabled, button.disabled {
     opacity: 0.5;
+    cursor: default;
     pointer-events: none; }
-    .button.disabled.secondary {
-      opacity: 0.5;
-      pointer-events: none; }
-    .button.disabled.success {
-      opacity: 0.5;
-      pointer-events: none; }
-    .button.disabled.warning {
-      opacity: 0.5;
-      pointer-events: none; }
-    .button.disabled.alert {
-      opacity: 0.5;
-      pointer-events: none; }
 
 .button-group {
   margin: 0;
@@ -1162,17 +1226,20 @@ img {
   display: -ms-inline-flexbox;
   display: inline-flex;
   border-radius: 0;
-  overflow: hidden; }
+  overflow: hidden;
+  font-size: 0.9rem; }
   .button-group > li {
     -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto; }
-    .button-group > li > a,
-    .button-group > li > label {
+    .button-group > li > a, .button-group > li > label, .button-group > li > button {
       border-radius: 0;
+      font-size: inherit;
       display: block;
       margin: 0; }
-    .button-group > li:not(:last-child) > a, .button-group > li:not(:last-child) > label {
+    .button-group > li > input + label {
+      margin-left: 0; }
+    .button-group > li:not(:last-child) > a, .button-group > li:not(:last-child) > label, .button-group > li:not(:last-child) > button {
       border-right: 1px solid #004068; }
   .button-group .iconic {
     width: 1em;
@@ -1187,12 +1254,7 @@ img {
   .button-group.segmented > li > input[type="radio"] {
     position: absolute;
     left: -9999px; }
-  .button-group.segmented > li > a, .button-group.segmented.secondary > li > a, .button-group.segmented.success > li > a, .button-group.segmented.warning > li > a, .button-group.segmented.alert > li > a,
-  .button-group.segmented > li > label,
-  .button-group.segmented.secondary > li > label,
-  .button-group.segmented.success > li > label,
-  .button-group.segmented.warning > li > label,
-  .button-group.segmented.alert > li > label {
+  .button-group.segmented > li > a, .button-group.segmented.secondary > li > a, .button-group.segmented.success > li > a, .button-group.segmented.warning > li > a, .button-group.segmented.alert > li > a, .button-group.segmented > li > label, .button-group.segmented.secondary > li > label, .button-group.segmented.success > li > label, .button-group.segmented.warning > li > label, .button-group.segmented.alert > li > label, .button-group.segmented > li > button, .button-group.segmented.secondary > li > button, .button-group.segmented.success > li > button, .button-group.segmented.warning > li > button, .button-group.segmented.alert > li > button {
     margin-right: 0;
     background: transparent; }
 
@@ -1205,171 +1267,171 @@ img {
     -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto; }
-  .button-group > li > a, .button-group > li > label {
+  .button-group > li > a, .button-group > li > label, .button-group > li > button {
     background: #00558b;
     color: #fff;
     border-color: #004876; }
-    .button-group > li > a:hover, .button-group > li > a:focus, .button-group > li > label:hover, .button-group > li > label:focus {
+    .button-group > li > a:hover, .button-group > li > a:focus, .button-group > li > label:hover, .button-group > li > label:focus, .button-group > li > button:hover, .button-group > li > button:focus {
       background: #004876;
       color: #fff; }
-    .button-group > li > a[data-popup-toggle]::after, .button-group > li > label[data-popup-toggle]::after {
+    .button-group > li > a[data-popup-toggle]::after, .button-group > li > label[data-popup-toggle]::after, .button-group > li > button[data-popup-toggle]::after {
       border-top-color: #fff; }
-    .button-group > li > a .iconic *, .button-group > li > label .iconic * {
+    .button-group > li > a .iconic *, .button-group > li > label .iconic *, .button-group > li > button .iconic * {
       fill: #fff;
       stroke: #fff; }
-      .button-group > li > a .iconic *.iconic-property-accent, .button-group > li > label .iconic *.iconic-property-accent {
+      .button-group > li > a .iconic *.iconic-property-accent, .button-group > li > label .iconic *.iconic-property-accent, .button-group > li > button .iconic *.iconic-property-accent {
         fill: #fff;
         stroke: #fff; }
-  .button-group > li.is-active > a, .button-group > li.is-active > label {
+  .button-group > li.is-active > a, .button-group > li.is-active > label, .button-group > li.is-active > button {
     background: #004876; }
-  .button-group.secondary > li > a, .button-group.secondary > li > label {
+  .button-group.secondary > li > a, .button-group.secondary > li > label, .button-group.secondary > li > button {
     background: #f1f1f1;
     color: #fff;
     border-color: #cdcdcd; }
-    .button-group.secondary > li > a:hover, .button-group.secondary > li > a:focus, .button-group.secondary > li > label:hover, .button-group.secondary > li > label:focus {
+    .button-group.secondary > li > a:hover, .button-group.secondary > li > a:focus, .button-group.secondary > li > label:hover, .button-group.secondary > li > label:focus, .button-group.secondary > li > button:hover, .button-group.secondary > li > button:focus {
       background: #cdcdcd;
       color: #fff; }
-    .button-group.secondary > li > a[data-popup-toggle]::after, .button-group.secondary > li > label[data-popup-toggle]::after {
+    .button-group.secondary > li > a[data-popup-toggle]::after, .button-group.secondary > li > label[data-popup-toggle]::after, .button-group.secondary > li > button[data-popup-toggle]::after {
       border-top-color: #fff; }
-    .button-group.secondary > li > a .iconic *, .button-group.secondary > li > label .iconic * {
+    .button-group.secondary > li > a .iconic *, .button-group.secondary > li > label .iconic *, .button-group.secondary > li > button .iconic * {
       fill: #fff;
       stroke: #fff; }
-      .button-group.secondary > li > a .iconic *.iconic-property-accent, .button-group.secondary > li > label .iconic *.iconic-property-accent {
+      .button-group.secondary > li > a .iconic *.iconic-property-accent, .button-group.secondary > li > label .iconic *.iconic-property-accent, .button-group.secondary > li > button .iconic *.iconic-property-accent {
         fill: #fff;
         stroke: #fff; }
-  .button-group.secondary > li.is-active > a, .button-group.secondary > li.is-active > label {
+  .button-group.secondary > li.is-active > a, .button-group.secondary > li.is-active > label, .button-group.secondary > li.is-active > button {
     background: #cdcdcd; }
-  .button-group.success > li > a, .button-group.success > li > label {
+  .button-group.success > li > a, .button-group.success > li > label, .button-group.success > li > button {
     background: #4CAF50;
     color: #fff;
     border-color: #419544; }
-    .button-group.success > li > a:hover, .button-group.success > li > a:focus, .button-group.success > li > label:hover, .button-group.success > li > label:focus {
+    .button-group.success > li > a:hover, .button-group.success > li > a:focus, .button-group.success > li > label:hover, .button-group.success > li > label:focus, .button-group.success > li > button:hover, .button-group.success > li > button:focus {
       background: #419544;
       color: #fff; }
-    .button-group.success > li > a[data-popup-toggle]::after, .button-group.success > li > label[data-popup-toggle]::after {
+    .button-group.success > li > a[data-popup-toggle]::after, .button-group.success > li > label[data-popup-toggle]::after, .button-group.success > li > button[data-popup-toggle]::after {
       border-top-color: #fff; }
-    .button-group.success > li > a .iconic *, .button-group.success > li > label .iconic * {
+    .button-group.success > li > a .iconic *, .button-group.success > li > label .iconic *, .button-group.success > li > button .iconic * {
       fill: #fff;
       stroke: #fff; }
-      .button-group.success > li > a .iconic *.iconic-property-accent, .button-group.success > li > label .iconic *.iconic-property-accent {
+      .button-group.success > li > a .iconic *.iconic-property-accent, .button-group.success > li > label .iconic *.iconic-property-accent, .button-group.success > li > button .iconic *.iconic-property-accent {
         fill: #fff;
         stroke: #fff; }
-  .button-group.success > li.is-active > a, .button-group.success > li.is-active > label {
+  .button-group.success > li.is-active > a, .button-group.success > li.is-active > label, .button-group.success > li.is-active > button {
     background: #419544; }
-  .button-group.warning > li > a, .button-group.warning > li > label {
+  .button-group.warning > li > a, .button-group.warning > li > label, .button-group.warning > li > button {
     background: #f89406;
     color: #fff;
     border-color: #d37e05; }
-    .button-group.warning > li > a:hover, .button-group.warning > li > a:focus, .button-group.warning > li > label:hover, .button-group.warning > li > label:focus {
+    .button-group.warning > li > a:hover, .button-group.warning > li > a:focus, .button-group.warning > li > label:hover, .button-group.warning > li > label:focus, .button-group.warning > li > button:hover, .button-group.warning > li > button:focus {
       background: #d37e05;
       color: #fff; }
-    .button-group.warning > li > a[data-popup-toggle]::after, .button-group.warning > li > label[data-popup-toggle]::after {
+    .button-group.warning > li > a[data-popup-toggle]::after, .button-group.warning > li > label[data-popup-toggle]::after, .button-group.warning > li > button[data-popup-toggle]::after {
       border-top-color: #fff; }
-    .button-group.warning > li > a .iconic *, .button-group.warning > li > label .iconic * {
+    .button-group.warning > li > a .iconic *, .button-group.warning > li > label .iconic *, .button-group.warning > li > button .iconic * {
       fill: #fff;
       stroke: #fff; }
-      .button-group.warning > li > a .iconic *.iconic-property-accent, .button-group.warning > li > label .iconic *.iconic-property-accent {
+      .button-group.warning > li > a .iconic *.iconic-property-accent, .button-group.warning > li > label .iconic *.iconic-property-accent, .button-group.warning > li > button .iconic *.iconic-property-accent {
         fill: #fff;
         stroke: #fff; }
-  .button-group.warning > li.is-active > a, .button-group.warning > li.is-active > label {
+  .button-group.warning > li.is-active > a, .button-group.warning > li.is-active > label, .button-group.warning > li.is-active > button {
     background: #d37e05; }
-  .button-group.alert > li > a, .button-group.alert > li > label {
+  .button-group.alert > li > a, .button-group.alert > li > label, .button-group.alert > li > button {
     background: #e74c3c;
     color: #fff;
     border-color: #dc2d1b; }
-    .button-group.alert > li > a:hover, .button-group.alert > li > a:focus, .button-group.alert > li > label:hover, .button-group.alert > li > label:focus {
+    .button-group.alert > li > a:hover, .button-group.alert > li > a:focus, .button-group.alert > li > label:hover, .button-group.alert > li > label:focus, .button-group.alert > li > button:hover, .button-group.alert > li > button:focus {
       background: #dc2d1b;
       color: #fff; }
-    .button-group.alert > li > a[data-popup-toggle]::after, .button-group.alert > li > label[data-popup-toggle]::after {
+    .button-group.alert > li > a[data-popup-toggle]::after, .button-group.alert > li > label[data-popup-toggle]::after, .button-group.alert > li > button[data-popup-toggle]::after {
       border-top-color: #fff; }
-    .button-group.alert > li > a .iconic *, .button-group.alert > li > label .iconic * {
+    .button-group.alert > li > a .iconic *, .button-group.alert > li > label .iconic *, .button-group.alert > li > button .iconic * {
       fill: #fff;
       stroke: #fff; }
-      .button-group.alert > li > a .iconic *.iconic-property-accent, .button-group.alert > li > label .iconic *.iconic-property-accent {
+      .button-group.alert > li > a .iconic *.iconic-property-accent, .button-group.alert > li > label .iconic *.iconic-property-accent, .button-group.alert > li > button .iconic *.iconic-property-accent {
         fill: #fff;
         stroke: #fff; }
-  .button-group.alert > li.is-active > a, .button-group.alert > li.is-active > label {
+  .button-group.alert > li.is-active > a, .button-group.alert > li.is-active > label, .button-group.alert > li.is-active > button {
     background: #dc2d1b; }
-  .button-group > li.secondary > a {
+  .button-group > li.secondary > a, .button-group > li.secondary > label, .button-group > li.secondary > button {
     background: #f1f1f1;
     color: #000;
     border-color: #f1f1f1; }
-    .button-group > li.secondary > a:hover, .button-group > li.secondary > a:focus {
+    .button-group > li.secondary > a:hover, .button-group > li.secondary > a:focus, .button-group > li.secondary > label:hover, .button-group > li.secondary > label:focus, .button-group > li.secondary > button:hover, .button-group > li.secondary > button:focus {
       background: #cdcdcd;
       color: #000; }
-    .button-group > li.secondary > a[data-popup-toggle]::after {
+    .button-group > li.secondary > a[data-popup-toggle]::after, .button-group > li.secondary > label[data-popup-toggle]::after, .button-group > li.secondary > button[data-popup-toggle]::after {
       border-top-color: #000; }
-    .button-group > li.secondary > a:hover, .button-group > li.secondary > a:focus {
+    .button-group > li.secondary > a:hover, .button-group > li.secondary > a:focus, .button-group > li.secondary > label:hover, .button-group > li.secondary > label:focus, .button-group > li.secondary > button:hover, .button-group > li.secondary > button:focus {
       border-color: #b5b5b5; }
-    .button-group > li.secondary > a .iconic * {
+    .button-group > li.secondary > a .iconic *, .button-group > li.secondary > label .iconic *, .button-group > li.secondary > button .iconic * {
       fill: #000;
       stroke: #000; }
-      .button-group > li.secondary > a .iconic *.iconic-property-accent {
+      .button-group > li.secondary > a .iconic *.iconic-property-accent, .button-group > li.secondary > label .iconic *.iconic-property-accent, .button-group > li.secondary > button .iconic *.iconic-property-accent {
         fill: #000;
         stroke: #000; }
-  .button-group > li.success > a {
+  .button-group > li.success > a, .button-group > li.success > label, .button-group > li.success > button {
     background: #4CAF50;
     color: #fff;
     border-color: #4CAF50; }
-    .button-group > li.success > a:hover, .button-group > li.success > a:focus {
+    .button-group > li.success > a:hover, .button-group > li.success > a:focus, .button-group > li.success > label:hover, .button-group > li.success > label:focus, .button-group > li.success > button:hover, .button-group > li.success > button:focus {
       background: #419544;
       color: #fff; }
-    .button-group > li.success > a[data-popup-toggle]::after {
+    .button-group > li.success > a[data-popup-toggle]::after, .button-group > li.success > label[data-popup-toggle]::after, .button-group > li.success > button[data-popup-toggle]::after {
       border-top-color: #fff; }
-    .button-group > li.success > a:hover, .button-group > li.success > a:focus {
+    .button-group > li.success > a:hover, .button-group > li.success > a:focus, .button-group > li.success > label:hover, .button-group > li.success > label:focus, .button-group > li.success > button:hover, .button-group > li.success > button:focus {
       border-color: #39833c; }
-    .button-group > li.success > a .iconic * {
+    .button-group > li.success > a .iconic *, .button-group > li.success > label .iconic *, .button-group > li.success > button .iconic * {
       fill: #fff;
       stroke: #fff; }
-      .button-group > li.success > a .iconic *.iconic-property-accent {
+      .button-group > li.success > a .iconic *.iconic-property-accent, .button-group > li.success > label .iconic *.iconic-property-accent, .button-group > li.success > button .iconic *.iconic-property-accent {
         fill: #fff;
         stroke: #fff; }
-  .button-group > li.warning > a {
+  .button-group > li.warning > a, .button-group > li.warning > label, .button-group > li.warning > button {
     background: #f89406;
     color: #fff;
     border-color: #f89406; }
-    .button-group > li.warning > a:hover, .button-group > li.warning > a:focus {
+    .button-group > li.warning > a:hover, .button-group > li.warning > a:focus, .button-group > li.warning > label:hover, .button-group > li.warning > label:focus, .button-group > li.warning > button:hover, .button-group > li.warning > button:focus {
       background: #d37e05;
       color: #fff; }
-    .button-group > li.warning > a[data-popup-toggle]::after {
+    .button-group > li.warning > a[data-popup-toggle]::after, .button-group > li.warning > label[data-popup-toggle]::after, .button-group > li.warning > button[data-popup-toggle]::after {
       border-top-color: #fff; }
-    .button-group > li.warning > a:hover, .button-group > li.warning > a:focus {
+    .button-group > li.warning > a:hover, .button-group > li.warning > a:focus, .button-group > li.warning > label:hover, .button-group > li.warning > label:focus, .button-group > li.warning > button:hover, .button-group > li.warning > button:focus {
       border-color: #ba6f04; }
-    .button-group > li.warning > a .iconic * {
+    .button-group > li.warning > a .iconic *, .button-group > li.warning > label .iconic *, .button-group > li.warning > button .iconic * {
       fill: #fff;
       stroke: #fff; }
-      .button-group > li.warning > a .iconic *.iconic-property-accent {
+      .button-group > li.warning > a .iconic *.iconic-property-accent, .button-group > li.warning > label .iconic *.iconic-property-accent, .button-group > li.warning > button .iconic *.iconic-property-accent {
         fill: #fff;
         stroke: #fff; }
-  .button-group > li.alert > a {
+  .button-group > li.alert > a, .button-group > li.alert > label, .button-group > li.alert > button {
     background: #e74c3c;
     color: #fff;
     border-color: #e74c3c; }
-    .button-group > li.alert > a:hover, .button-group > li.alert > a:focus {
+    .button-group > li.alert > a:hover, .button-group > li.alert > a:focus, .button-group > li.alert > label:hover, .button-group > li.alert > label:focus, .button-group > li.alert > button:hover, .button-group > li.alert > button:focus {
       background: #dc2d1b;
       color: #fff; }
-    .button-group > li.alert > a[data-popup-toggle]::after {
+    .button-group > li.alert > a[data-popup-toggle]::after, .button-group > li.alert > label[data-popup-toggle]::after, .button-group > li.alert > button[data-popup-toggle]::after {
       border-top-color: #fff; }
-    .button-group > li.alert > a:hover, .button-group > li.alert > a:focus {
+    .button-group > li.alert > a:hover, .button-group > li.alert > a:focus, .button-group > li.alert > label:hover, .button-group > li.alert > label:focus, .button-group > li.alert > button:hover, .button-group > li.alert > button:focus {
       border-color: #c22818; }
-    .button-group > li.alert > a .iconic * {
+    .button-group > li.alert > a .iconic *, .button-group > li.alert > label .iconic *, .button-group > li.alert > button .iconic * {
       fill: #fff;
       stroke: #fff; }
-      .button-group > li.alert > a .iconic *.iconic-property-accent {
+      .button-group > li.alert > a .iconic *.iconic-property-accent, .button-group > li.alert > label .iconic *.iconic-property-accent, .button-group > li.alert > button .iconic *.iconic-property-accent {
         fill: #fff;
         stroke: #fff; }
   .button-group.segmented {
     border-color: #00558b; }
-    .button-group.segmented > li > a, .button-group.segmented > li > label {
+    .button-group.segmented > li > a, .button-group.segmented > li > label, .button-group.segmented > li > button {
       border-color: #00558b;
       color: #00558b; }
-      .button-group.segmented > li > a:hover, .button-group.segmented > li > label:hover {
+      .button-group.segmented > li > a:hover, .button-group.segmented > li > label:hover, .button-group.segmented > li > button:hover {
         background: rgba(0, 85, 139, 0.25);
         color: #00558b; }
-      .button-group.segmented > li > a .iconic *, .button-group.segmented > li > label .iconic * {
+      .button-group.segmented > li > a .iconic *, .button-group.segmented > li > label .iconic *, .button-group.segmented > li > button .iconic * {
         fill: #00558b;
         stroke: #00558b; }
-        .button-group.segmented > li > a .iconic *.iconic-property-accent, .button-group.segmented > li > label .iconic *.iconic-property-accent {
+        .button-group.segmented > li > a .iconic *.iconic-property-accent, .button-group.segmented > li > label .iconic *.iconic-property-accent, .button-group.segmented > li > button .iconic *.iconic-property-accent {
           fill: #00558b;
           stroke: #00558b; }
     .button-group.segmented > li.is-active > a, .button-group.segmented > li.is-active > a:hover,
@@ -1387,16 +1449,16 @@ img {
         stroke: #fff; }
     .button-group.segmented.secondary {
       border-color: #f1f1f1; }
-      .button-group.segmented.secondary > li > a, .button-group.segmented.secondary > li > label {
+      .button-group.segmented.secondary > li > a, .button-group.segmented.secondary > li > label, .button-group.segmented.secondary > li > button {
         border-color: #f1f1f1;
         color: #f1f1f1; }
-        .button-group.segmented.secondary > li > a:hover, .button-group.segmented.secondary > li > label:hover {
+        .button-group.segmented.secondary > li > a:hover, .button-group.segmented.secondary > li > label:hover, .button-group.segmented.secondary > li > button:hover {
           background: rgba(241, 241, 241, 0.25);
           color: #f1f1f1; }
-        .button-group.segmented.secondary > li > a .iconic *, .button-group.segmented.secondary > li > label .iconic * {
+        .button-group.segmented.secondary > li > a .iconic *, .button-group.segmented.secondary > li > label .iconic *, .button-group.segmented.secondary > li > button .iconic * {
           fill: #f1f1f1;
           stroke: #f1f1f1; }
-          .button-group.segmented.secondary > li > a .iconic *.iconic-property-accent, .button-group.segmented.secondary > li > label .iconic *.iconic-property-accent {
+          .button-group.segmented.secondary > li > a .iconic *.iconic-property-accent, .button-group.segmented.secondary > li > label .iconic *.iconic-property-accent, .button-group.segmented.secondary > li > button .iconic *.iconic-property-accent {
             fill: #f1f1f1;
             stroke: #f1f1f1; }
       .button-group.segmented.secondary > li.is-active > a, .button-group.segmented.secondary > li.is-active > a:hover,
@@ -1414,16 +1476,16 @@ img {
           stroke: #000; }
     .button-group.segmented.success {
       border-color: #4CAF50; }
-      .button-group.segmented.success > li > a, .button-group.segmented.success > li > label {
+      .button-group.segmented.success > li > a, .button-group.segmented.success > li > label, .button-group.segmented.success > li > button {
         border-color: #4CAF50;
         color: #4CAF50; }
-        .button-group.segmented.success > li > a:hover, .button-group.segmented.success > li > label:hover {
+        .button-group.segmented.success > li > a:hover, .button-group.segmented.success > li > label:hover, .button-group.segmented.success > li > button:hover {
           background: rgba(76, 175, 80, 0.25);
           color: #4CAF50; }
-        .button-group.segmented.success > li > a .iconic *, .button-group.segmented.success > li > label .iconic * {
+        .button-group.segmented.success > li > a .iconic *, .button-group.segmented.success > li > label .iconic *, .button-group.segmented.success > li > button .iconic * {
           fill: #4CAF50;
           stroke: #4CAF50; }
-          .button-group.segmented.success > li > a .iconic *.iconic-property-accent, .button-group.segmented.success > li > label .iconic *.iconic-property-accent {
+          .button-group.segmented.success > li > a .iconic *.iconic-property-accent, .button-group.segmented.success > li > label .iconic *.iconic-property-accent, .button-group.segmented.success > li > button .iconic *.iconic-property-accent {
             fill: #4CAF50;
             stroke: #4CAF50; }
       .button-group.segmented.success > li.is-active > a, .button-group.segmented.success > li.is-active > a:hover,
@@ -1441,16 +1503,16 @@ img {
           stroke: #fff; }
     .button-group.segmented.warning {
       border-color: #f89406; }
-      .button-group.segmented.warning > li > a, .button-group.segmented.warning > li > label {
+      .button-group.segmented.warning > li > a, .button-group.segmented.warning > li > label, .button-group.segmented.warning > li > button {
         border-color: #f89406;
         color: #f89406; }
-        .button-group.segmented.warning > li > a:hover, .button-group.segmented.warning > li > label:hover {
+        .button-group.segmented.warning > li > a:hover, .button-group.segmented.warning > li > label:hover, .button-group.segmented.warning > li > button:hover {
           background: rgba(248, 148, 6, 0.25);
           color: #f89406; }
-        .button-group.segmented.warning > li > a .iconic *, .button-group.segmented.warning > li > label .iconic * {
+        .button-group.segmented.warning > li > a .iconic *, .button-group.segmented.warning > li > label .iconic *, .button-group.segmented.warning > li > button .iconic * {
           fill: #f89406;
           stroke: #f89406; }
-          .button-group.segmented.warning > li > a .iconic *.iconic-property-accent, .button-group.segmented.warning > li > label .iconic *.iconic-property-accent {
+          .button-group.segmented.warning > li > a .iconic *.iconic-property-accent, .button-group.segmented.warning > li > label .iconic *.iconic-property-accent, .button-group.segmented.warning > li > button .iconic *.iconic-property-accent {
             fill: #f89406;
             stroke: #f89406; }
       .button-group.segmented.warning > li.is-active > a, .button-group.segmented.warning > li.is-active > a:hover,
@@ -1468,16 +1530,16 @@ img {
           stroke: #fff; }
     .button-group.segmented.alert {
       border-color: #e74c3c; }
-      .button-group.segmented.alert > li > a, .button-group.segmented.alert > li > label {
+      .button-group.segmented.alert > li > a, .button-group.segmented.alert > li > label, .button-group.segmented.alert > li > button {
         border-color: #e74c3c;
         color: #e74c3c; }
-        .button-group.segmented.alert > li > a:hover, .button-group.segmented.alert > li > label:hover {
+        .button-group.segmented.alert > li > a:hover, .button-group.segmented.alert > li > label:hover, .button-group.segmented.alert > li > button:hover {
           background: rgba(231, 76, 60, 0.25);
           color: #e74c3c; }
-        .button-group.segmented.alert > li > a .iconic *, .button-group.segmented.alert > li > label .iconic * {
+        .button-group.segmented.alert > li > a .iconic *, .button-group.segmented.alert > li > label .iconic *, .button-group.segmented.alert > li > button .iconic * {
           fill: #e74c3c;
           stroke: #e74c3c; }
-          .button-group.segmented.alert > li > a .iconic *.iconic-property-accent, .button-group.segmented.alert > li > label .iconic *.iconic-property-accent {
+          .button-group.segmented.alert > li > a .iconic *.iconic-property-accent, .button-group.segmented.alert > li > label .iconic *.iconic-property-accent, .button-group.segmented.alert > li > button .iconic *.iconic-property-accent {
             fill: #e74c3c;
             stroke: #e74c3c; }
       .button-group.segmented.alert > li.is-active > a, .button-group.segmented.alert > li.is-active > a:hover,
@@ -1507,10 +1569,14 @@ img {
       -webkit-flex: 1;
           -ms-flex: 1;
               flex: 1; }
-      .button-group.expand > li > a, .button-group.expand > li > label {
+      .button-group.expand > li > a, .button-group.expand > li > label, .button-group.expand > li > button {
         display: block;
         margin-left: 0;
         margin-right: 0; }
+  .button-group li.disabled > a, .button-group li.disabled > label, .button-group li.disabled > button {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none; }
 
 /*
   Cards
@@ -1633,6 +1699,11 @@ img {
   padding: 0.5rem;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.25); }
 
+ul.thumbnails > li {
+  margin-bottom: 1rem; }
+  ul.thumbnails > li a {
+    display: block; }
+
 /*
   FORMS
   -----
@@ -1729,7 +1800,13 @@ input[type="checkbox"], input[type="radio"] {
       border-right: 0; }
     .inline-label > .form-label:last-child {
       border-left: 0; }
-  .inline-label > a {
+  .inline-label > a,
+  .inline-label > button,
+  .inline-label > input[type="button"],
+  .inline-label > input[type="submit"] {
+    -webkit-flex: 0 0 auto;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
@@ -1756,8 +1833,10 @@ select {
   font-size: 1rem;
   color: #000;
   border-radius: 0;
-  background: #fafafa url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" style="fill: #000"></polygon></svg>') right 10px center no-repeat;
-  background-size: 8px 8px; }
+  border: 1px solid #ccc;
+  background: #fafafa url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" style="fill: black"></polygon></svg>') right 10px center no-repeat;
+  background-size: 8px 8px;
+  padding-right: 1.625rem; }
   select:hover {
     background-color: #f0f0f0; }
   select:focus {
@@ -2188,9 +2267,9 @@ meter {
   height: 100vh;
   position: relative;
   overflow: hidden;
-  -webkit-flex: 1 1;
-      -ms-flex: 1 1;
-          flex: 1 1;
+  -webkit-flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
   -webkit-flex-flow: row wrap;
       -ms-flex-flow: row wrap;
           flex-flow: row wrap;
@@ -2214,9 +2293,9 @@ meter {
   height: 100vh;
   position: relative;
   overflow: hidden;
-  -webkit-flex: 1 1;
-      -ms-flex: 1 1;
-          flex: 1 1;
+  -webkit-flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
   -webkit-flex-flow: row wrap;
       -ms-flex-flow: row wrap;
           flex-flow: row wrap;
@@ -2246,9 +2325,9 @@ meter {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: -ms-autohiding-scrollbar;
-  -webkit-flex: 1 1;
-      -ms-flex: 1 1;
-          flex: 1 1; }
+  -webkit-flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto; }
   .grid-content.collapse {
     padding: 0; }
 
@@ -2272,9 +2351,9 @@ meter {
   height: 100vh;
   position: relative;
   overflow: hidden;
-  -webkit-flex: 1 1;
-      -ms-flex: 1 1;
-          flex: 1 1;
+  -webkit-flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
   -webkit-flex-flow: row wrap;
       -ms-flex-flow: row wrap;
           flex-flow: row wrap;
@@ -2314,9 +2393,9 @@ meter {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: -ms-autohiding-scrollbar;
-  -webkit-flex: 1 1;
-      -ms-flex: 1 1;
-          flex: 1 1; }
+  -webkit-flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto; }
   .small-grid-content.panel {
     -webkit-transform: none;
             transform: none;
@@ -2339,9 +2418,9 @@ meter {
     height: 100vh;
     position: relative;
     overflow: hidden;
-    -webkit-flex: 1 1;
-        -ms-flex: 1 1;
-            flex: 1 1;
+    -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
     -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
@@ -2382,9 +2461,9 @@ meter {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    -webkit-flex: 1 1;
-        -ms-flex: 1 1;
-            flex: 1 1; }
+    -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto; }
     .medium-grid-content.panel {
       -webkit-transform: none;
               transform: none;
@@ -2407,9 +2486,9 @@ meter {
     height: 100vh;
     position: relative;
     overflow: hidden;
-    -webkit-flex: 1 1;
-        -ms-flex: 1 1;
-            flex: 1 1;
+    -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
     -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
@@ -2450,9 +2529,9 @@ meter {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    -webkit-flex: 1 1;
-        -ms-flex: 1 1;
-            flex: 1 1; }
+    -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto; }
     .large-grid-content.panel {
       -webkit-transform: none;
               transform: none;
@@ -3630,37 +3709,37 @@ meter {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  position: absolute;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
   display: inline-flex;
-  min-width: 1.75em; }
+  border-radius: 1000px; }
 
 .badge {
-  font-size: 1em;
-  padding: 0.1em 0.61em;
+  font-size: 0.8em;
+  width: 1.5rem;
+  height: 1.5rem;
   background: #00558b;
-  border-radius: 1000px;
   color: #fff; }
+  .badge.secondary {
+    background: #f1f1f1;
+    color: #000; }
   .badge.primary {
     background: #00558b;
-    border-radius: 1000px;
     color: #fff; }
   .badge.success {
     background: #4CAF50;
-    border-radius: 1000px;
     color: #fff; }
   .badge.warning {
     background: #f89406;
-    border-radius: 1000px;
     color: #fff; }
   .badge.alert {
     background: #e74c3c;
-    border-radius: 1000px;
     color: #fff; }
   .badge.dark {
     background: #232323;
-    border-radius: 1000px;
     color: #fff; }
 
 .inline-list {
@@ -3694,16 +3773,15 @@ meter {
       -ms-flex-align: stretch;
           align-items: stretch;
   margin: 0;
-  list-style-type: none;
-  margin-bottom: 1rem; }
-  .menu-bar li, .ftz-menu-bar li {
+  list-style-type: none; }
+  .menu-bar > li, .ftz-menu-bar > li {
     -webkit-flex: 1 0 auto;
         -ms-flex: 1 0 auto;
             flex: 1 0 auto;
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center; }
-    .menu-bar li a, .ftz-menu-bar li a {
+    .menu-bar > li > a, .ftz-menu-bar > li > a {
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
@@ -3718,13 +3796,28 @@ meter {
       line-height: 1; }
 
 /*
+  Set the alignment of menu items (li) within a menu-bar
+
+  left: Items align to the left.
+  right: Items align to the right.
+  center: Items align to the center.
+  justify: Items are spaced equally apart so they occupy the space of the entire grid.
+  spaced: Items are given equal space to their left and right.
+
+  @group menu-bar
+
+  @param {string} $align - Alignment to use.
+
+  @output An appropriate justify-content value.
+*/
+/*
   CSS output
 */
 .menu-bar {
   background: #fff; }
-  .menu-bar a {
+  .menu-bar > li > a {
     color: #000; }
-    .menu-bar a:hover {
+    .menu-bar > li > a:hover {
       background: #ededed;
       color: #000; }
   .menu-bar .is-active > a {
@@ -3747,7 +3840,7 @@ meter {
     /*
       Stretch
     */ }
-    .menu-bar a, .menu-bar.horizontal a {
+    .menu-bar > li > a, .menu-bar.horizontal > li > a {
       -webkit-flex-flow: column nowrap;
           -ms-flex-flow: column nowrap;
               flex-flow: column nowrap; }
@@ -3761,14 +3854,30 @@ meter {
     /*
       Stretch
     */ }
-    .menu-bar.vertical a {
+    .menu-bar.vertical > li > a {
       -webkit-flex-flow: row nowrap;
           -ms-flex-flow: row nowrap;
               flex-flow: row nowrap; }
-  .menu-bar.condense li {
+  .menu-bar.condense > li {
     -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto; }
+  .menu-bar.align-right {
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+  .menu-bar.align-center {
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+  .menu-bar.align-justify {
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+  .menu-bar.align-spaced {
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around; }
   .menu-bar.small-condense li {
     -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
@@ -3777,6 +3886,26 @@ meter {
     -webkit-flex: 1 0 auto;
         -ms-flex: 1 0 auto;
             flex: 1 0 auto; }
+  .menu-bar.small-align-left {
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start; }
+  .menu-bar.small-align-right {
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+  .menu-bar.small-align-center {
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+  .menu-bar.small-align-justify {
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+  .menu-bar.small-align-spaced {
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around; }
   @media only screen and (min-width: 40em) {
     .menu-bar.medium-condense li {
       -webkit-flex: 0 0 auto;
@@ -3785,7 +3914,27 @@ meter {
     .menu-bar.medium-expand li {
       -webkit-flex: 1 0 auto;
           -ms-flex: 1 0 auto;
-              flex: 1 0 auto; } }
+              flex: 1 0 auto; }
+    .menu-bar.medium-align-left {
+      -webkit-justify-content: flex-start;
+          -ms-flex-pack: start;
+              justify-content: flex-start; }
+    .menu-bar.medium-align-right {
+      -webkit-justify-content: flex-end;
+          -ms-flex-pack: end;
+              justify-content: flex-end; }
+    .menu-bar.medium-align-center {
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center; }
+    .menu-bar.medium-align-justify {
+      -webkit-justify-content: space-between;
+          -ms-flex-pack: justify;
+              justify-content: space-between; }
+    .menu-bar.medium-align-spaced {
+      -webkit-justify-content: space-around;
+          -ms-flex-pack: distribute;
+              justify-content: space-around; } }
   @media only screen and (min-width: 75em) {
     .menu-bar.large-condense li {
       -webkit-flex: 0 0 auto;
@@ -3794,7 +3943,27 @@ meter {
     .menu-bar.large-expand li {
       -webkit-flex: 1 0 auto;
           -ms-flex: 1 0 auto;
-              flex: 1 0 auto; } }
+              flex: 1 0 auto; }
+    .menu-bar.large-align-left {
+      -webkit-justify-content: flex-start;
+          -ms-flex-pack: start;
+              justify-content: flex-start; }
+    .menu-bar.large-align-right {
+      -webkit-justify-content: flex-end;
+          -ms-flex-pack: end;
+              justify-content: flex-end; }
+    .menu-bar.large-align-center {
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center; }
+    .menu-bar.large-align-justify {
+      -webkit-justify-content: space-between;
+          -ms-flex-pack: justify;
+              justify-content: space-between; }
+    .menu-bar.large-align-spaced {
+      -webkit-justify-content: space-around;
+          -ms-flex-pack: distribute;
+              justify-content: space-around; } }
   .menu-bar.small-horizontal {
     /*
       Orientation
@@ -3806,7 +3975,7 @@ meter {
     /*
       Stretch
     */ }
-    .menu-bar.small-horizontal a {
+    .menu-bar.small-horizontal > li > a {
       -webkit-flex-flow: column nowrap;
           -ms-flex-flow: column nowrap;
               flex-flow: column nowrap; }
@@ -3820,7 +3989,7 @@ meter {
     /*
       Stretch
     */ }
-    .menu-bar.small-vertical a {
+    .menu-bar.small-vertical > li > a {
       -webkit-flex-flow: row nowrap;
           -ms-flex-flow: row nowrap;
               flex-flow: row nowrap; }
@@ -3836,7 +4005,7 @@ meter {
       /*
         Stretch
       */ }
-      .menu-bar.medium-horizontal a {
+      .menu-bar.medium-horizontal > li > a {
         -webkit-flex-flow: column nowrap;
             -ms-flex-flow: column nowrap;
                 flex-flow: column nowrap; }
@@ -3850,7 +4019,7 @@ meter {
       /*
         Stretch
       */ }
-      .menu-bar.medium-vertical a {
+      .menu-bar.medium-vertical > li > a {
         -webkit-flex-flow: row nowrap;
             -ms-flex-flow: row nowrap;
                 flex-flow: row nowrap; } }
@@ -3866,7 +4035,7 @@ meter {
       /*
         Stretch
       */ }
-      .menu-bar.large-horizontal a {
+      .menu-bar.large-horizontal > li > a {
         -webkit-flex-flow: column nowrap;
             -ms-flex-flow: column nowrap;
                 flex-flow: column nowrap; }
@@ -3880,194 +4049,194 @@ meter {
       /*
         Stretch
       */ }
-      .menu-bar.large-vertical a {
+      .menu-bar.large-vertical > li > a {
         -webkit-flex-flow: row nowrap;
             -ms-flex-flow: row nowrap;
                 flex-flow: row nowrap; } }
-  .menu-bar li img, .menu-bar li .iconic, .menu-bar.icon-top li img, .menu-bar.icon-top li .iconic {
+  .menu-bar > li > img, .menu-bar > li > .iconic, .menu-bar.icon-top > li > img, .menu-bar.icon-top > li > .iconic {
     margin: 0;
     width: 25px;
     height: 25px; }
-  .menu-bar li a, .menu-bar.icon-top li a {
+  .menu-bar > li > a, .menu-bar.icon-top > li > a {
     -webkit-flex-flow: column nowrap;
         -ms-flex-flow: column nowrap;
             flex-flow: column nowrap; }
-    .menu-bar li a img, .menu-bar li a .iconic, .menu-bar.icon-top li a img, .menu-bar.icon-top li a .iconic {
+    .menu-bar > li > a > img, .menu-bar > li > a > .iconic, .menu-bar.icon-top > li > a > img, .menu-bar.icon-top > li > a > .iconic {
       margin: 0 0 1rem 0; }
-  .menu-bar.icon-right li img, .menu-bar.icon-right li .iconic {
+  .menu-bar.icon-right > li > img, .menu-bar.icon-right > li > .iconic {
     margin: 0;
     width: 25px;
     height: 25px; }
-  .menu-bar.icon-right li a {
+  .menu-bar.icon-right > li > a {
     -webkit-flex-flow: row-reverse nowrap;
         -ms-flex-flow: row-reverse nowrap;
             flex-flow: row-reverse nowrap; }
-    .menu-bar.icon-right li a img, .menu-bar.icon-right li a .iconic {
+    .menu-bar.icon-right > li > a > img, .menu-bar.icon-right > li > a > .iconic {
       margin: 0 0 0 1rem; }
-  .menu-bar.icon-bottom li img, .menu-bar.icon-bottom li .iconic {
+  .menu-bar.icon-bottom > li > img, .menu-bar.icon-bottom > li > .iconic {
     margin: 0;
     width: 25px;
     height: 25px; }
-  .menu-bar.icon-bottom li a {
+  .menu-bar.icon-bottom > li > a {
     -webkit-flex-flow: column-reverse nowrap;
         -ms-flex-flow: column-reverse nowrap;
             flex-flow: column-reverse nowrap; }
-    .menu-bar.icon-bottom li a img, .menu-bar.icon-bottom li a .iconic {
+    .menu-bar.icon-bottom > li > a > img, .menu-bar.icon-bottom > li > a > .iconic {
       margin: 1rem 0 0 0; }
-  .menu-bar.icon-left li img, .menu-bar.icon-left li .iconic {
+  .menu-bar.icon-left > li > img, .menu-bar.icon-left > li > .iconic {
     margin: 0;
     width: 25px;
     height: 25px; }
-  .menu-bar.icon-left li a {
+  .menu-bar.icon-left > li > a {
     -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center; }
-    .menu-bar.icon-left li a img, .menu-bar.icon-left li a .iconic {
+    .menu-bar.icon-left > li > a > img, .menu-bar.icon-left > li > a > .iconic {
       margin: 0 1rem 0 0; }
-  .menu-bar.small-icon-top li img, .menu-bar.small-icon-top li .iconic {
+  .menu-bar.small-icon-top > li > img, .menu-bar.small-icon-top > li > .iconic {
     margin: 0;
     width: 25px;
     height: 25px; }
-  .menu-bar.small-icon-top li a {
+  .menu-bar.small-icon-top > li > a {
     -webkit-flex-flow: column nowrap;
         -ms-flex-flow: column nowrap;
             flex-flow: column nowrap; }
-    .menu-bar.small-icon-top li a img, .menu-bar.small-icon-top li a .iconic {
+    .menu-bar.small-icon-top > li > a > img, .menu-bar.small-icon-top > li > a > .iconic {
       margin: 0 0 1rem 0; }
-  .menu-bar.small-icon-right li img, .menu-bar.small-icon-right li .iconic {
+  .menu-bar.small-icon-right > li > img, .menu-bar.small-icon-right > li > .iconic {
     margin: 0;
     width: 25px;
     height: 25px; }
-  .menu-bar.small-icon-right li a {
+  .menu-bar.small-icon-right > li > a {
     -webkit-flex-flow: row-reverse nowrap;
         -ms-flex-flow: row-reverse nowrap;
             flex-flow: row-reverse nowrap; }
-    .menu-bar.small-icon-right li a img, .menu-bar.small-icon-right li a .iconic {
+    .menu-bar.small-icon-right > li > a > img, .menu-bar.small-icon-right > li > a > .iconic {
       margin: 0 0 0 1rem; }
-  .menu-bar.small-icon-bottom li img, .menu-bar.small-icon-bottom li .iconic {
+  .menu-bar.small-icon-bottom > li > img, .menu-bar.small-icon-bottom > li > .iconic {
     margin: 0;
     width: 25px;
     height: 25px; }
-  .menu-bar.small-icon-bottom li a {
+  .menu-bar.small-icon-bottom > li > a {
     -webkit-flex-flow: column-reverse nowrap;
         -ms-flex-flow: column-reverse nowrap;
             flex-flow: column-reverse nowrap; }
-    .menu-bar.small-icon-bottom li a img, .menu-bar.small-icon-bottom li a .iconic {
+    .menu-bar.small-icon-bottom > li > a > img, .menu-bar.small-icon-bottom > li > a > .iconic {
       margin: 1rem 0 0 0; }
-  .menu-bar.small-icon-left li img, .menu-bar.small-icon-left li .iconic {
+  .menu-bar.small-icon-left > li > img, .menu-bar.small-icon-left > li > .iconic {
     margin: 0;
     width: 25px;
     height: 25px; }
-  .menu-bar.small-icon-left li a {
+  .menu-bar.small-icon-left > li > a {
     -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center; }
-    .menu-bar.small-icon-left li a img, .menu-bar.small-icon-left li a .iconic {
+    .menu-bar.small-icon-left > li > a > img, .menu-bar.small-icon-left > li > a > .iconic {
       margin: 0 1rem 0 0; }
   @media only screen and (min-width: 40em) {
-    .menu-bar.medium-icon-top li img, .menu-bar.medium-icon-top li .iconic {
+    .menu-bar.medium-icon-top > li > img, .menu-bar.medium-icon-top > li > .iconic {
       margin: 0;
       width: 25px;
       height: 25px; }
-    .menu-bar.medium-icon-top li a {
+    .menu-bar.medium-icon-top > li > a {
       -webkit-flex-flow: column nowrap;
           -ms-flex-flow: column nowrap;
               flex-flow: column nowrap; }
-      .menu-bar.medium-icon-top li a img, .menu-bar.medium-icon-top li a .iconic {
+      .menu-bar.medium-icon-top > li > a > img, .menu-bar.medium-icon-top > li > a > .iconic {
         margin: 0 0 1rem 0; } }
   @media only screen and (min-width: 40em) {
-    .menu-bar.medium-icon-right li img, .menu-bar.medium-icon-right li .iconic {
+    .menu-bar.medium-icon-right > li > img, .menu-bar.medium-icon-right > li > .iconic {
       margin: 0;
       width: 25px;
       height: 25px; }
-    .menu-bar.medium-icon-right li a {
+    .menu-bar.medium-icon-right > li > a {
       -webkit-flex-flow: row-reverse nowrap;
           -ms-flex-flow: row-reverse nowrap;
               flex-flow: row-reverse nowrap; }
-      .menu-bar.medium-icon-right li a img, .menu-bar.medium-icon-right li a .iconic {
+      .menu-bar.medium-icon-right > li > a > img, .menu-bar.medium-icon-right > li > a > .iconic {
         margin: 0 0 0 1rem; } }
   @media only screen and (min-width: 40em) {
-    .menu-bar.medium-icon-bottom li img, .menu-bar.medium-icon-bottom li .iconic {
+    .menu-bar.medium-icon-bottom > li > img, .menu-bar.medium-icon-bottom > li > .iconic {
       margin: 0;
       width: 25px;
       height: 25px; }
-    .menu-bar.medium-icon-bottom li a {
+    .menu-bar.medium-icon-bottom > li > a {
       -webkit-flex-flow: column-reverse nowrap;
           -ms-flex-flow: column-reverse nowrap;
               flex-flow: column-reverse nowrap; }
-      .menu-bar.medium-icon-bottom li a img, .menu-bar.medium-icon-bottom li a .iconic {
+      .menu-bar.medium-icon-bottom > li > a > img, .menu-bar.medium-icon-bottom > li > a > .iconic {
         margin: 1rem 0 0 0; } }
   @media only screen and (min-width: 40em) {
-    .menu-bar.medium-icon-left li img, .menu-bar.medium-icon-left li .iconic {
+    .menu-bar.medium-icon-left > li > img, .menu-bar.medium-icon-left > li > .iconic {
       margin: 0;
       width: 25px;
       height: 25px; }
-    .menu-bar.medium-icon-left li a {
+    .menu-bar.medium-icon-left > li > a {
       -webkit-flex-flow: row nowrap;
           -ms-flex-flow: row nowrap;
               flex-flow: row nowrap;
       -webkit-align-items: center;
           -ms-flex-align: center;
               align-items: center; }
-      .menu-bar.medium-icon-left li a img, .menu-bar.medium-icon-left li a .iconic {
+      .menu-bar.medium-icon-left > li > a > img, .menu-bar.medium-icon-left > li > a > .iconic {
         margin: 0 1rem 0 0; } }
   @media only screen and (min-width: 75em) {
-    .menu-bar.large-icon-top li img, .menu-bar.large-icon-top li .iconic {
+    .menu-bar.large-icon-top > li > img, .menu-bar.large-icon-top > li > .iconic {
       margin: 0;
       width: 25px;
       height: 25px; }
-    .menu-bar.large-icon-top li a {
+    .menu-bar.large-icon-top > li > a {
       -webkit-flex-flow: column nowrap;
           -ms-flex-flow: column nowrap;
               flex-flow: column nowrap; }
-      .menu-bar.large-icon-top li a img, .menu-bar.large-icon-top li a .iconic {
+      .menu-bar.large-icon-top > li > a > img, .menu-bar.large-icon-top > li > a > .iconic {
         margin: 0 0 1rem 0; } }
   @media only screen and (min-width: 75em) {
-    .menu-bar.large-icon-right li img, .menu-bar.large-icon-right li .iconic {
+    .menu-bar.large-icon-right > li > img, .menu-bar.large-icon-right > li > .iconic {
       margin: 0;
       width: 25px;
       height: 25px; }
-    .menu-bar.large-icon-right li a {
+    .menu-bar.large-icon-right > li > a {
       -webkit-flex-flow: row-reverse nowrap;
           -ms-flex-flow: row-reverse nowrap;
               flex-flow: row-reverse nowrap; }
-      .menu-bar.large-icon-right li a img, .menu-bar.large-icon-right li a .iconic {
+      .menu-bar.large-icon-right > li > a > img, .menu-bar.large-icon-right > li > a > .iconic {
         margin: 0 0 0 1rem; } }
   @media only screen and (min-width: 75em) {
-    .menu-bar.large-icon-bottom li img, .menu-bar.large-icon-bottom li .iconic {
+    .menu-bar.large-icon-bottom > li > img, .menu-bar.large-icon-bottom > li > .iconic {
       margin: 0;
       width: 25px;
       height: 25px; }
-    .menu-bar.large-icon-bottom li a {
+    .menu-bar.large-icon-bottom > li > a {
       -webkit-flex-flow: column-reverse nowrap;
           -ms-flex-flow: column-reverse nowrap;
               flex-flow: column-reverse nowrap; }
-      .menu-bar.large-icon-bottom li a img, .menu-bar.large-icon-bottom li a .iconic {
+      .menu-bar.large-icon-bottom > li > a > img, .menu-bar.large-icon-bottom > li > a > .iconic {
         margin: 1rem 0 0 0; } }
   @media only screen and (min-width: 75em) {
-    .menu-bar.large-icon-left li img, .menu-bar.large-icon-left li .iconic {
+    .menu-bar.large-icon-left > li > img, .menu-bar.large-icon-left > li > .iconic {
       margin: 0;
       width: 25px;
       height: 25px; }
-    .menu-bar.large-icon-left li a {
+    .menu-bar.large-icon-left > li > a {
       -webkit-flex-flow: row nowrap;
           -ms-flex-flow: row nowrap;
               flex-flow: row nowrap;
       -webkit-align-items: center;
           -ms-flex-align: center;
               align-items: center; }
-      .menu-bar.large-icon-left li a img, .menu-bar.large-icon-left li a .iconic {
+      .menu-bar.large-icon-left > li > a > img, .menu-bar.large-icon-left > li > a > .iconic {
         margin: 0 1rem 0 0; } }
-  .menu-bar.label-side li {
+  .menu-bar.label-side > li {
     position: relative; }
-  .menu-bar.label-side a {
-    padding-right: 3.2rem; }
+    .menu-bar.label-side > li > a {
+      padding-right: 3.2rem; }
   .menu-bar.label-side .menu-bar-label {
     display: block;
     font-size: 0.9rem;
@@ -4084,10 +4253,10 @@ meter {
     top: 50%;
     -webkit-transform: translateY(-50%);
             transform: translateY(-50%); }
-  .menu-bar.label-corner li {
+  .menu-bar.label-corner > li {
     position: relative; }
-  .menu-bar.label-corner a {
-    padding-right: 3.2rem; }
+    .menu-bar.label-corner > li > a {
+      padding-right: 3.2rem; }
   .menu-bar.label-corner .menu-bar-label {
     display: block;
     font-size: 0.9rem;
@@ -4104,9 +4273,9 @@ meter {
     top: 1rem; }
   .menu-bar.primary {
     background: #00558b; }
-    .menu-bar.primary a {
+    .menu-bar.primary > li > a {
       color: #fff; }
-      .menu-bar.primary a:hover {
+      .menu-bar.primary > li > a:hover {
         background: #0065a5;
         color: #fff; }
     .menu-bar.primary .is-active > a {
@@ -4120,9 +4289,9 @@ meter {
         stroke: #fff; }
   .menu-bar.dark {
     background: #232323; }
-    .menu-bar.dark a {
+    .menu-bar.dark > li > a {
       color: #fff; }
-      .menu-bar.dark a:hover {
+      .menu-bar.dark > li > a:hover {
         background: #323232;
         color: #fff; }
     .menu-bar.dark .is-active > a {
@@ -4178,11 +4347,11 @@ meter {
       Stretch
     */
     margin: 0; }
-    .menu-group .menu-bar a {
+    .menu-group .menu-bar > li > a {
       -webkit-flex-flow: column nowrap;
           -ms-flex-flow: column nowrap;
               flex-flow: column nowrap; }
-    .menu-group .menu-bar li {
+    .menu-group .menu-bar > li {
       -webkit-flex: 0 0 auto;
           -ms-flex: 0 0 auto;
               flex: 0 0 auto; }
@@ -4190,9 +4359,9 @@ meter {
     background-color: #00558b; }
     .menu-group.primary .menu-bar {
       background: #00558b; }
-      .menu-group.primary .menu-bar a {
+      .menu-group.primary .menu-bar > li > a {
         color: #fff; }
-        .menu-group.primary .menu-bar a:hover {
+        .menu-group.primary .menu-bar > li > a:hover {
           background: #0065a5;
           color: #fff; }
       .menu-group.primary .menu-bar .is-active > a {
@@ -4208,9 +4377,9 @@ meter {
     background-color: #232323; }
     .menu-group.dark .menu-bar {
       background: #232323; }
-      .menu-group.dark .menu-bar a {
+      .menu-group.dark .menu-bar > li > a {
         color: #fff; }
-        .menu-group.dark .menu-bar a:hover {
+        .menu-group.dark .menu-bar > li > a:hover {
           background: #323232;
           color: #fff; }
       .menu-group.dark .menu-bar .is-active > a {
@@ -4234,47 +4403,36 @@ meter {
 .modal {
   position: relative;
   z-index: 1001;
-  display: none;
   background: #fff;
+  -webkit-flex: 0 0 auto;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
   width: 100%;
+  height: 100vh;
+  max-height: 100%;
   overflow: hidden;
-  opacity: 0;
-  -webkit-transform: scale(0.9);
-          transform: scale(0.9);
-  transition: opacity,-webkit-transform 0.2s,0.2s; }
-  .is-active.modal {
-    -webkit-flex: 0 0  auto;
-        -ms-flex: 0 0  auto;
-            flex: 0 0  auto;
-    display: -webkit-flex !important;
-    display: -ms-flexbox !important;
-    display: flex !important;
-    opacity: 1;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    -webkit-transform: scale(1);
-            transform: scale(1); }
-    @media only screen and (min-width: 40em) {
-      .is-active.modal {
-        height: auto;
-        max-width: 600px; } }
-    .is-active.dialogue.modal {
-      width: 95%;
-      height: auto; }
-    .is-active.modal .grid-content, .is-active.modal .grid-block {
-      margin: 0; }
+  padding: 1rem; }
+  @media only screen and (min-width: 40em) {
+    .modal {
+      height: auto;
+      max-width: 600px; } }
+  .modal .grid-content, .modal .grid-block {
+    margin: 0; }
   .modal .close-button, .modal [fa-close] {
     z-index: 1001; }
 
 .modal {
   max-width: 600px; }
-  .modal.tiny {
+  .tiny > .modal {
     max-width: 300px; }
-  .modal.small {
+  .small > .modal {
     max-width: 500px; }
-  .modal.large {
+  .large > .modal {
     max-width: 800px; }
+  .dialog > .modal {
+    height: auto; }
+  .collapse > .modal {
+    padding: 0; }
 
 .modal-overlay {
   position: fixed;
@@ -4369,7 +4527,7 @@ meter {
   Transitions
 */
 .slideInDown.ng-enter {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4383,7 +4541,7 @@ meter {
           transform: translateX(0) translateY(0); }
 
 .slideInLeft.ng-enter {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4397,7 +4555,7 @@ meter {
           transform: translateX(0) translateY(0); }
 
 .slideInUp.ng-enter {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4411,7 +4569,7 @@ meter {
           transform: translateX(0) translateY(0); }
 
 .slideInRight.ng-enter {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4425,7 +4583,7 @@ meter {
           transform: translateX(0) translateY(0); }
 
 .slideOutBottom.ng-leave {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4439,7 +4597,7 @@ meter {
           transform: translateY(100%); }
 
 .slideOutRight.ng-leave {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4453,7 +4611,7 @@ meter {
           transform: translateX(100%); }
 
 .slideOutUp.ng-leave {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4467,7 +4625,7 @@ meter {
           transform: translateY(-100%); }
 
 .slideOutLeft.ng-leave {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4481,7 +4639,7 @@ meter {
           transform: translateX(-100%); }
 
 .fadeIn.ng-enter {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: opacity;
@@ -4490,7 +4648,7 @@ meter {
   opacity: 1; }
 
 .fadeOut.ng-leave {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: opacity;
@@ -4499,7 +4657,7 @@ meter {
   opacity: 0; }
 
 .hingeInFromTop.ng-enter {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4515,7 +4673,7 @@ meter {
   opacity: 1; }
 
 .hingeInFromRight.ng-enter {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4531,7 +4689,7 @@ meter {
   opacity: 1; }
 
 .hingeInFromBottom.ng-enter {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4547,7 +4705,7 @@ meter {
   opacity: 1; }
 
 .hingeInFromLeft.ng-enter {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4563,7 +4721,7 @@ meter {
   opacity: 1; }
 
 .hingeInFromMiddleX.ng-enter {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4579,7 +4737,7 @@ meter {
   opacity: 1; }
 
 .hingeInFromMiddleY.ng-enter {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4595,7 +4753,7 @@ meter {
   opacity: 1; }
 
 .hingeOutFromTop.ng-leave {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4611,7 +4769,7 @@ meter {
   opacity: 0; }
 
 .hingeOutFromRight.ng-leave {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4627,7 +4785,7 @@ meter {
   opacity: 0; }
 
 .hingeOutFromBottom.ng-leave {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4643,7 +4801,7 @@ meter {
   opacity: 0; }
 
 .hingeOutFromLeft.ng-leave {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4659,7 +4817,7 @@ meter {
   opacity: 0; }
 
 .hingeOutFromMiddleX.ng-leave {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4675,7 +4833,7 @@ meter {
   opacity: 0; }
 
 .hingeOutFromMiddleY.ng-leave {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, opacity;
@@ -4691,7 +4849,7 @@ meter {
   opacity: 0; }
 
 .zoomIn.ng-enter {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, property;
@@ -4705,7 +4863,7 @@ meter {
   opacity: 1; }
 
 .zoomOut.ng-leave {
-  transition-duration: 700ms;
+  transition-duration: 500ms;
   transition-timing-function: ease;
   transition-delay: 0;
   transition-property: -webkit-transform, property;
@@ -4766,10 +4924,10 @@ meter {
   Transition modifiers
 */
 .slow {
-  transition-duration: 1.4s !important; }
+  transition-duration: 750ms !important; }
 
 .fast {
-  transition-duration: 300ms !important; }
+  transition-duration: 250ms !important; }
 
 .linear {
   transition-timing-function: linear !important; }
@@ -4807,8 +4965,8 @@ meter {
 .shake {
   -webkit-animation-name: shake;
           animation-name: shake;
-  -webkit-animation-duration: 700ms;
-          animation-duration: 700ms;
+  -webkit-animation-duration: 500ms;
+          animation-duration: 500ms;
   -webkit-animation-timing-function: ease;
           animation-timing-function: ease;
   -webkit-backface-visibility: hidden;
@@ -4821,8 +4979,8 @@ meter {
 .spin-cw {
   -webkit-animation-name: spin-cw;
           animation-name: spin-cw;
-  -webkit-animation-duration: 700ms;
-          animation-duration: 700ms;
+  -webkit-animation-duration: 500ms;
+          animation-duration: 500ms;
   -webkit-animation-timing-function: ease;
           animation-timing-function: ease;
   -webkit-backface-visibility: hidden;
@@ -4835,8 +4993,8 @@ meter {
 .spin-ccw {
   -webkit-animation-name: spin-ccw;
           animation-name: spin-ccw;
-  -webkit-animation-duration: 700ms;
-          animation-duration: 700ms;
+  -webkit-animation-duration: 500ms;
+          animation-duration: 500ms;
   -webkit-animation-timing-function: ease;
           animation-timing-function: ease;
   -webkit-backface-visibility: hidden;
@@ -4849,8 +5007,8 @@ meter {
 .wiggle {
   -webkit-animation-name: wiggle;
           animation-name: wiggle;
-  -webkit-animation-duration: 700ms;
-          animation-duration: 700ms;
+  -webkit-animation-duration: 500ms;
+          animation-duration: 500ms;
   -webkit-animation-timing-function: ease;
           animation-timing-function: ease;
   -webkit-backface-visibility: hidden;
@@ -4921,14 +5079,14 @@ meter {
 .spin-cw.slow,
 .spin-ccw.slow,
 .wiggle.slow {
-  -webkit-animation-duration: 1.4s !important;
-          animation-duration: 1.4s !important; }
+  -webkit-animation-duration: 750ms !important;
+          animation-duration: 750ms !important; }
 .shake.fast,
 .spin-cw.fast,
 .spin-ccw.fast,
 .wiggle.fast {
-  -webkit-animation-duration: 300ms !important;
-          animation-duration: 300ms !important; }
+  -webkit-animation-duration: 250ms !important;
+          animation-duration: 250ms !important; }
 .shake.delay,
 .spin-cw.delay,
 .spin-ccw.delay,
@@ -4942,6 +5100,18 @@ meter {
   -webkit-animation-delay: 700ms !important;
           animation-delay: 700ms !important; }
 
+.stagger {
+  transition-delay: 150ms;
+  transition-duration: 0; }
+
+.stort-stagger {
+  transition-delay: 150ms;
+  transition-duration: 0; }
+
+.long-stagger {
+  transition-delay: 150ms;
+  transition-duration: 0; }
+
 /*
   NOTIFICATION
   ------------
@@ -4950,122 +5120,46 @@ meter {
 
   Optionally, the notifications directive can also tap into the browser's native notification support, if it exists.
 */
-.notification {
-  position: fixed;
+.notification, .static-notification {
   z-index: 1000;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  transition: -webkit-transform 0.25s ease-out;
-  transition: transform 0.25s ease-out; }
-  .notification h1 {
+  position: relative;
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+  display: none; }
+  .notification h1, .static-notification h1 {
     font-size: 1.25em;
     margin: 0; }
-  .notification p {
+  .notification p, .static-notification p {
     margin: 0; }
-  .is-active.notification {
-    -webkit-transform: translateX(0%) translateY(0%) !important;
-            transform: translateX(0%) translateY(0%) !important; }
-  .notification .close-button {
+  .is-active.notification, .is-active.static-notification {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+  .notification .close-button, .static-notification .close-button {
     color: white; }
+
+.notification-container {
+  z-index: 3000;
+  position: fixed;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
 
 /*
   CSS Output
 */
 .notification {
-  width: 25rem;
-  right: 1rem;
-  -webkit-transform: translateX(110%);
-          transform: translateX(110%);
-  top: 1rem;
   background: #00558b;
   padding: 1rem;
   border-radius: 4px; }
-  @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
-    .notification {
-      width: auto;
-      left: 1rem;
-      right: 1rem;
-      margin-left: 0; } }
   .notification, .notification h1, .notification h2, .notification h3, .notification h4, .notification h5, .notification h6 {
     color: white; }
-  .notification.top-right {
-    width: 25rem;
-    right: 1rem;
-    -webkit-transform: translateX(110%);
-            transform: translateX(110%);
-    top: 1rem; }
-    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
-      .notification.top-right {
-        width: auto;
-        left: 1rem;
-        right: 1rem;
-        margin-left: 0; } }
-  .notification.top-left {
-    width: 25rem;
-    left: 1rem;
-    -webkit-transform: translateX(-110%);
-            transform: translateX(-110%);
-    top: 1rem; }
-    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
-      .notification.top-left {
-        width: auto;
-        left: 1rem;
-        right: 1rem;
-        margin-left: 0; } }
-  .notification.top-middle {
-    width: 25rem;
-    left: 50%;
-    margin-left: -12.5rem;
-    -webkit-transform: translateY(-110%);
-            transform: translateY(-110%);
-    top: 1rem; }
-    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
-      .notification.top-middle {
-        width: auto;
-        left: 1rem;
-        right: 1rem;
-        margin-left: 0; } }
-  .notification.bottom-right {
-    width: 25rem;
-    right: 1rem;
-    -webkit-transform: translateX(110%);
-            transform: translateX(110%);
-    top: auto;
-    bottom: 1rem; }
-    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
-      .notification.bottom-right {
-        width: auto;
-        left: 1rem;
-        right: 1rem;
-        margin-left: 0; } }
-  .notification.bottom-left {
-    width: 25rem;
-    left: 1rem;
-    -webkit-transform: translateX(-110%);
-            transform: translateX(-110%);
-    top: auto;
-    bottom: 1rem; }
-    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
-      .notification.bottom-left {
-        width: auto;
-        left: 1rem;
-        right: 1rem;
-        margin-left: 0; } }
-  .notification.bottom-middle {
-    width: 25rem;
-    left: 50%;
-    margin-left: -12.5rem;
-    -webkit-transform: translateY(110%);
-            transform: translateY(110%);
-    top: auto;
-    bottom: 1rem; }
-    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
-      .notification.bottom-middle {
-        width: auto;
-        left: 1rem;
-        right: 1rem;
-        margin-left: 0; } }
   .notification.success {
     background: #4CAF50;
     padding: 1rem;
@@ -5090,6 +5184,155 @@ meter {
     border-radius: 4px; }
     .notification.dark, .notification.dark h1, .notification.dark h2, .notification.dark h3, .notification.dark h4, .notification.dark h5, .notification.dark h6 {
       color: #fff; }
+
+.static-notification {
+  background: #00558b;
+  padding: 1rem;
+  border-radius: 4px;
+  position: fixed !important; }
+  .static-notification, .static-notification h1, .static-notification h2, .static-notification h3, .static-notification h4, .static-notification h5, .static-notification h6 {
+    color: white; }
+  .static-notification.top-right {
+    width: 25rem;
+    right: 1rem;
+    top: 1rem; }
+    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+      .static-notification.top-right {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        margin-left: 0; } }
+  .static-notification.top-left {
+    width: 25rem;
+    left: 1rem;
+    top: 1rem; }
+    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+      .static-notification.top-left {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        margin-left: 0; } }
+  .static-notification.top-middle {
+    width: 25rem;
+    left: 50%;
+    margin-left: -12.5rem;
+    top: 1rem; }
+    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+      .static-notification.top-middle {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        margin-left: 0; } }
+  .static-notification.bottom-right {
+    width: 25rem;
+    right: 1rem;
+    top: auto;
+    bottom: 1rem; }
+    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+      .static-notification.bottom-right {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        margin-left: 0; } }
+  .static-notification.bottom-left {
+    width: 25rem;
+    left: 1rem;
+    top: auto;
+    bottom: 1rem; }
+    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+      .static-notification.bottom-left {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        margin-left: 0; } }
+  .static-notification.bottom-middle {
+    width: 25rem;
+    left: 50%;
+    margin-left: -12.5rem;
+    top: auto;
+    bottom: 1rem; }
+    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+      .static-notification.bottom-middle {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        margin-left: 0; } }
+
+.notification-container {
+  width: 25rem;
+  right: 1rem;
+  top: 1rem; }
+  @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+    .notification-container {
+      width: auto;
+      left: 1rem;
+      right: 1rem;
+      margin-left: 0; } }
+  .notification-container.top-right {
+    width: 25rem;
+    right: 1rem;
+    top: 1rem; }
+    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+      .notification-container.top-right {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        margin-left: 0; } }
+  .notification-container.top-left {
+    width: 25rem;
+    left: 1rem;
+    top: 1rem; }
+    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+      .notification-container.top-left {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        margin-left: 0; } }
+  .notification-container.top-middle {
+    width: 25rem;
+    left: 50%;
+    margin-left: -12.5rem;
+    top: 1rem; }
+    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+      .notification-container.top-middle {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        margin-left: 0; } }
+  .notification-container.bottom-right {
+    width: 25rem;
+    right: 1rem;
+    top: auto;
+    bottom: 1rem; }
+    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+      .notification-container.bottom-right {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        margin-left: 0; } }
+  .notification-container.bottom-left {
+    width: 25rem;
+    left: 1rem;
+    top: auto;
+    bottom: 1rem; }
+    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+      .notification-container.bottom-left {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        margin-left: 0; } }
+  .notification-container.bottom-middle {
+    width: 25rem;
+    left: 50%;
+    margin-left: -12.5rem;
+    top: auto;
+    bottom: 1rem; }
+    @media only screen and (min-width: 0em) and (max-width: 39.9375rem) {
+      .notification-container.bottom-middle {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        margin-left: 0; } }
 
 .notification-icon {
   -webkit-flex: 0 0 60px;
@@ -6068,7 +6311,7 @@ body {
 
 .sub-title-bar {
   padding: 1rem 0 0; }
-  .sub-title-bar .button {
+  .sub-title-bar .button, .sub-title-bar button {
     font-weight: bold;
     font-size: 1.125rem;
     background-color: #4CAF50; }
@@ -6205,7 +6448,7 @@ footer {
 
 form {
   height: 100vh-rem-calc(48px)-4px; }
-  form .button {
+  form .button, form button {
     font-weight: bold;
     font-size: 1rem; }
 
@@ -6322,7 +6565,7 @@ input[type="checkbox"] + label, input[type="radio"] + label {
 
 .match-actions {
   padding: 1rem 0 0; }
-  .match-actions .button {
+  .match-actions .button, .match-actions button {
     font-weight: bold;
     font-size: 1rem; }
   .match-actions .small-action {
@@ -6406,12 +6649,12 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     line-height: 30px;
     font-size: 0.875rem; }
 
-.button.hollow.add-player {
+.button.hollow.add-player, button.hollow.add-player {
   border: 1px solid #CFD8DC;
   color: #607D8B;
   font-weight: normal;
   font-size: 0.875rem; }
-  .button.hollow.add-player:hover {
+  .button.hollow.add-player:hover, button.hollow.add-player:hover {
     border-color: #4CAF50;
     color: #4CAF50; }
 
@@ -6596,7 +6839,8 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     padding: 0.55em;
     text-align: center; }
     .match-card-info .date-block .month {
-      display: block; }
+      display: block;
+      text-transform: uppercase; }
     .match-card-info .date-block .day {
       display: block;
       font-size: 1.625em; }
@@ -6656,13 +6900,13 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     Stretch
   */
   background: #fff; }
-  .ftz-menu-bar a {
+  .ftz-menu-bar > li > a {
     -webkit-flex-flow: column nowrap;
         -ms-flex-flow: column nowrap;
             flex-flow: column nowrap; }
-  .ftz-menu-bar a {
+  .ftz-menu-bar > li > a {
     color: #607D8B; }
-    .ftz-menu-bar a:hover {
+    .ftz-menu-bar > li > a:hover {
       background: #fafafa;
       color: #f89406; }
   .ftz-menu-bar .is-active > a {
@@ -6674,15 +6918,15 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     .ftz-menu-bar .iconic *.iconic-property-accent {
       fill: #607D8B;
       stroke: #607D8B; }
-  .ftz-menu-bar li img, .ftz-menu-bar li .iconic {
+  .ftz-menu-bar > li > img, .ftz-menu-bar > li > .iconic {
     margin: 0;
     width: 25px;
     height: 25px; }
-  .ftz-menu-bar li a {
+  .ftz-menu-bar > li > a {
     -webkit-flex-flow: column nowrap;
         -ms-flex-flow: column nowrap;
             flex-flow: column nowrap; }
-    .ftz-menu-bar li a img, .ftz-menu-bar li a .iconic {
+    .ftz-menu-bar > li > a > img, .ftz-menu-bar > li > a > .iconic {
       margin: 0 0 1rem 0; }
   .ftz-menu-bar .match-menu-active a {
     color: #f89406; }
@@ -6715,7 +6959,7 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     margin: 0 auto;
     max-width: 620px;
     font-weight: bold; }
-  .splash-bg .button {
+  .splash-bg .button, .splash-bg button {
     margin: 1.25rem 0 0;
     font-size: 1.125rem;
     font-weight: bold;

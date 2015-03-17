@@ -8,21 +8,21 @@
 		<div class="card">
 			<div class="card-section">
 				<div class="player-profile-picture">
-					<img src="assets/img/face1.jpg" alt="">
+					<img src="{{player.photo_url}}" alt="">
 				</div>
 				<div class="player-profile-info">
-					<h4>Daieg Ferveyra</h4> 
-					<p class="match-owner"><i class="fa fa-shield"></i> Hincha de <strong>River Plate</strong></p>
+					<h4>{{player.name}} {{player.lastname}}</h4> 
+					<p ng-if="player.fanOf != ''" class="match-owner"><i class="fa fa-shield"></i> Hincha de <strong>{{player.fanOf}}</strong></p>
 				</div>
 				<hr>
 				<div class="grid-block small-2-up align-center">
 					<div class="grid-block player-stats">
-						<span class="matches-played">24 <i class="fa fa-thumbs-up"></i></span>
+						<span class="matches-played">{{matchesPlayed}} <i class="fa fa-thumbs-up"></i></span>
 						
 						<p>Futzapps <br>jugados</p>
 					</div>
 					<div class="grid-block player-stats ">
-						<span class="matches-created">2 <i class="fa fa-soccer-ball-o"></i></span>
+						<span class="matches-created">{{matchesOrganized}} <i class="fa fa-soccer-ball-o"></i></span>
 						
 						<p>Futzapps <br>armados</p>
 					</div>
@@ -32,7 +32,7 @@
 		</div>
 	</div>
 	
-	<div ng-show="myMatchPlayerProfile = 1">
+	<div ng-show="adminMode">
 		<a class="alert expand hollow button"><i class="fa fa-thumbs-down"></i>&nbsp; Dar de baja</a>
 	</div>
 	

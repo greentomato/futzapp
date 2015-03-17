@@ -12,19 +12,19 @@
 		<p>Va a estar entre los convocados pero no podrá recibir avisos desde Futzapp.</p>
 		
 		<hr>
-		
+		<div ng-init="newPlayerName"></div>
 		<div class="grid-block">
-
+	
 			<div class="small-12 grid-content collapse">
 				<label>
 					Nombre o Apodo
-					<input type="text">
+					<input type="text" ng-model="newPlayerName">
 				</label>
 			</div>
 			
 		</div>
 		<br>
-		<a class="success expand button" zf-close=""><i class="fa fa-plus"></i>&nbsp; Agregar Jugador</a>
+		<a class="success expand button" ng-click="addPlayer(newPlayerName)" zf-close=""><i class="fa fa-plus"></i>&nbsp; Agregar Jugador</a>
 	
 </form>
 	

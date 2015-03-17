@@ -6,53 +6,53 @@
 // 1. LIBRARIES
 // - - - - - - - - - - - - - - -
 
-var gulp           = require('gulp'),
-    rimraf         = require('rimraf'),
-    runSequence    = require('run-sequence'),
-    frontMatter    = require('gulp-front-matter'),
-    autoprefixer   = require('gulp-autoprefixer'),
-    sass           = require('gulp-ruby-sass'),
-    uglify         = require('gulp-uglify'),
-    concat         = require('gulp-concat'),
-    connect        = require('gulp-connect'),
-    path           = require('path'),
-    modRewrite     = require('connect-modrewrite'),
-    dynamicRouting = require('./bower_components/foundation-apps/bin/gulp-dynamic-routing');
+var gulp       = require('gulp'),
+    argv       = require('yargs').argv,
+    $          = require('gulp-load-plugins')(),
+	gulpif     = require('gulp-if'),
+    rimraf     = require('rimraf'),
+    sequence   = require('run-sequence'),
+    path       = require('path'),
+    modRewrite = require('connect-modrewrite'),
+    router     = require('./bower_components/foundation-apps/bin/gulp-dynamic-routing');
 
 // 2. SETTINGS VARIABLES
 // - - - - - - - - - - - - - - -
 
+// Let's check if the production flag was passed
+var production     = !!(argv.production);
+
 // Sass will check these folders for files when you use @import.
 var sassPaths = [
   'client/assets/scss',
-  'client/assets/scss/blocks',
   'bower_components/foundation-apps/scss'
 ];
 // These files include Foundation for Apps and its dependencies
 var foundationJS = [
   'bower_components/fastclick/lib/fastclick.js',
-  'bower_components/hammerjs/hammer.js',
   'bower_components/viewport-units-buggyfill/viewport-units-buggyfill.js',
   'bower_components/tether/tether.js',
+  'bower_components/moment/min/moment-with-locales.min.js',
   'bower_components/angular/angular.js',
-  // 'bower_components/pickadate/picker.js',
-  // 'bower_components/pickadate/picker.date.js',
-  // 'bower_components/pickadate/picker.time.js',
-  // 'bower_components/pickadate/picker.es_ES.js',
-  // 'bower_components/jquery.min.js',
-  'bower_components/ryanmullins-angular-hammer/angular.hammer.js',
+  'bower_components/ryanmullins-angular-hammer/angular.hammer.min.js',
   'bower_components/angular-animate/angular-animate.js',
-  'bower_components/ui-router/release/angular-ui-router.js',
+  'bower_components/angular-ui-router/release/angular-ui-router.js',
+  'bower_components/angular-route/angular-route.js',
+  'bower_components/angular-resource/angular-resource.js',
+  'bower_components/ng-flow/dist/ng-flow-standalone.min.js',
+  'bower_components/jquery/dist/jquery.min.js',
   'bower_components/foundation-apps/js/vendor/**/*.js',
   'bower_components/foundation-apps/js/angular/**/*.js',
   '!bower_components/foundation-apps/js/angular/app.js'
 ];
 // These files are for your app's JavaScript
 var appJS = [
-  'client/assets/js/jquery.min.js',
-  'client/assets/js/app.js'
-  // 'client/assets/js/angular.hammer.min.js'
-  
+  'client/assets/js/app.js',
+  'client/assets/js/controllers.js',
+  'client/assets/js/filters.js',
+  'client/assets/js/services.js',
+  'client/assets/js/directives.js',
+  'client/assets/js/helpers.js'
 ];
 
 // 3. TASKS
@@ -89,15 +89,14 @@ gulp.task('copy', function() {
 // Compiles Sass
 gulp.task('sass', function() {
   return gulp.src('client/assets/scss/app.scss')
-    .pipe(sass({
+    .pipe($.rubySass({
       loadPath: sassPaths,
-      style: 'nested',
+      style: (production ? 'compressed' : 'nested'),
       bundleExec: true
-    }))
-    .on('error', function(e) {
+    })).on('error', function(e) {
       console.log(e);
     })
-    .pipe(autoprefixer({
+    .pipe($.autoprefixer({
       browsers: ['last 2 versions', 'ie 10']
     }))
     .pipe(gulp.dest('./build/assets/css/'));
@@ -107,25 +106,25 @@ gulp.task('sass', function() {
 gulp.task('uglify', function() {
   // Foundation JavaScript
   gulp.src(foundationJS)
-    .pipe(uglify({
+    .pipe(gulpif(production, $.uglify({
       beautify: true,
       mangle: false
     }).on('error', function(e) {
       console.log(e);
-    }))
-    .pipe(concat('foundation.js'))
+    })))
+    .pipe($.concat('foundation.js'))
     .pipe(gulp.dest('./build/assets/js/'))
   ;
 
   // App JavaScript
   return gulp.src(appJS)
-    .pipe(uglify({
+    .pipe(gulpif(production, $.uglify({
       beautify: true,
       mangle: false
     }).on('error', function(e) {
       console.log(e);
-    }))
-    .pipe(concat('app.js'))
+    })))
+    .pipe($.concat('app.js'))
     .pipe(gulp.dest('./build/assets/js/'))
   ;
 });
@@ -133,7 +132,7 @@ gulp.task('uglify', function() {
 // Copies your app's page templates and generates URLs for them
 gulp.task('copy-templates', ['copy'], function() {
   return gulp.src('./client/templates/**/*.html')
-    .pipe(dynamicRouting({
+    .pipe(router({
       path: 'build/assets/js/routes.js',
       root: 'client'
     }))
@@ -143,7 +142,7 @@ gulp.task('copy-templates', ['copy'], function() {
 
 // Starts a test server, which you can view at http://localhost:8080
 gulp.task('server:start', function() {
-  connect.server({
+  $.connect.server({
     root: './build',
     middleware: function() {
       return [
@@ -155,7 +154,7 @@ gulp.task('server:start', function() {
 
 // Builds your entire app once, without starting a server
 gulp.task('build', function() {
-  runSequence('clean', ['copy', 'sass', 'uglify'], 'copy-templates', function() {
+  sequence('clean', ['copy', 'sass', 'uglify'], 'copy-templates', function() {
     console.log("Successfully built.");
   })
 });

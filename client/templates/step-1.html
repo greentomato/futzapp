@@ -1,72 +1,67 @@
----
-name: new-match.step-1
-url: /step-1
-title: Nuevo Futzapp
-prev: home
-matchType: Fútbol 5
-matchOwner: Daieg Ferveyra
----
-<div ng-include="" src="'partials/match-menu.html'"></div>
-<div class="grid-content collapse">
-	<progress  class="new-match-steps-progress" value="30" max="90"></progress>
-</div>
-
-<div class="grid-content grid-container">
-	<form>
-		<!-- <h4 class="form-header"><span>Paso 1/3</span></h4>
-		<hr> -->
-		<header>Elegí la sede del partido</header>
-		<div class="grid-block">
-			
-			<div class="small-6 grid-content">
-				<label>Provincia</label>
-				<select name="" id="">
-					<option value="">GBA Norte</option>
-					<option value="">Capital Federal</option>
-					<option value="">GBA Norte</option>
-					<option value="">GBA Sur</option>
-					<option value="">GBA Oeste</option>
-				</select>
-			</div>
-			<div class="small-6 grid-content">
-				<label>Localidad</label>
-				<select name="" id="">
-					<option value="">San Isidro</option>
-					<option value="">San Fernando</option>
-					<option value="">Tigre</option>
-				</select>
-			</div>
-			<div class="small-12 medium-6 grid-content">
-				<label><i class="fa fa-map-marker"></i> Cancha</label>
-				<select name="" id="" ng-click="fieldSelected = !fieldSelected">
-					<option value="">San Isidro Fútbol</option>
-					<option value="">Thames Fútbol</option>
-					<option value="">Marangoni</option>
-				</select>
-			</div>
-		</div>
-
-		<div ng-hide="fieldSelected">
-			<br>
-			<!-- <p>¿No encontrás la sede?</p>
-			<a class="hollow expand button add-player" href="#">Agregar Cancha</a> -->
-
-		</div>
-
-		<div ng-show="fieldSelected">
-				<div ng-include="" src="'partials/field-card.html'"></div>
-				<header>Reservá tu cancha:</header>
-				<a class="warning hollow expand button" href="tel:47374480"><i class="fa fa-phone"></i>&nbsp;4737-4480</a>
-			
-
-			<br>
-			<p>¿Ya reservaste? Continuá al siguiente paso</p>
-			<a class="success expand button" ui-sref="new-match.step-2" ng-class="fieldSelected ? '' : 'disabled'">Siguiente &nbsp;<i class="fa fa-angle-right"></i></a>
-		</div>
-			
-
-	</form>
+<div class="grid-frame vertical">
+	<!-- TitleBar -->
+	<form-title-bar cancelUrl="$root.newMatch.id != 0 ? 'match/$root.newMatch.id':'home'" title="$root.newMatch.id != 0 ? 'Editar Mi Futzapp':'Nuevo Futzapp'"></form-title-bar>
 	
-</div>
+	<div class="grid-block">
+	<div ng-class="['ui-animation']" class="match-content">
+		<match-menu step2="$root.newMatch.fieldId != 0" step3="false"></match-menu>
+		<div class="grid-content collapse">
+			<progress  class="new-match-steps-progress" value="30" max="90"></progress>
+		</div>
 
+		<div class="grid-content grid-container">
+			<form>
+				<!-- <h4 class="form-header"><span>Paso 1/3</span></h4>
+				<hr> -->
+				<header>Elegí la sede del partido</header>
+				<div class="grid-block">
+					
+					<div class="small-6 grid-content">
+						<label>Provincia</label>
+						<select name="stateSelect" id="stateSelect" ng-model="$root.newMatch.stateId">
+							<option ng-repeat="state in $root.states" value="{{state.id}}">{{state.name}}</option>
+						</select>
+					</div>
+					<div class="small-6 grid-content">
+						<label>Localidad</label>
+						<select name="townSelect" id="townSelect" ng-model="$root.newMatch.townId">
+							<option ng-repeat="town in $root.towns | filter:{stateId:$root.newMatch.stateId}" value="{{town.id}}">{{town.name}}</option>
+						</select>
+					</div>
+
+					<div class="small-12 medium-6 grid-content">
+						<label><i class="fa fa-map-marker"></i> Cancha</label>
+						<select name="" id="" ng-model="$root.newMatch.fieldId">
+							<option ng-repeat="field in $root.fields | filter:{stateId:$root.newMatch.stateId} | filter:{townId:$root.newMatch.townId}" value="{{field.id}}">
+								{{field.name}}
+							</option>
+						</select>
+					</div>
+				</div>
+
+				<div ng-hide="$root.newMatch.fieldId != 0">
+					<br>
+					<!-- <p>¿No encontrás la sede?</p>
+					<a class="hollow expand button add-player" href="#">Agregar Cancha</a> -->
+
+				</div>
+
+				<div ng-show="$root.newMatch.fieldId != 0">
+						<field-card data="$root.fields | getById:$root.newMatch.fieldId"></field-card>
+						<header>Reservá tu cancha:</header>
+						<a class="warning hollow expand button" href="tel:{{($root.fields | getById:$root.newMatch.fieldId).contact}}"><i class="fa fa-phone"></i>&nbsp;{{($root.fields | getById:$root.newMatch.fieldId).contact}}</a>
+					
+
+					<br>
+					<p>¿Ya reservaste? Continuá al siguiente paso</p>
+					<a class="success expand button" ng-href="#/step-2" ng-class="$root.newMatch.fieldId != 0 ? '' : 'disabled'">Siguiente &nbsp;<i class="fa fa-angle-right"></i></a>
+				</div>
+					
+
+			</form>
+			
+		</div>
+	</div>
+	</div>
+</div>
 

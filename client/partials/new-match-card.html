@@ -5,14 +5,14 @@
 		<div class="match-card-info">
 
 			<div class="date-block">
-				<span class="day">24</span>
-				<span class="month">JAN</span>
+				<span class="day">{{match.date | dateFormat:'D'}}</span>
+				<span class="month">{{(match.date | dateFormat:'MMMM').substr(0,3)}}</span>
 			</div>
 
 			<div class="text">
-				<h4>Fútbol 5</h4>
-				<p>Jueves a las <strong>6:30 pm</strong></p>
-				<p>San Isidro Fútbol, Martinez</p>
+				<h4>{{match.type.name}}</h4>
+				<p>{{match.date | dateFormat:'dddd'}} a las <strong>{{match.date | dateFormat:'hh:mm A'}}</strong></p>
+				<p>{{($root.fields | getById:match.fieldId).name}}, {{($root.fields | getById:match.fieldId).town.name}}</p>
 			</div>
 
 			

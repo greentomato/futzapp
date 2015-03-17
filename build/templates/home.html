@@ -1,8 +1,8 @@
 
 <div ng-include="" src="'partials/panel-menu.html'"></div>
-<div ng-include="" src="'partials/panel-notifications.html'"></div>
-<div ng-include="" src="'partials/modal-invite-players.html'"></div>
-<div ng-include="" src="'partials/modal-player-profile.html'"></div>
+<!--<div ng-include="" src="'partials/panel-notifications.html'"></div>-->
+<!--<div ng-include="" src="'partials/modal-invite-players.html'"></div>-->
+<player-profile player="selectedUser" matchesOrganized="12" matchesPlayed="12"></player-profile>
 
 
 <div class="grid-frame vertical">
@@ -20,12 +20,12 @@
 				<i class="fa fa-bars"></i>
 			</a>
 		</span>
-		<span class="right">
+		<!--<span class="right">
 			<a href="#" zf-hard-toggle="panelNotifications">
 				<i class="fa fa-bell"></i>
 				<span class="alert badge">4</span>
 			</a>
-		</span>
+		</span>-->
 	</div>
 			<!-- Content -->
 			<div class="grid-block vertical ">
@@ -34,7 +34,7 @@
 				<div class="grid-block shrink medium-12 grid-container">
 					<div class="grid-content">
 						<div class="sub-title-bar">
-							<a class="success expand button" ui-sref="new-match.step-1">Armá un Futzapp</a>
+							<a class="success expand button" ng-click="$root.goToStep1(null)">Armá un Futzapp</a>
 						</div>
 					</div>
 				</div>
@@ -48,99 +48,82 @@
 
 
 				<!-- MatchCard -->
-				<div class="grid-block shrink grid-container">
+				<div ng-repeat="match in matches | filter:query | orderObjectBy: 'date'" class="grid-block shrink grid-container">
 					<div class="grid-content">
 						<div class="card my-match-card">	
-							<div class="ribbon ribbon-orange">
+							<div ng-if="match.admin.id == $root.user.id" class="ribbon ribbon-orange">
 								<div class="banner">
 									<div class="text"><i class="fa fa-soccer-ball-o"></i></div>
 								</div>
 							</div>
+							
+							<div ng-if="match.admin.id != $root.user.id && match.pivot.confirmed != null && match.pivot.confirmed == 0" class="ribbon ribbon-green">
+								<div class="banner">
+									<div class="text" ng-click="answerYes(match)"><i class="fa fa-thumbs-up"></i></div>
+								</div>
+							</div>
+							<a ng-if="match.admin.id != $root.user.id && match.pivot.confirmed != null && match.pivot.confirmed == 1" class="dismiss-match-card" ng-click="answerNo(match)"><i class="fa fa-trash-o"></i></a>
 
 							<div class="card-section clearfix">
-								<a ui-sref="my-match" class="match-card-info">
+								<a ng-href="#/match/{{match.id}}" class="match-card-info">
 
 									<div class="date-block">
-										<span class="day">24</span>
-										<span class="month">JAN</span>
+										<span class="day">{{match.date | dateFormat:'D'}}</span>
+										<span class="month">{{(match.date | dateFormat:'MMMM').substr(0,3)}}</span>
 									</div>
 
 									<div class="text">
-										<h4>Fútbol 5</h4>
-										<p>Jueves a las <strong>6:30 pm</strong></p>
-										<p>San Isidro Fútbol, Martinez</p>
+										<h4>{{match.type.name}}</h4>
+										<p>{{match.date | dateFormat:'dddd'}} a las <strong>{{match.date | dateFormat:'hh:mm a'}}</strong></p>
+										<p>{{match.field.name}}, {{($root.fields | getById:match.fieldId).town.name}}</p>
 									</div>
 								</a>
 								<hr>
-								<p class="match-owner float-left"><i class="fa fa-bullhorn"></i> Sos el <strong><a href="" zf-open="playerProfile">Organizador</a></strong>.</p>
-								<span class="float-right label alert">8/10</span>
+								<p ng-if="match.admin.id != $root.user.id" class="match-owner float-left"><i class="fa fa-bullhorn"></i> Convocado por <strong><a href="" ng-click="changeSelectedUser(match.admin)" zf-open="playerProfile">{{match.admin.name}} {{match.admin.lastname}}</a></strong></p> 
+								<p ng-if="match.admin.id == $root.user.id" class="match-owner float-left"><i class="fa fa-bullhorn"></i> Sos el <strong><a ng-href="#/settings">Organizador</a></strong>.</p>
+								<span class="float-right label alert">{{match.guestsConfirmedAmount}}/{{match.type.totalPlayers}}</span>
 							</div>
-							<meter min="0" max="10" low="3" high="8" optimum="10" value="8"></meter>
+							<meter min="0" max="{{match.type.totalPlayers}}" low="{{match.type.totalPlayers/4}}" high="{{match.type.totalPlayers*3/4}}" optimum="{{match.type.totalPlayers}}" value="{{match.guestsConfirmedAmount}}"></meter>
 						</div>	
 					</div>
 				</div>
 
 
 				<!-- MatchCard -->
-				<div class="grid-block shrink grid-container">
+				<!--<div ng-repeat="match in matches.Guest | filter:query | orderObjectBy:'date'" class="grid-block shrink grid-container">
 					<div class="grid-content">
 						<div class="card match-card">
-							<div class="ribbon ribbon-green">
+							<div ng-if="match.pivot.confirmed != null && match.pivot.confirmed == 0" class="ribbon ribbon-green">
 								<div class="banner">
-									<div class="text"><i class="fa fa-thumbs-up"></i></div>
+									<div class="text" ng-click="answerYes(match)"><i class="fa fa-thumbs-up"></i></div>
 								</div>
 							</div>
+							<a ng-if="match.pivot.confirmed != null && match.pivot.confirmed == 1" class="dismiss-match-card" ng-click="answerNo(match)"><i class="fa fa-trash-o"></i></a>
+							
 							<div class="card-section clearfix">
-								<a ui-sref="match" class="match-card-info">
+								<a ng-href="#/match/{{match.id}}" class="match-card-info">
 
 									<div class="date-block">
-										<span class="day">24</span>
-										<span class="month">JAN</span>
+										<span class="day">{{match.date | dateFormat:'D'}}</span>
+										<span class="month">{{(match.date | dateFormat:'MMMM').substr(0,3)}}</span>
 									</div>
 
 									<div class="text">
-										<h4>Fútbol 5</h4>
-										<p>Jueves a las <strong>6:30 pm</strong></p>
-										<p>San Isidro Fútbol, Martinez</p>
+										<h4>{{match.type.name}}</h4>
+										<p>{{match.date | dateFormat:'dddd'}} a las <strong>{{match.date | dateFormat:'hh:mm a'}}</strong></p>
+										<p>{{match.field.name}}, {{($root.fields | getById:match.fieldId).town.name}}</p>
 									</div>
 								</a>
 								<hr>
-								<p class="match-owner float-left"><i class="fa fa-bullhorn"></i> Convocado por <strong><a href="" zf-open="playerProfile">Juan Perez</a></strong></p>
-								<span class="float-right label success">2/10</span>
+								<p class="match-owner float-left"><i class="fa fa-bullhorn"></i> Convocado por <strong><a href="" ng-href="/settings/{{match.admin.id}}">{{match.admin.name}} {{match.admin.lastname}}</a></strong></p>
+								<span class="float-right label success">{{match.guestsConfirmedAmount}}/{{match.type.totalPlayers}}</span>
 							</div>
-							<meter min="0" max="10" low="3" high="8" optimum="10" value="2"></meter>
+							<meter min="0" max="{{match.type.totalPlayers}}" low="{{match.type.totalPlayers/4}}" high="{{match.type.totalPlayers*3/4}}" optimum="{{match.type.totalPlayers}}" value="{{match.guestsConfirmedAmount}}"></meter>
 						</div>
 					</div>
-				</div>
+				</div>-->
 
-				<!-- MatchCard -->
-				<div class="grid-block shrink grid-container">
-					<div class="grid-content">
-						<div class="card match-card">
-							<a class="dismiss-match-card"><i class="fa fa-trash-o"></i></a>
-							<div class="card-section clearfix">
-								<a ui-sref="match" class="match-card-info">
-
-									<div class="date-block">
-										<span class="day">24</span>
-										<span class="month">JAN</span>
-									</div>
-
-									<div class="text">
-										<h4>Fútbol 5</h4>
-										<p>Jueves a las <strong>6:30 pm</strong></p>
-										<p>San Isidro Fútbol, Martinez</p>
-									</div>
-								</a>
-								<hr>
-								<p class="match-owner float-left"><i class="fa fa-bullhorn"></i> Convocado por <strong><a href="" zf-open="playerProfile">Juan Perez</a></strong></p>
-								<span class="float-right label warning">5/10</span>
-							</div>
-							<meter min="0" max="10" low="3" high="8" optimum="10" value="5"></meter>
-						</div>
-					</div>
-				</div>
-				 <div ng-include="" src="'partials/footer.html'"></div>
+				<div ng-include="" src="'partials/footer.html'"></div>
 			</div>
 
 		</div>

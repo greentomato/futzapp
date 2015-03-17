@@ -1,61 +1,57 @@
----
-name: new-match.step-2
-url: /step-2
-title: Nuevo Futzapp
-prev: new-match.step-1
-matchType: Fútbol 5
-matchOwner: Daieg Ferveyra
----
-<div ng-include="" src="'partials/match-menu.html'"></div>
-<div class="grid-content collapse">
-	<progress  class="new-match-steps-progress" value="60" max="90"></progress>
-</div>
-
-<div class="grid-content grid-container">
-	<form>
-		<!-- <h4 class="form-header"><span>Paso 2/3</span></h4>
-		<hr> -->
-		<header>Elegí el tipo de Partido</header>
-		
-		<div class="grid-block">
-
-			<div class="small-12 medium-6 grid-content">
-				<label><i class="fa fa-soccer-ball-o"></i> Cantidad de jugadores</label>
-				<select name="" id="">
-					<option value="">Futbol 5 (10)</option>
-					<option value="">Futbol 6 (12)</option>
-					<option value="">Futbol 7 (14)</option>
-					<option value="">Futbol 8 (16)</option>
-					<option value="">Futbol 11 (22)</option>
-				</select>
-			</div>
-		</div>
-		
-		<hr>
-		<header>Cuándo se juega</header>
-		
-		<div class="grid-block">
-
-			<div class="small-6 grid-content">
-				<label>
-					<i class="fa fa-calendar-o"></i> Fecha
-					<input type="date">
-
-				</label>
-			</div>
-			<div class="small-6 grid-content">
-				<label>
-					<i class="fa fa-clock-o"></i> Horario
-					<input type="time" ng-click="timeSelected = !timeSelected">
-				</label>
-			</div>
-		</div>
-		<div ng-show="timeSelected">
-			<br>
-			<p>¡Ya casi estamos!</p>
-			<a class="success expand button" ui-sref="new-match.step-3" ng-class="timeSelected ? '' : 'disabled'"><i class="fa fa-bullhorn"></i>&nbsp; Convocar Jugadores</a>
-		</div>
+<div class="grid-frame vertical">
+	<!-- TitleBar -->
+	<form-title-bar cancelUrl="$root.newMatch.id != 0 ? 'match/$root.newMatch.id':'home'" title="$root.newMatch.id != 0 ? 'Editar Mi Futzapp':'Nuevo Futzapp'"></form-title-bar>
 	
-</form>
-</div>
+	<div class="grid-block">
+	<div ng-class="['ui-animation']" class="match-content">
+		<match-menu step2="true" step3="$root.newMatch.matchTypeId != 0 && $root.newMatch.date != ''"></match-menu>
+		<div class="grid-content collapse">
+			<progress  class="new-match-steps-progress" value="60" max="90"></progress>
+		</div>
 
+		<div class="grid-content grid-container">
+			<form>
+				<!-- <h4 class="form-header"><span>Paso 2/3</span></h4>
+				<hr> -->
+				<header>Elegí el tipo de Partido</header>
+				
+				<div class="grid-block">
+
+					<div class="small-12 medium-6 grid-content">
+						<label><i class="fa fa-soccer-ball-o"></i> Cantidad de jugadores</label>
+						<select name="" id="" ng-model="$root.newMatch.matchTypeId">
+							<option ng-repeat="matchType in $root.matchTypes" value="{{matchType.id}}">{{matchType.name}} ({{matchType.totalPlayers}})</option>
+						</select>
+					</div>
+				</div>
+				
+				<hr>
+				<header>Cuándo se juega</header>
+				
+				<div class="grid-block">
+
+					<div class="small-6 grid-content">
+						<label>
+							<i class="fa fa-calendar-o"></i> Fecha
+							<input ng-model="$root.newMatch.partialDate" type="date">
+
+						</label>
+					</div>
+					<div class="small-6 grid-content">
+						<label>
+							<i class="fa fa-clock-o"></i> Horario
+							<input ng-model="$root.newMatch.partialTime" type="time">
+						</label>
+					</div>
+				</div>
+				<div ng-show="$root.newMatch.matchTypeId != 0">
+					<br>
+					<p>¡Ya casi estamos!</p>
+					<a class="success expand button" ng-click="$root.createMatch()" ng-class="$root.newMatch.date != '' ? '' : 'disabled'"><i class="fa fa-bullhorn"></i>&nbsp; Convocar Jugadores</a>
+				</div>
+			
+		</form>
+		</div>
+	</div>
+	</div>
+</div>

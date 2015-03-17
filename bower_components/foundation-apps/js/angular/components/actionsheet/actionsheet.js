@@ -6,7 +6,29 @@
     .directive('zfActionSheet', zfActionSheet)
     .directive('zfAsContent', zfAsContent)
     .directive('zfAsButton', zfAsButton)
+    .service('FoundationActionSheet', FoundationActionSheet)
   ;
+
+  FoundationActionSheet.$inject = ['FoundationApi'];
+
+  function FoundationActionSheet(foundationApi) {
+    var service    = {};
+
+    service.activate = activate;
+    service.deactivate = deactivate;
+
+    return service;
+
+    //target should be element ID
+    function activate(target) {
+      foundationApi.publish(target, 'show');
+    }
+
+    //target should be element ID
+    function deactivate(target) {
+      foundationApi.publish(target, 'hide');
+    }
+  }
 
   zfActionSheetController.$inject = ['$scope', 'FoundationApi'];
 
@@ -14,6 +36,7 @@
     var controller = this;
     var content = controller.content = $scope.content;
     var container = controller.container = $scope.container;
+    var body = angular.element(document.body);
 
     controller.registerContent = function(scope) {
       content = scope;
@@ -25,21 +48,49 @@
       container.active = false;
     };
 
-    controller.toggle = function() {
-      content.toggle();
-      container.toggle();
+    controller.toggle = toggle;
+    controller.hide = hide;
 
-      content.$apply();
-      container.$apply();
+    controller.registerListener = function() {
+      document.body.addEventListener('click', listenerLogic);
     };
 
-    controller.hide = function() {
+    controller.deregisterListener = function() {
+      document.body.removeEventListener('click', listenerLogic);
+    }
+
+    function listenerLogic(e) {
+      var el = e.target;
+      var insideActionSheet = false;
+
+      do {
+        if(el.classList && el.classList.contains('action-sheet-container')) {
+          insideActionSheet = true;
+          break;
+        }
+
+      } while ((el = el.parentNode));
+
+      if(!insideActionSheet) {
+        hide();
+      }
+    }
+
+    function hide() {
       content.hide();
       container.hide();
 
       content.$apply();
       container.$apply();
-    };
+    }
+
+    function toggle() {
+      content.toggle();
+      container.toggle();
+
+      content.$apply();
+      container.$apply();
+    }
   }
 
   zfActionSheet.$inject = ['FoundationApi'];
@@ -123,11 +174,19 @@
 
       scope.toggle = function() {
         scope.active = !scope.active;
+
+        if(scope.active) {
+          controller.registerListener();
+        } else {
+          controller.deregisterListener();
+        }
+
         return;
       };
 
       scope.hide = function() {
         scope.active = false;
+        controller.deregisterListener();
         return;
       };
     }

@@ -1,0 +1,11 @@
+09.09.2014: cannot create the destination file
+09.09.2014: cannot create the destination file
+09.09.2014: cannot create the destination file
+02.10.2014: cannot create the destination file
+02.10.2014: cannot create the destination file
+03.10.2014: writing chunk 1
+03.10.2014: writing chunk 1
+03.10.2014: writing chunk 1
+03.10.2014: writing chunk 1
+03.10.2014: writing chunk 1
+03.10.2014: writing chunk 1

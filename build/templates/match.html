@@ -1,66 +1,84 @@
-
-<div ng-include="" src="'partials/modal-player-profile.html'"></div>
-<div ng-include="" src="'partials/modal-field.html'"></div>
 <div class="grid-frame vertical">
-<!-- TitleBar -->
-     <div ng-include="" src="'partials/match-title-bar.html'"></div>
+	<!-- TitleBar -->
+	<div ng-include="" src="'partials/match-title-bar.html'"></div>
+	
+	<div ng-if="adminMode" ng-include="" src="'partials/modal-invite-players.html'"></div>
+	<div ng-if="adminMode" ng-include="" src="'partials/modal-add-player.html'"></div>
+	<div ng-if="adminMode" ng-include="" src="'partials/modal-assign-team.html'"></div>
+	<div ng-if="adminMode" ng-include="" src="'partials/modal-team-colors.html'"></div>
+	<player-profile player="selectedUser" matchesOrganized="'12'" matchesPlayed="'12'" adminMode="adminMode"></player-profile>
+	<modal-field field="match.field"></modal-field>
+	
+	<!-- Match Container -->
+	<div class="grid-block vertical medium-horizontal grid-container match-container">	
 
-     <!-- Match Container -->
-     <div class="grid-block vertical medium-horizontal grid-container match-container">	
-
-     	<!-- Match Info -->
-     	<div class="grid-block shrink medium-5 large-3">
-     		<div class="grid-content">
-     			<div class="match-header">
-     				<h2>
+		<!-- Match Info -->
+		<div class="grid-block shrink medium-5 large-3">
+			<div class="grid-content">
+				<div ng-if="adminMode" class="match-header">
+					<div class="ribbon ribbon ribbon-orange">
+						<div class="banner">
+							<div class="text"><i class="fa fa-soccer-ball-o"></i></div>
+						</div>
+					</div>
+					<h2>{{ match.type.name }} <a ng-click="$root.goToStep1(match)" class="small-action"><i class="fa fa-pencil-square-o"></i>Editar</a></h2>
+				</div>
+				<div ng-if="!adminMode" class="match-header">
+					<h2>
      					<div class="ribbon ribbon-green">
      						<div class="banner">
      							<div class="text"><i class="fa fa-thumbs-up"></i></div>
      						</div>
      					</div>
-     					{{ vars.matchType }}
+     					{{ match.type.name }}
      				</h2>
-     			</div>
+				</div>
 
-     			<div class="match-info">
-     				<div class="date-block">
-     					<div class="day">24</div>
-     					<div class="month">ENE</div>
-     				</div>
-     				<div class="text">
-     					<p>Jueves a las <strong>6:30 pm</strong></p>
-     					<p><a href="" zf-open="fieldInfo"><i class="fa fa-map-marker"></i><strong>San Isidro Fútbol</strong>, Martinez</a></p>
-     				</div>
-     			</div>
+				<div class="match-info">
+					<div class="date-block">
+						<div class="day">{{match.date | dateFormat:'D'}}</div>
+						<div class="month">{{(match.date | dateFormat:'MMMM').substr(0,3)}}</div>
+					</div>
+					<div class="text">
+						<p>{{match.date | dateFormat:'dddd'}} a las <strong>{{match.date | dateFormat:'hh:mm a'}}</strong></p>
+						<p><a zf-open="fieldInfo"><i class="fa fa-map-marker"></i><strong>{{match.field.name}}</strong>, {{($root.fields | getById:match.fieldId).town.name}}</a></p>
+					</div>
+				</div>
 
-     			<div class="match-actions">
+				<div ng-if="adminMode" class="match-actions">
+					<a class="warning expand button" zf-open="invitePlayers"><i class="fa fa-bullhorn"></i>&nbsp; Convocar jugadores</a>
+
+					<a href="#" class="small-action" zf-open="addPlayers"><i class="fa fa-plus"></i> Agregar jugador a mano</a>
+				</div>
+				<div ng-if="!adminMode" class="match-actions">
      				<div ng-include="" src="'partials/match-confirm-buttons.html'"></div>
      			</div>
-     			<hr>
-     			<p class="match-owner"><i class="fa fa-bullhorn"></i> 32 convocados por <strong>{{ vars.matchOwner }}</strong></p>
-     		</div>
-     	</div>
+				
+				<hr>
+				<p class="match-owner"><i class="fa fa-bullhorn"></i> {{guests.length}} convocados por <strong>{{adminMode ? 'Vos' : match.admin.name}}</strong> {{adminMode ? '(Organizador)' : ''}}</p>
+			</div>
+		</div>
 
-     	<!-- Match Players -->
-     	<div class="grid-block shrink medium-4 large-6 border-block ">
-     		<div class="grid-content">		
-     			<div class="match-confirmation-meter">
-     				<meter min="0" max="10" low="3" high="8" optimum="10" value="5"></meter>
-     				<span><i class="fa fa-thumbs-up"></i>&nbsp; 5/10 Jugadores confirmaron</span>
-     			</div>
+		<!-- Match Players -->
+		<div class="grid-block shrink medium-4 large-6 border-block">
+			<div class="grid-content">
+				<div class="match-confirmation-meter">
+					<meter min="0" max="{{match.type.totalPlayers}}" low="{{match.type.totalPlayers/4}}" high="{{match.type.totalPlayers*3/4}}" optimum="{{match.type.totalPlayers}}" value="{{match.guestsConfirmedAmount}}"></meter>
+					<span><i class="fa fa-thumbs-up"></i>&nbsp; {{match.guestsConfirmedAmount}}/{{match.type.totalPlayers}} Jugadores confirmaron</span>
+				</div>
 
-     			<div ng-include="" src="'partials/teams.html'"></div>
-     		</div>
-     	</div>
+				<teams></teams>
+			</div>
+		</div>
 
-     	<!-- Match Comments -->
-     	<div class="grid-block shrink medium-3 large-3 border-block">
-     		<div class="grid-content">	
-     			<div ng-include="" src="'partials/comments.html'"></div>
-     		</div>
-     	</div>
-     </div>
+		<!-- Match Comments -->
+		<div class="grid-block shrink medium-3 large-3">
+			<div class="grid-content">
+				<div ng-include="" src="'partials/comments.html'"></div>
+
+			</div>
+		</div>
+	</div>
 </div>
-
 
 

@@ -4,48 +4,45 @@
 				<img src="assets/img/ftz-soccer-field.jpg" alt="La Cancha">
 
 				<!-- TEAM A -->
-				<div class="team-player f5 team-a player-1" zf-open="playerProfile"><img src="assets/img/face1.jpg" alt=""></div>
-
-				<div class="team-player f5 team-a player-2" zf-open="playerProfile"><img src="assets/img/face2.jpg" alt=""></div>
-
-				<div class="team-player f5 team-a player-3" zf-open="playerProfile"><img src="assets/img/face3.jpg" alt=""></div>
-
-				<div class="team-player f5 team-a player-4"><a href=""><i class="fa fa-question"></i></a></div>
-
-				<div class="team-player f5 team-a player-5"><a href=""><i class="fa fa-question"></i></a></div>
-
-				<!-- TEAM B -->
-				<div class="team-player f5 team-b player-1" zf-open="playerProfile"><img src="assets/img/face4.jpg" alt=""></div>
-
-				<div class="team-player f5 team-b player-2" zf-open="playerProfile"><img src="assets/img/face5.jpg" alt=""></div>
+				<!-- Confirmed Players -->
+				<div ng-if="adminMode"  ng-repeat="player in teamA.team.users" class="team-player" style="border-color: {{teamA.team.shirtColor}}; top: {{teamA.positions[$index].y}}; left: {{teamA.positions[$index].x}};" ng-click="changeSelectedUser(player)"  zf-open="playerProfile"><img src="{{player.photo_url}}" alt=""></div>
+				<div ng-if="!adminMode" ng-repeat="player in teamA.team.users" class="team-player" style="border-color: {{teamA.team.shirtColor}}; top: {{teamA.positions[$index].y}}; left: {{teamA.positions[$index].x}};" ng-click="changeSelectedUser(player)" zf-open="playerProfile"><img src="{{player.photo_url}}" alt=""></div>
+				<!-- Missing Players -->
+				<div ng-if="adminMode" ng-repeat="i in getNumber(teamA.missingPlayers) track by $index" class="team-player" style="background-color: {{teamA.team.shirtColor}}; border-color: {{teamA.team.shirtColor}}; top: {{teamA.positions[$index + teamA.team.users.length].y}}; left: {{teamA.positions[$index + teamA.team.users.length].x}};"><a href=""><i class="fa fa-plus"></i></a></div>
+				<div ng-if="!adminMode" ng-repeat="i in getNumber(teamA.missingPlayers) track by $index" class="team-player" style="background-color: {{teamA.team.shirtColor}}; border-color: {{teamA.team.shirtColor}}; top: {{teamA.positions[$index + teamA.team.users.length].y}}; left: {{teamA.positions[$index + teamA.team.users.length].x}};"><a href=""><i class="fa fa-question"></i></a></div>
 				
-				<div class="team-player f5 team-b player-3"><a href=""><i class="fa fa-question"></i></a></div>
-
-				<div class="team-player f5 team-b player-4" zf-open="playerProfile"><img src="assets/img/face6.jpg" alt=""></div>
-
-				<div class="team-player f5 team-b player-5"><a href="" ><i class="fa fa-question"></i></a></div>
+				<!-- TEAM B -->
+				<!-- Confirmed Players -->
+				<div ng-if="adminMode"  ng-repeat="player in teamB.team.users" class="team-player" style="border-color: {{teamB.team.shirtColor}}; top: {{teamB.positions[$index].y}}; left: {{teamB.positions[$index].x}};" ng-click="changeSelectedUser(player)" zf-open="playerProfile"><img src="{{player.photo_url}}" alt=""></div>
+				<div ng-if="!adminMode" ng-repeat="player in teamB.team.users" class="team-player" style="border-color: {{teamB.team.shirtColor}}; top: {{teamB.positions[$index].y}}; left: {{teamB.positions[$index].x}};" ng-click="changeSelectedUser(player)" zf-open="playerProfile"><img src="{{player.photo_url}}" alt=""></div>
+				<!-- Missing Players -->
+				<div ng-if="adminMode" ng-repeat="i in getNumber(teamB.missingPlayers) track by $index" class="team-player" style="background-color: {{teamB.team.shirtColor}}; border-color: {{teamB.team.shirtColor}}; top: {{teamB.positions[$index + teamB.team.users.length].y}}; left: {{teamB.positions[$index + teamB.team.users.length].x}};"><a href=""><i class="fa fa-plus"></i></a></div>
+				<div ng-if="!adminMode" ng-repeat="i in getNumber(teamB.missingPlayers) track by $index" class="team-player" style="background-color: {{teamB.team.shirtColor}}; border-color: {{teamB.team.shirtColor}}; top: {{teamB.positions[$index + teamB.team.users.length].y}}; left: {{teamB.positions[$index + teamB.team.users.length].x}};"><a href=""><i class="fa fa-question"></i></a></div>
+				
 			</div>
 			
 		</div>
 		<div class="grid-block small-up-2 medium-up-1 large-up-2">
 			<div class="grid-content">
 				<section class="ftz-block-list team-list">
-					<header><i class="fa fa-square team-a"></i> Equipo A</header>
+					<header ng-if="adminMode"><a href="#" zf-open="teamColors"><i style="color: {{teamA.team.shirtColor}};" class="fa fa-square"></i>  Equipo A <i class="fa fa-pencil-square-o edit-icon"></i></a></header>
+					<header ng-if="!adminMode"><i style="color: {{teamA.team.shirtColor}};" class="fa fa-square"></i> Equipo A</header>
 					<ul>
-						<li ng-repeat="player in vars.teamAplayers">
-							<a href="#" zf-open="playerProfile">
-								<!-- <img src="../assets/img/face.jpg" alt=""> -->
-								<span>{{ player }}</span>
+						<li ng-repeat="player in teamA.team.users">
+							<a href="#" ng-click="changeSelectedUser(player)" zf-open="playerProfile">
+								<!-- <img src="{{player.photo_url}}" alt=""> -->
+								<span>{{player.name}} {{player.lastname}}</span>
 							</a>				
 						</li>
-						<li>
+						
+						<li ng-if="!adminMode" ng-repeat="i in getNumber(teamA.missingPlayers) track by $index">
 							<a href="#" zf-open="team-player">
 								<span class="empty-player">&nbsp;</span>
 							</a>				
 						</li>
-						<li>
-							<a href="#" zf-open="team-player">
-								<span class="empty-player">&nbsp;</span>
+						<li ng-if="adminMode" ng-repeat="i in getNumber(teamA.missingPlayers) track by $index">
+							<a href="#" ng-click="changeSelectedTeam('A')" zf-open="addPlayers">
+								<span class="empty-player">Agregar Jugador</span>
 							</a>				
 						</li>
 					</ul>
@@ -55,25 +52,26 @@
 
 			<div class="grid-content">
 				<section class="ftz-block-list team-list">
-				<header><i class="fa fa-square team-b"></i> Equipo B</header>
+				<header ng-if="adminMode"><a href="#" zf-open="teamColors"><i style="color: {{teamB.team.shirtColor}};" class="fa fa-square"></i> Equipo B <i class="fa fa-pencil-square-o edit-icon"></i></a></header>
+				<header ng-if="!adminMode"><i style="color: {{teamB.team.shirtColor}};" class="fa fa-square"></i> Equipo B</header>
 					<ul>					
-						<li ng-repeat="player in vars.teamBplayers">
-							<a href="#" zf-open="playerProfile">
-								<!-- <img src="../assets/img/face.jpg" alt=""> -->
-								<span>{{ player }}</span>
+						<li ng-repeat="player in teamB.team.users">
+							<a href="#" ng-click="changeSelectedUser(player)" zf-open="playerProfile">
+								<!-- <img src="{{player.photo_url}}" alt=""> -->
+								<span>{{player.name}} {{player.lastname}}</span>
 							</a>				
 						</li>
-						<li>
-							<a href="#">
+						
+						<li ng-if="!adminMode" ng-repeat="i in getNumber(teamB.missingPlayers) track by $index">
+							<a href="#" zf-open="team-player">
 								<span class="empty-player">&nbsp;</span>
 							</a>				
 						</li>
-						<li>
-							<a href="#">
-								<span class="empty-player">&nbsp;</span>
+						<li ng-if="adminMode" ng-repeat="i in getNumber(teamB.missingPlayers) track by $index">
+							<a href="#" ng-click="changeSelectedTeam('B')" zf-open="addPlayers">
+								<span class="empty-player">Agregar Jugador</span>
 							</a>				
 						</li>
-
 					</ul>
 				</section>
 			</div>

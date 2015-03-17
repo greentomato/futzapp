@@ -1,6 +1,6 @@
 {
   "name": "foundation-apps-template",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "authors": [
     "ZURB"
   ],
@@ -23,7 +23,6 @@
     "tests"
   ],
   "dependencies": {
-    "foundation-apps": "~1.0.2",
-    "ryanmullins-angular-hammer": "~2.1.10"
+    "foundation-apps": "~1.0.3"
   }
 }

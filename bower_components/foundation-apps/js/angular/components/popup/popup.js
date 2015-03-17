@@ -4,7 +4,33 @@
   angular.module('foundation.popup', ['foundation.core'])
     .directive('zfPopup', zfPopup)
     .directive('zfPopupToggle', zfPopupToggle)
+    .service('FoundationPopup', FoundationPopup)
   ;
+
+  FoundationPopup.$inject = ['FoundationApi'];
+
+  function FoundationPopup(foundationApi) {
+    var service    = {};
+
+    service.activate = activate;
+    service.deactivate = deactivate;
+
+    return service;
+
+    //target should be element ID
+    function activate(target) {
+      foundationApi.publish(target, 'show');
+    }
+
+    //target should be element ID
+    function deactivate(target) {
+      foundationApi.publish(target, 'hide');
+    }
+
+    function toggle(target, popupTarget) {
+      foundationApi.publish(target, ['toggle', popupTarget]);
+    }
+  }
 
   zfPopup.$inject = ['FoundationApi'];
 
@@ -17,6 +43,7 @@
       scope: {
         pinTo: '@?',
         pinAt: '@?',
+        target: '@?'
       },
       compile: compile
     };
@@ -38,6 +65,7 @@
         scope.target = scope.target || false;
 
         var attachment = scope.pinTo || 'top center';
+        var targetAttachment = scope.pinAt || 'bottom center';
         var tetherInit = false;
         var tether     = {};
 
@@ -59,7 +87,7 @@
 
         scope.hide = function() {
           scope.active = false;
-          tetherElement(newTarget);
+          tetherElement();
           tether.disable();
           return;
         };
@@ -96,6 +124,7 @@
             element: element[0],
             target: scope.target,
             attachment: attachment,
+            targetAttachment: targetAttachment,
             enable: false
           });
 

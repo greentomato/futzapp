@@ -1,18 +1,18 @@
 <div zf-panel="" zf-swipe-close="left" id="panelMenu" position="left" class="panel-fixed" >
 		<a zf-close="" class="close-button"><span class="float-left">Menu</span>×</a>
 	<div class="user-profile">
-    <a href="" zf-open="playerProfile">
-      <img src="assets/img/face1.jpg" alt="">
-      <h6>Daieg Ferveyra</h6>
+    <a href="" ng-click="changeSelectedUser($root.user)" zf-open="playerProfile">
+      <img src="{{$root.user.photo_url}}" alt="">
+      <h6>{{$root.user.name}} {{$root.user.lastname}}</h6>
     </a>
 	</div>
 
 	<section class="block-list">
   <ul>
-    <li><a ui-sref="home"><i class="fa fa-soccer-ball-o"></i>Mis Futzapps</a></li>
-    <li><a ui-sref="settings"><i class="fa fa-cog"></i>Mi Perfíl</a></li>
-    <li><a ui-sref="help"><i class="fa fa-question"></i>Ayuda</a></li>
-    <li><a ui-sref="landing"><i class="fa fa-sign-out"></i>Salir</a></li>
+    <li><a ng-href="#/home"><i class="fa fa-soccer-ball-o"></i>Mis Futzapps</a></li>
+    <li><a ng-href="#/settings"><i class="fa fa-cog"></i>Mi Perfíl</a></li>
+    <li><a ng-href="#/help"><i class="fa fa-question"></i>Ayuda</a></li>
+    <li><a ng-click="$root.logout()"><i class="fa fa-sign-out"></i>Salir</a></li>
   </ul>
 </section>
 

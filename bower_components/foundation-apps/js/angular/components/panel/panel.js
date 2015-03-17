@@ -3,7 +3,29 @@
 
   angular.module('foundation.panel', ['foundation.core'])
     .directive('zfPanel', zfPanel)
+    .service('FoundationPanel', FoundationPanel)
   ;
+
+  FoundationPanel.$inject = ['FoundationApi'];
+
+  function FoundationPanel(foundationApi) {
+    var service    = {};
+
+    service.activate = activate;
+    service.deactivate = deactivate;
+
+    return service;
+
+    //target should be element ID
+    function activate(target) {
+      foundationApi.publish(target, 'show');
+    }
+
+    //target should be element ID
+    function deactivate(target) {
+      foundationApi.publish(target, 'hide');
+    }
+  }
 
   zfPanel.$inject = ['FoundationApi'];
 
@@ -66,25 +88,33 @@
             scope.toggle();
           }
 
-          foundationApi.animate(element, scope.active, animationIn, animationOut);
-
           scope.$apply();
 
           return;
         });
 
         scope.hide = function() {
-          scope.active = false;
+          if(scope.active){
+            scope.active = false;
+            foundationApi.animate(element, scope.active, animationIn, animationOut);
+          }
+
           return;
         };
 
         scope.show = function() {
-          scope.active = true;
+          if(!scope.active){
+            scope.active = true;
+            foundationApi.animate(element, scope.active, animationIn, animationOut);
+          }
+
           return;
         };
 
         scope.toggle = function() {
           scope.active = !scope.active;
+          foundationApi.animate(element, scope.active, animationIn, animationOut);
+          
           return;
         };
 
