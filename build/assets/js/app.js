@@ -5,6 +5,7 @@
 		//'ui.router',
 		'ngRoute',
 		'ngAnimate',
+		'ngSanitize',
 		
 		'fulboControllers',
 		'fulboFilters',
@@ -20,8 +21,10 @@
 	
 	futzApp.value('redirectToUrlAfterLogin', { url: '/home' });
 	
-	futzApp.config(['$routeProvider', '$locationProvider', 'flowFactoryProvider', 
-		function($routeProvider, $locationProvider, flowFactoryProvider) {
+	futzApp.config(['$routeProvider', '$locationProvider', '$compileProvider', 'flowFactoryProvider', 
+		function($routeProvider, $locationProvider, $compileProvider, flowFactoryProvider) {
+			$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|whatsapp):/);
+		
 			$routeProvider.
 			  when('/', {
 				templateUrl: 'templates/landing.html',
@@ -81,24 +84,26 @@
 		}
 	]);
 	
-	futzApp.run(['$rootScope', '$window', '$location', 'Fields', 'Matches', 'MatchTypes', 'UsersAuth', 'Towns', 'States', 
-     	function($rootScope, $window, $location, Fields, Matches, MatchTypes, UsersAuth, Towns, States) {
-
+	futzApp.run(['$rootScope', '$filter', '$sanitize', '$window', '$location', 'Fields', 'Matches', 'MatchTypes', 'UsersAuth', 'Towns', 'States', 
+     	function($rootScope, $filter, $sanitize, $window, $location, Fields, Matches, MatchTypes, UsersAuth, Towns, States) {
 			FastClick.attach(document.body);
 			
+			/* ROUTING LOGIC */
 			$rootScope.routeChanges = 0;
 		
+			/* FACEBOOK LOGIN VARIABLES */
 			$rootScope.fbUser = null;
 			$rootScope.user = null;
+			//$rootScope.fbAppId = "1517377388534738";
+			$rootScope.fbAppId = "1450926871846457";
 			
-			$rootScope.fbAppId = "1517377388534738";
-			$rootScope.activePage = "/";
-			
+			/* GLOBAL VARIABLES */
 			$rootScope.fields = Fields.query();
 			$rootScope.matchTypes = MatchTypes.query();
 			$rootScope.towns = Towns.query();
 			$rootScope.states = States.query();
 			
+			/* NEW/EDIT MATCH VARIABLES */
 			$rootScope.newMatch = {
 				date: '',
 				partialDate: '',
@@ -110,11 +115,9 @@
 				admin_userId: 0,
 				id: 0
 			};
+			$rootScope.matchShareURL = "";
 			
-			$rootScope.logout = function() {
-				UsersAuth.logout();
-			};
-			
+			/* NEW/EDIT MATCH METHODS */
 			$rootScope.$watch('newMatch.partialDate', function() {
 			   tryCombineDateTime(); 
 			});
@@ -141,6 +144,55 @@
 				}
 			}
 			
+			$rootScope.createMatch = function(){
+				$rootScope.newMatch.admin_userId = $rootScope.user.id;
+				
+				if($rootScope.newMatch.id != 0) {
+					Matches.update($rootScope.newMatch, function(updatedMatch){
+						$rootScope.newMatch = updatedMatch;
+						$rootScope.matchShareURL = $sanitize("http://" + $location.host() + "?token=" + $rootScope.newMatch.token);
+						console.log("Match updated, id:" + updatedMatch.id);
+						$location.path( "/step-3" );
+					}, function(){
+						console.log("Failed updating match!");
+						showAlert("Error", "Hubo un error al actualizar el partido! Intente nuevamente.");
+					});
+				} else {
+					Matches.save($rootScope.newMatch, function(newMatch){
+						$rootScope.newMatch = newMatch;
+						$rootScope.matchShareURL = $sanitize("http://" + $location.host() + "?token=" + $rootScope.newMatch.token);
+						
+						console.log("Match saved, id:" + newMatch.id);
+						$location.path( "/step-3" );
+					}, function(){
+						console.log("Failed saving match!");
+						showAlert("Error", "Hubo un error al crear el partido! Intente nuevamente.");
+					});
+				}
+			};
+			
+			$rootScope.shareFB = function(match){
+				var url = $rootScope.matchShareURL;
+				var field = {};
+				for (var i=0, len=$rootScope.fields.length; i<len; i++) {
+					if (+$rootScope.fields[i].id == +match.fieldId) {
+						field = $rootScope.fields[i];
+						break;
+					}
+				}
+				FB.ui( {
+					method: 'feed',
+					name: "Futzapp",
+					link: url,
+					picture: "http://futzapp.com/images/field.jpg",
+					description: "Jugate un futzapp el " + $filter('dateFormat')($scope.match.date, 'dddd ') +  " a las " + $filter('dateFormat')($scope.match.date, 'hh:mm a') + " en " + field.name + "!",
+					caption: "Ya reservaste cancha y te faltan jugadores? Armar un partido de f&ucaute;tbol entre amigos nunca fue tan f&aacute;cil!"
+				}, function( response ) {
+					// do nothing
+				} );
+			};
+			
+			/* GLOBAL METHODS */
 			$rootScope.goToStep1 = function(match) {
 				if(match == null){
 					$rootScope.newMatch = {
@@ -174,51 +226,11 @@
 				$location.path( "/step-1" );
 			}
 
-			$rootScope.createMatch = function(){
-				$rootScope.newMatch.admin_userId = $rootScope.user.id;
-				
-				if($rootScope.newMatch.id != 0) {
-					Matches.update($rootScope.newMatch, function(updatedMatch){
-						$rootScope.newMatch = updatedMatch;
-						console.log("Match updated, id:" + updatedMatch.id);
-						$location.path( "/step-3" );
-					}, function(){
-						console.log("Failed updating match!");
-						showAlert("Error", "Hubo un error al actualizar el partido! Intente nuevamente.");
-					});
-				} else {
-					Matches.save($rootScope.newMatch, function(newMatch){
-						$rootScope.newMatch = newMatch;
-						console.log("Match saved, id:" + newMatch.id);
-						$location.path( "/step-3" );
-					}, function(){
-						console.log("Failed saving match!");
-						showAlert("Error", "Hubo un error al crear el partido! Intente nuevamente.");
-					});
-				}
+			$rootScope.logout = function() {
+				UsersAuth.logout();
 			};
 			
-			$rootScope.shareFB = function(match){
-				var url = "http://" + $location.host() + "?token=" + match.token;
-				var field = {};
-				for (var i=0, len=$rootScope.fields.length; i<len; i++) {
-					if (+$rootScope.fields[i].id == +match.fieldId) {
-						field = $rootScope.fields[i];
-						break;
-					}
-				}
-				FB.ui( {
-					method: 'feed',
-					name: "Futzapp",
-					link: url,
-					picture: "http://futzapp.com/images/field.jpg",
-					description: "Jugate un futzapp el " + match.date + " en " + field.name + "!",
-					caption: "Ya reservaste cancha y te faltan jugadores? Armar un partido de f鷗bol entre amigos nunca fue tan f醕il!"
-				}, function( response ) {
-					// do nothing
-				} );
-			};
-			
+			/* USER AUTH METHODS */
 			$rootScope.$on('$routeChangeStart', function (event, next) {
 				if($rootScope.routeChanges == 0){
 					UsersAuth.saveAttemptUrl();
@@ -227,13 +239,13 @@
 				}
 				
 				if (!UsersAuth.isLogged) {
-					
 					//event.preventDefault();
 					$location.path( "/" );
 					$rootScope.routeChanges++;
 				}
 			});
 			
+			/* FB METHODS SDK */
 			$window.fbAsyncInit = function() {
 				// Executed when the SDK is loaded
 
@@ -289,8 +301,6 @@ var fulboControllers = angular.module('fulboControllers', []);
 
 fulboControllers.controller('HomeController', ['$rootScope', '$scope', '$location', 'Fields', 'Matches', 'UsersAuth',
   function($rootScope, $scope, $location, Fields, Matches, UsersAuth) {
-    $rootScope.activePage = "landing";
-	
     $scope.matchToSave = false;
     
     $scope.login = function() {
@@ -300,14 +310,12 @@ fulboControllers.controller('HomeController', ['$rootScope', '$scope', '$locatio
 
 fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$location', 'Users', 'Matches', 'Teams', 'Facebook',   
 	function($rootScope, $scope, $location, Users, Matches, Teams, Facebook) {
-		$rootScope.activePage = "home";
-		
 		$scope.selectedUser = {};
 		$scope.changeSelectedUser = function(user){
 	    	$scope.selectedUser = user;
 	    };
 		
-		//TODO: filtrar por guest si/guest no/admin!
+		//TODO: mostrar solo las que DATE>NOW!! (BACK)
 		$scope.renderMatches = function(){
 			var userMatches = Users.getMatches({id: $rootScope.user.id}, function(){
 				for (var i=0, len=userMatches.Admin.length;i<len;i++){
@@ -381,7 +389,7 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 			   	if(subsUpdated)
 			   		$scope.updateSubs(dataSubs, match.substitutes);
 			   	
-			   	var message = "Juego el partido del d铆a " + match.date + " en " + match.field.name;
+			   	/*var message = "Juego el partido del d铆a " + match.date + " en " + match.field.name;
 	    		var link = "http://www.futzapp.com?token=" + match.token;
 	    		var actions = null;
 	    		var tags = [match.admin.fbId];
@@ -390,7 +398,7 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 		    		showAlert("Notificaci贸n", "Se ha enviado una notificaci贸n!");
 				}, function(){
 					showAlert("Error", "No se pudo enviar la notificaci贸n. Avisale al admin!");
-				});
+				});*/
 			   	
 			   	$scope.matches = Users.getMatches({id: $rootScope.user.id});
 	    	});
@@ -434,7 +442,7 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 			   		$scope.updateTeam(dataTeamB, match.teams[1], $rootScope.user.id);
 			   	$scope.updateSubs(dataSubs, match.substitutes, $rootScope.user.id);
 			   	
-			   	var message = "No juego el partido del d铆a " + match.date + " en " + match.field.name;
+			   	/*var message = "No juego el partido del d铆a " + match.date + " en " + match.field.name;
 	    		var link = "http://www.futzapp.com?token=" + match.token;
 	    		var actions = null;
 	    		var tags = [match.admin.fbId];
@@ -443,7 +451,7 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 		    		showAlert("Notificaci贸n", "Se ha enviado una notificaci贸n!");
 				}, function(){
 					showAlert("Error", "No se pudo enviar la notificaci贸n. Avisale al admin!");
-				});
+				});*/
 	    		
 			   	$scope.matches = Users.getMatches({id: $rootScope.user.id});
 		    });
@@ -483,10 +491,8 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 	    };
 }]);
 
-fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeParams', '$location', 'Matches', 'Teams', 'Users', 'Facebook', 
-    function($rootScope, $scope, $routeParams, $location, Matches, Teams, Users, Facebook) {
-		$rootScope.activePage = "match";
-		$scope.currentURL = $location.host();
+fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeParams', '$filter', '$sanitize', '$location', 'Matches', 'Teams', 'Users', 'Facebook', 
+    function($rootScope, $scope, $routeParams,  $filter, $sanitize, $location, Matches, Teams, Users, Facebook) {
 		
 		$scope.totalPlayers = 0;
 		$scope.friendsSelected = [];
@@ -533,8 +539,11 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
     		});
 		};
 		
+		$scope.matchShareURL = "";
 		$scope.renderMatch = function(){
 			return Matches.get({id: $routeParams.matchId}, function(){
+				$scope.matchShareURL = $sanitize("http://" + $location.host() + "?token=" + $scope.match.token);
+				
 				if($rootScope.user.id == $scope.match.admin.id) $scope.adminMode = true;
 				var teams = Matches.getTeams({id: $routeParams.matchId}, function(){
 					if(teams.length == 1)
@@ -888,7 +897,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    //match Share
 	    $scope.shareFB = function(){
 	    	//TODO: cambiar metodo feed (deprecated) por share_open_graph con story
-	    	var url = "http://" + $scope.currentURL + "?token=" + $scope.match.token;
+	    	var url = $scope.matchShareURL;
 	    	//var url = "http://www.futzapp.com/back/public/matchSharer.php";
 			/*FB.ui({
 	    		method: 'share_open_graph',
@@ -908,8 +917,8 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				name: "Futzapp",
 				link: url,
 				picture: "http://futzapp.com/images/field.jpg",
-				description: "Jugate un futzapp el " + $scope.match.date + " en " + $scope.match.field.name + "!",
-				caption: "Ya reservaste cancha y te faltan jugadores? Armar un partido de f煤tbol entre amigos nunca fue tan f谩cil!"
+				description: "Jugate un futzapp el " + $filter('dateFormat')($scope.match.date, 'dddd ') +  " a las " + $filter('dateFormat')($scope.match.date, 'hh:mm a') + " en " + $scope.match.field.name + "!",
+				caption: "Ya reservaste cancha y te faltan jugadores? Armar un partido de f&uacute;tbol entre amigos nunca fue tan f&aacute;cil!"
 			}, function( response ) {
 				// do nothing
 			} );
@@ -918,8 +927,6 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 
 fulboControllers.controller('ProfileController', ['$rootScope', '$scope', 'UsersAuth', 'Users', 
   function($rootScope, $scope, UsersAuth, Users) {
-	$rootScope.activePage = "settings";
-	
 	//TODO: calculate games played
 	$scope.gamesPlayed = 0;
 	
@@ -994,8 +1001,8 @@ fulboFilters.filter('getById', function() {
 'use strict';
 
 /* Services */
-//var serverURL = "http://futzapp.com/back/public/";
-var serverURL = "http://futbolizados.dev/";
+var serverURL = "http://futzapp.com/back/public/";
+//var serverURL = "http://futbolizados.dev/";
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
@@ -1118,7 +1125,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 		fbToken: null,
 		
 		saveAttemptUrl: function() {
-			if($location.path().toLowerCase() != '/') {
+			if($location.path().toLowerCase() != '/' && $location.path().toLowerCase() != '') {
 				redirectToUrlAfterLogin.url = $location.path();
 			}
 			else
@@ -1149,7 +1156,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 								_self.redirectToAttemptedUrl();
 						}, function(){
 							console.log("user save failed!");
-							_self.logout();
+							//_self.logout();
 							$("#loaderDiv").hide();
 						});
 					}, function(error){
@@ -1178,7 +1185,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 									_self.redirectToAttemptedUrl();
 							}, function(){
 								console.log("user save failed!");
-								_self.logout();
+								//_self.logout();
 								$("#loaderDiv").hide();
 							});
 						}
@@ -1231,7 +1238,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 					$("#loaderDiv").hide();
 					console.log('User logged out.');
 					if(_self.user != null){
-						_self.logout();
+						//_self.logout();
 					} else{
 						_self.isLogged = false;
 						_self.fbToken = null;
@@ -1635,3 +1642,4 @@ function showAlert(title, message) {
 	$("#alertModal .message").html(message);
 	$('#alertModal').modal('show');
 }
+waShBtn=function(){this.isIos===!0&&this.cntLdd(window,this.crBtn)},waShBtn.prototype.isIos=navigator.userAgent.match(/iPhone/i)&&!navigator.userAgent.match(/iPod/i)?!0:!1,waShBtn.prototype.cntLdd=function(win,fn){var done=!1,top=!0,doc=win.document,root=doc.documentElement,add=doc.addEventListener?"addEventListener":"attachEvent",rem=doc.addEventListener?"removeEventListener":"detachEvent",pre=doc.addEventListener?"":"on",init=function(e){("readystatechange"!=e.type||"complete"==doc.readyState)&&(("load"==e.type?win:doc)[rem](pre+e.type,init,!1),!done&&(done=!0)&&fn.call(win,e.type||e))},poll=function(){try{root.doScroll("left")}catch(e){return void setTimeout(poll,50)}init("poll")};if("complete"==doc.readyState)fn.call(win,"lazy");else{if(doc.createEventObject&&root.doScroll){try{top=!win.frameElement}catch(e){}top&&poll()}doc[add](pre+"DOMContentLoaded",init,!1),doc[add](pre+"readystatechange",init,!1),win[add](pre+"load",init,!1)}},waShBtn.prototype.addStyling=function(){var s=document.createElement("style"),c="body,html{padding:0;margin:0;height:100%;width:100%}.wa_btn{background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE2IDE2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxnPg0KCQk8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iI0ZGRkZGRiIgZD0iTTguMTI5LDAuOTQ1Yy0zLjc5NSwwLTYuODcyLDMuMDc3LTYuODcyLDYuODczDQoJCQljMCwxLjI5OCwwLjM2LDIuNTEyLDAuOTg2LDMuNTQ5bC0xLjI0LDMuNjg4bDMuODA1LTEuMjE5YzAuOTg0LDAuNTQ0LDIuMTE2LDAuODU0LDMuMzIxLDAuODU0YzMuNzk1LDAsNi44NzEtMy4wNzUsNi44NzEtNi44NzENCgkJCVMxMS45MjQsMC45NDUsOC4xMjksMC45NDV6IE04LjEyOSwxMy41MzhjLTEuMTYyLDAtMi4yNDQtMC4zNDgtMy4xNDctMC45NDZsLTIuMTk4LDAuNzA1bDAuNzE1LTIuMTI0DQoJCQljLTAuNjg2LTAuOTQ0LTEuMDktMi4xMDMtMS4wOS0zLjM1NGMwLTMuMTU1LDIuNTY2LTUuNzIyLDUuNzIxLTUuNzIyczUuNzIxLDIuNTY2LDUuNzIxLDUuNzIyUzExLjI4MywxMy41MzgsOC4xMjksMTMuNTM4eg0KCQkJIE0xMS4zNTIsOS4zNzljLTAuMTc0LTAuMDk0LTEuMDItMC41NS0xLjE3OC0wLjYxNUMxMC4wMTQsOC43LDkuODk4LDguNjY2LDkuNzc1LDguODM3QzkuNjUyLDkuMDA3LDkuMzAxLDkuMzksOS4xOTMsOS41MDUNCgkJCUM5LjA4OCw5LjYxNyw4Ljk4NCw5LjYyOSw4LjgxMiw5LjUzM2MtMC4xNzEtMC4wOTYtMC43My0wLjMtMS4zNzgtMC45MjNjLTAuNTA0LTAuNDg0LTAuODM0LTEuMDcyLTAuOTMtMS4yNTINCgkJCWMtMC4wOTUtMC4xOCwwLTAuMjcxLDAuMDkxLTAuMzU0QzYuNjc3LDYuOTI4LDYuNzc4LDYuODA1LDYuODcsNi43MDZjMC4wOTEtMC4xLDAuMTI0LTAuMTcxLDAuMTg3LTAuMjg2DQoJCQljMC4wNjItMC4xMTUsMC4wMzgtMC4yMTgtMC4wMDMtMC4zMDhDNy4wMTIsNi4wMjMsNi42OTQsNS4xNDYsNi41NjEsNC43OUM2LjQyOCw0LjQzNCw2LjI4LDQuNDg2LDYuMTc3LDQuNDgyDQoJCQlDNi4wNzUsNC40NzksNS45NTgsNC40NTksNS44NDEsNC40NTZDNS43MjQsNC40NTEsNS41MzMsNC40ODcsNS4zNjYsNC42NTdjLTAuMTY3LDAuMTctMC42MzcsMC41NzYtMC42NjksMS40MzkNCgkJCXMwLjU2NSwxLjcyMiwwLjY0OCwxLjg0MWMwLjA4NCwwLjEyMSwxLjE0LDEuOTkxLDIuODk3LDIuNzYyYzEuNzU2LDAuNzcsMS43NjYsMC41MzQsMi4wODgsMC41MTgNCgkJCWMwLjMyMi0wLjAxOCwxLjA1NS0wLjM4NiwxLjIxNS0wLjc4OWMwLjE2Mi0wLjQwNSwwLjE3Ni0wLjc1NSwwLjEzNS0wLjgzMUMxMS42MzksOS41MjEsMTEuNTIzLDkuNDc1LDExLjM1Miw5LjM3OXoiLz4NCgk8L2c+DQo8L2c+DQo8L3N2Zz4NCg==);border:1px solid rgba(0,0,0,.1);display:inline-block!important;position:relative;font-family:Arial,sans-serif;letter-spacing:.4px;cursor:pointer;font-weight:400;text-transform:none;color:#fff;border-radius:2px;background-color:#5cbe4a;background-repeat:no-repeat;line-height:1.2;text-decoration:none;text-align:left}.wa_btn_s{font-size:12px;background-size:16px;background-position:5px 2px;padding:3px 6px 3px 25px}.wa_btn_m{font-size:16px;background-size:20px;background-position:4px 2px;padding:4px 6px 4px 30px}.wa_btn_l{font-size:16px;background-size:20px;background-position:5px 5px;padding:8px 6px 8px 30px}";return s.type="text/css",s.styleSheet?s.styleSheet.cssText=c:s.appendChild(document.createTextNode(c)),s},waShBtn.prototype.crBtn=function(){var b=document.getElementsByClassName("wa_btn");iframe=new Array;for(var i=0;i<b.length;i++){var parent=b[i].parentNode,t=b[i].getAttribute("data-text"),u=b[i].getAttribute("data-href"),o=b[i].getAttribute("href"),at="?text="+t;t&&(at+=" "),at+=u?u:document.URL,b[i].setAttribute("href",o+at),b[i].setAttribute("target","_top"),iframe[i]=document.createElement("iframe"),iframe[i].width=1,iframe[i].height=1,iframe[i].button=b[i],iframe[i].style.border=0,iframe[i].style.overflow="hidden",iframe[i].border=0,iframe[i].setAttribute("scrolling","no"),iframe[i].addEventListener("load",function(){this.contentDocument.body.appendChild(this.button),this.contentDocument.getElementsByTagName("head")[0].appendChild(theWaShBtn.addStyling());var meta=document.createElement("meta");meta.setAttribute("charset","utf-8"),this.contentDocument.getElementsByTagName("head")[0].appendChild(meta),this.width=Math.ceil(this.contentDocument.getElementsByTagName("a")[0].getBoundingClientRect().width),this.height=Math.ceil(this.contentDocument.getElementsByTagName("a")[0].getBoundingClientRect().height)},!1),parent.insertBefore(iframe[i],b[i])}};var theWaShBtn=new waShBtn;

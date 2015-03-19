@@ -6333,7 +6333,8 @@ hr {
 .grid-container {
   min-width: 100%; }
   .grid-container.match-container {
-    max-width: 85rem; }
+    max-width: 85rem;
+    top: 26px; }
 
 @media only screen and (min-width: 40em) {
   .border-block {
