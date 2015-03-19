@@ -6,8 +6,6 @@ var fulboControllers = angular.module('fulboControllers', []);
 
 fulboControllers.controller('HomeController', ['$rootScope', '$scope', '$location', 'Fields', 'Matches', 'UsersAuth',
   function($rootScope, $scope, $location, Fields, Matches, UsersAuth) {
-    $rootScope.activePage = "landing";
-	
     $scope.matchToSave = false;
     
     $scope.login = function() {
@@ -17,14 +15,12 @@ fulboControllers.controller('HomeController', ['$rootScope', '$scope', '$locatio
 
 fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$location', 'Users', 'Matches', 'Teams', 'Facebook',   
 	function($rootScope, $scope, $location, Users, Matches, Teams, Facebook) {
-		$rootScope.activePage = "home";
-		
 		$scope.selectedUser = {};
 		$scope.changeSelectedUser = function(user){
 	    	$scope.selectedUser = user;
 	    };
 		
-		//TODO: filtrar por guest si/guest no/admin!
+		//TODO: mostrar solo las que DATE>NOW!! (BACK)
 		$scope.renderMatches = function(){
 			var userMatches = Users.getMatches({id: $rootScope.user.id}, function(){
 				for (var i=0, len=userMatches.Admin.length;i<len;i++){
@@ -98,7 +94,7 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 			   	if(subsUpdated)
 			   		$scope.updateSubs(dataSubs, match.substitutes);
 			   	
-			   	var message = "Juego el partido del día " + match.date + " en " + match.field.name;
+			   	/*var message = "Juego el partido del día " + match.date + " en " + match.field.name;
 	    		var link = "http://www.futzapp.com?token=" + match.token;
 	    		var actions = null;
 	    		var tags = [match.admin.fbId];
@@ -107,7 +103,7 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 		    		showAlert("Notificación", "Se ha enviado una notificación!");
 				}, function(){
 					showAlert("Error", "No se pudo enviar la notificación. Avisale al admin!");
-				});
+				});*/
 			   	
 			   	$scope.matches = Users.getMatches({id: $rootScope.user.id});
 	    	});
@@ -151,7 +147,7 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 			   		$scope.updateTeam(dataTeamB, match.teams[1], $rootScope.user.id);
 			   	$scope.updateSubs(dataSubs, match.substitutes, $rootScope.user.id);
 			   	
-			   	var message = "No juego el partido del día " + match.date + " en " + match.field.name;
+			   	/*var message = "No juego el partido del día " + match.date + " en " + match.field.name;
 	    		var link = "http://www.futzapp.com?token=" + match.token;
 	    		var actions = null;
 	    		var tags = [match.admin.fbId];
@@ -160,7 +156,7 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 		    		showAlert("Notificación", "Se ha enviado una notificación!");
 				}, function(){
 					showAlert("Error", "No se pudo enviar la notificación. Avisale al admin!");
-				});
+				});*/
 	    		
 			   	$scope.matches = Users.getMatches({id: $rootScope.user.id});
 		    });
@@ -200,10 +196,8 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 	    };
 }]);
 
-fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeParams', '$location', 'Matches', 'Teams', 'Users', 'Facebook', 
-    function($rootScope, $scope, $routeParams, $location, Matches, Teams, Users, Facebook) {
-		$rootScope.activePage = "match";
-		$scope.currentURL = $location.host();
+fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeParams', '$filter', '$sanitize', '$location', 'Matches', 'Teams', 'Users', 'Facebook', 
+    function($rootScope, $scope, $routeParams,  $filter, $sanitize, $location, Matches, Teams, Users, Facebook) {
 		
 		$scope.totalPlayers = 0;
 		$scope.friendsSelected = [];
@@ -250,8 +244,11 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
     		});
 		};
 		
+		$scope.matchShareURL = "";
 		$scope.renderMatch = function(){
 			return Matches.get({id: $routeParams.matchId}, function(){
+				$scope.matchShareURL = $sanitize("http://" + $location.host() + "?token=" + $scope.match.token);
+				
 				if($rootScope.user.id == $scope.match.admin.id) $scope.adminMode = true;
 				var teams = Matches.getTeams({id: $routeParams.matchId}, function(){
 					if(teams.length == 1)
@@ -605,7 +602,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    //match Share
 	    $scope.shareFB = function(){
 	    	//TODO: cambiar metodo feed (deprecated) por share_open_graph con story
-	    	var url = "http://" + $scope.currentURL + "?token=" + $scope.match.token;
+	    	var url = $scope.matchShareURL;
 	    	//var url = "http://www.futzapp.com/back/public/matchSharer.php";
 			/*FB.ui({
 	    		method: 'share_open_graph',
@@ -625,8 +622,8 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				name: "Futzapp",
 				link: url,
 				picture: "http://futzapp.com/images/field.jpg",
-				description: "Jugate un futzapp el " + $scope.match.date + " en " + $scope.match.field.name + "!",
-				caption: "Ya reservaste cancha y te faltan jugadores? Armar un partido de fútbol entre amigos nunca fue tan fácil!"
+				description: "Jugate un futzapp el " + $filter('dateFormat')($scope.match.date, 'dddd ') +  " a las " + $filter('dateFormat')($scope.match.date, 'hh:mm a') + " en " + $scope.match.field.name + "!",
+				caption: "Ya reservaste cancha y te faltan jugadores? Armar un partido de f&uacute;tbol entre amigos nunca fue tan f&aacute;cil!"
 			}, function( response ) {
 				// do nothing
 			} );
@@ -635,8 +632,6 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 
 fulboControllers.controller('ProfileController', ['$rootScope', '$scope', 'UsersAuth', 'Users', 
   function($rootScope, $scope, UsersAuth, Users) {
-	$rootScope.activePage = "settings";
-	
 	//TODO: calculate games played
 	$scope.gamesPlayed = 0;
 	

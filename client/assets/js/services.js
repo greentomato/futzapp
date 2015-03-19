@@ -1,8 +1,8 @@
 'use strict';
 
 /* Services */
-//var serverURL = "http://futzapp.com/back/public/";
-var serverURL = "http://futbolizados.dev/";
+var serverURL = "http://futzapp.com/back/public/";
+//var serverURL = "http://futbolizados.dev/";
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
@@ -125,7 +125,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 		fbToken: null,
 		
 		saveAttemptUrl: function() {
-			if($location.path().toLowerCase() != '/') {
+			if($location.path().toLowerCase() != '/' && $location.path().toLowerCase() != '') {
 				redirectToUrlAfterLogin.url = $location.path();
 			}
 			else
@@ -156,7 +156,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 								_self.redirectToAttemptedUrl();
 						}, function(){
 							console.log("user save failed!");
-							_self.logout();
+							//_self.logout();
 							$("#loaderDiv").hide();
 						});
 					}, function(error){
@@ -185,7 +185,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 									_self.redirectToAttemptedUrl();
 							}, function(){
 								console.log("user save failed!");
-								_self.logout();
+								//_self.logout();
 								$("#loaderDiv").hide();
 							});
 						}
@@ -238,7 +238,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 					$("#loaderDiv").hide();
 					console.log('User logged out.');
 					if(_self.user != null){
-						_self.logout();
+						//_self.logout();
 					} else{
 						_self.isLogged = false;
 						_self.fbToken = null;
