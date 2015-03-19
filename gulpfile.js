@@ -39,6 +39,7 @@ var foundationJS = [
   'bower_components/angular-ui-router/release/angular-ui-router.js',
   'bower_components/angular-route/angular-route.js',
   'bower_components/angular-resource/angular-resource.js',
+  'bower_components/angular-sanitize/angular-sanitize.min.js',
   'bower_components/ng-flow/dist/ng-flow-standalone.min.js',
   'bower_components/jquery/dist/jquery.min.js',
   'bower_components/foundation-apps/js/vendor/**/*.js',
@@ -52,7 +53,8 @@ var appJS = [
   'client/assets/js/filters.js',
   'client/assets/js/services.js',
   'client/assets/js/directives.js',
-  'client/assets/js/helpers.js'
+  'client/assets/js/helpers.js',
+  'client/assets/js/whatsapp-button.js'
 ];
 
 // 3. TASKS
