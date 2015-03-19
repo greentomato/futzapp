@@ -6334,7 +6334,7 @@ hr {
   min-width: 100%; }
   .grid-container.match-container {
     max-width: 85rem;
-    top: 26px; }
+    top: 25px; }
 
 @media only screen and (min-width: 40em) {
   .border-block {
@@ -6672,6 +6672,11 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     -moz-border-radius: 100%;
     border: 2px solid;
     background-color: rgba(255, 255, 255, 0.4); }
+    .soccer-field .team-player.small {
+      width: 40px;
+      height: 40px; }
+      .soccer-field .team-player.small a {
+        line-height: 39px; }
     .soccer-field .team-player.team-a {
       border-color: #9b59b6; }
       .soccer-field .team-player.team-a a {

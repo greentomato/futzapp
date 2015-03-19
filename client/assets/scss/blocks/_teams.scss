@@ -11,6 +11,14 @@
 		-moz-border-radius: 100%;
 		border: 2px solid;
 		background-color: rgba(#fff, 0.4);
+		&.small {
+			width: 40px;
+			height: 40px;
+			a{
+				line-height: 39px;
+			}
+		}
+		
 		&.team-a {
 			border-color: $teamAColor;
 			a{color: $teamAColor;}

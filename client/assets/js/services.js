@@ -1,10 +1,153 @@
 'use strict';
 
 /* Services */
-var serverURL = "http://futzapp.com/back/public/";
-//var serverURL = "http://futbolizados.dev/";
+//var serverURL = "http://futzapp.com/back/public/"; //PRD
+var serverURL = "http://futbolizados.dev/"; //DEV
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
+
+/* Notifications Services */
+fulboServices.factory('MandrillAPI', ['$resource',
+  function($resource){
+    return $resource('https://mandrillapp.com/api/1.0/:category/:call.json', {}, {
+    	sendMessage: {
+			method: "POST",
+			isArray: true,
+			params: {
+			  category: "messages",
+			  call: "send"
+			}
+		},
+		ping: {
+			method: "POST",
+			params: {
+			  category: "users",
+			  call:"ping"
+			}
+		}
+    });
+}]);
+
+fulboServices.factory('MandrillHelper', ['MandrillAPI', function(Mandrill) {
+	var sdo = {
+		setup: {
+			apiKey: "fqI6qDsSxKpKcZW_PaYtUQ", //Mandrill API Key
+			fromEmail: "no-reply@futzapp.com" //sender mail
+		},
+		checkSetup: function(successCallBack, errorCallBack){
+			var _self = this;
+			Mandrill.ping(
+			  {"key": _self.setup.apiKey}, 
+				function(data,status,headers,config){ 
+					successCallBack();
+				},
+				function(data,status,headers,config){
+					errorCallBack();
+				}
+			)
+		},
+		sendMessage: function(subject, message, mailTo, successCallback, errorCallBack){
+			var _self = this;
+			Mandrill.sendMessage(
+				{
+					key: _self.setup.apiKey,
+					message: {
+					  html: message,
+					  subject: subject,
+					  from_email: _self.setup.fromEmail,
+					  to: mailTo
+					}
+				},
+				function(data,status,headers,config){
+					successCallback(data);
+				},
+				function(data,status,headers,config){
+					errorCallBack(data);
+				}
+			)
+		}
+	};
+	return sdo;
+}]);
+
+fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$location', 'MandrillHelper', function($rootScope, $filter, $sanitize, $location, MandrillHelper) {
+	var sdo = {
+		juego: function(match){
+			var message = "Juego el partido del día " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
+			message += "<br/>Entra a Futzapp y mira como quedaron los equipos: " + $sanitize("http://" + $location.host() + "/#/match/" + match.id);
+			MandrillHelper.checkSetup(function(){	
+				MandrillHelper.sendMessage("Juego!", message, [{email: match.admin.email}], function(data){
+					console.log("Mail enviado!" + data);
+				}, function(data) {
+					console.log("Error al enviar el mail!" + data);
+				});
+			}, function(){
+				console.log("Error con Mandrill, verificar API Key");
+			});
+		},
+		meBajo: function(match){
+			var message = "Me bajo del partido del día " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
+			message += "<br/>Entra a Futzapp y mira como quedaron los equipos: " + $sanitize("http://" + $location.host() + "/#/match/" + match.id);
+			MandrillHelper.checkSetup(function(){	
+				MandrillHelper.sendMessage("Me bajo!", message, [{email: match.admin.email}], function(data){
+					console.log("Mail enviado!" + data);
+				}, function(data) {
+					console.log("Error al enviar el mail!" + data);
+				});
+			}, function(){
+				console.log("Error con Mandrill, verificar API Key");
+			});
+		},
+		completo: function(match, guests){
+			var message = "Ya estamos todos para el partido del día " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
+			message += "<br/>Entra a Futzapp y mira como quedaron los equipos: " + $sanitize("http://" + $location.host() + "/#/match/" + match.id);
+			
+			var mails = [];
+			for(var i = 0; i < guests.length; i++) {
+				if(guests[i].pivot.confirmed == "1" && guests[i].email != null) {
+					mails.push({email: guests[i].email});
+				}
+	        }
+			mails.push({email: $rootScope.user.email});
+			if($rootScope.user.email != match.admin.email)
+				mails.push({email: match.admin.email});
+	    	
+			MandrillHelper.checkSetup(function(){	
+				MandrillHelper.sendMessage("Partido completo!", message, mails, function(data){
+					console.log("Mail enviado!" + data);
+				}, function(data) {
+					console.log("Error al enviar el mail!" + data);
+				});
+			}, function(){
+				console.log("Error con Mandrill, verificar API Key");
+			});
+		},
+		cancelado: function(match, guests){
+			var message = "Se cancela el partido del día " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
+			message += "<br/>Entra a futzapp y arma uno nuevo! " + $sanitize("http://" + $location.host());
+			
+			var mails = [];
+			for(var i = 0; i < guests.length; i++) {
+				if(guests[i].pivot.confirmed == "1" && guests[i].id != match.admin.id && guests[i].email != null) {
+					mails.push({email: guests[i].email});
+				}
+	        }
+	    	
+			MandrillHelper.checkSetup(function(){	
+				MandrillHelper.sendMessage("Partido cancelado!", message, mails, function(data){
+					console.log("Mail enviado!" + data);
+				}, function(data) {
+					console.log("Error al enviar el mail!" + data);
+				});
+			}, function(){
+				console.log("Error con Mandrill, verificar API Key");
+			});
+		}
+	};
+	
+	return sdo;
+}]);
+/* End Notifications Services */
 
 /* Facebook API Services */
 fulboServices.factory('Facebook', ['$rootScope', 'Users', function($rootScope, Users) {

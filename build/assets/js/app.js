@@ -94,8 +94,8 @@
 			/* FACEBOOK LOGIN VARIABLES */
 			$rootScope.fbUser = null;
 			$rootScope.user = null;
-			//$rootScope.fbAppId = "1517377388534738";
-			$rootScope.fbAppId = "1450926871846457";
+			$rootScope.fbAppId = "1517377388534738"; //DEV
+			//$rootScope.fbAppId = "1450926871846457"; //PRD
 			
 			/* GLOBAL VARIABLES */
 			$rootScope.fields = Fields.query();
@@ -308,8 +308,8 @@ fulboControllers.controller('HomeController', ['$rootScope', '$scope', '$locatio
     };
   }]);
 
-fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$location', 'Users', 'Matches', 'Teams', 'Facebook',   
-	function($rootScope, $scope, $location, Users, Matches, Teams, Facebook) {
+fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$location', 'Users', 'Matches', 'Teams', 'Notifications', 
+	function($rootScope, $scope, $location, Users, Matches, Teams, Notifications) {
 		$scope.selectedUser = {};
 		$scope.changeSelectedUser = function(user){
 	    	$scope.selectedUser = user;
@@ -371,7 +371,7 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 		    	
 		    	var teamAMissingPlayers = match.type.totalPlayers / 2 - match.teams[0].users.length;
 		    	var teamBMissingPlayers = dataTeamB != null ? (match.type.totalPlayers / 2 - match.teams[1].users.length) : 0;
-		    	if(teamAMissingPlayers > 0 && teamBMissingPlayers > teamAMissingPlayers && dataTeamB != null){ //add to teamB
+		    	if(teamBMissingPlayers > 0 && teamBMissingPlayers > teamAMissingPlayers && dataTeamB != null){ //add to teamB
 		    		dataTeamB.userIds.push($rootScope.user.fbId);
 		    		teamBUpdated = true;
 		    	} else if(teamAMissingPlayers > 0){ //add to teamA
@@ -389,31 +389,30 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 			   	if(subsUpdated)
 			   		$scope.updateSubs(dataSubs, match.substitutes);
 			   	
-			   	/*var message = "Juego el partido del día " + match.date + " en " + match.field.name;
-	    		var link = "http://www.futzapp.com?token=" + match.token;
-	    		var actions = null;
-	    		var tags = [match.admin.fbId];
-	    		
-				Facebook.postNotification(message, link, tags, actions, function(){
-		    		showAlert("Notificación", "Se ha enviado una notificación!");
-				}, function(){
-					showAlert("Error", "No se pudo enviar la notificación. Avisale al admin!");
-				});*/
-			   	
+				/* si se llenaron los 2 equipos envio mail a todos */
+				if(parseInt($scope.teamA.missingPlayers) + parseInt($scope.teamB.missingPlayers) == 1)
+					Notifications.completo($scope.match, $scope.guests);
+				/* envio mail al admin */
+				Notifications.juego(match);
+			   	   	
 			   	$scope.matches = Users.getMatches({id: $rootScope.user.id});
 	    	});
 	    };
 	    
 	    $scope.answerNo = function(match){
-	    	//mark as rejected
+	    	var wasConfirmed = false;
+			
+			//mark as rejected
 	    	var data = {
 			   	users: [],
 			   	matchId: match.id
 			};
 		    for(var i = 0; i < match.guests.length; i++){
 		    	var confirmed = match.guests[i].pivot.confirmed;
-		    	if(match.guests[i].id == $rootScope.user.id)
-		    		confirmed = 0;
+		    	if(match.guests[i].id == $rootScope.user.id){
+		    		if(confirmed == 1) wasConfirmed = true;
+					confirmed = 0;
+				}
 		    	var userItem = {
 		    		id: match.guests[i].fbId != null? match.guests[i].fbId.toString() : match.guests[i].id.toString(),
 		    		confirmed: confirmed
@@ -442,17 +441,10 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 			   		$scope.updateTeam(dataTeamB, match.teams[1], $rootScope.user.id);
 			   	$scope.updateSubs(dataSubs, match.substitutes, $rootScope.user.id);
 			   	
-			   	/*var message = "No juego el partido del día " + match.date + " en " + match.field.name;
-	    		var link = "http://www.futzapp.com?token=" + match.token;
-	    		var actions = null;
-	    		var tags = [match.admin.fbId];
-	    		
-				Facebook.postNotification(message, link, tags, actions, function(){
-		    		showAlert("Notificación", "Se ha enviado una notificación!");
-				}, function(){
-					showAlert("Error", "No se pudo enviar la notificación. Avisale al admin!");
-				});*/
-	    		
+				/* si estaba anotado, y se bajó => envio mail al admin */
+				if(wasConfirmed)
+					Notifications.meBajo(match);
+			   	
 			   	$scope.matches = Users.getMatches({id: $rootScope.user.id});
 		    });
 	    };
@@ -491,8 +483,8 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 	    };
 }]);
 
-fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeParams', '$filter', '$sanitize', '$location', 'Matches', 'Teams', 'Users', 'Facebook', 
-    function($rootScope, $scope, $routeParams,  $filter, $sanitize, $location, Matches, Teams, Users, Facebook) {
+fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeParams', '$filter', '$sanitize', '$location', 'Matches', 'Teams', 'Users', 'Notifications',
+    function($rootScope, $scope, $routeParams,  $filter, $sanitize, $location, Matches, Teams, Users, Notifications) {
 		
 		$scope.totalPlayers = 0;
 		$scope.friendsSelected = [];
@@ -504,12 +496,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    	$scope.selectedUser = user;
 	    };
 		
-		//$scope.groups = Users.getGroups({id: $rootScope.user.id});
-		/*Facebook.getFriends(function(response) {
-			$scope.friends = response;
-		});*/
-		
-	    $scope.getNumber = function(num) {
+		$scope.getNumber = function(num) {
 		    return new Array(num);   
 		};
 		
@@ -523,9 +510,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				positions: [],
 				missingPlayers: 0
 		};
-		/*$scope.tooltipA = false;
-		$scope.showTeamAColors = false;
-		$scope.showTeamBColors = false;*/
+		
 		$scope.setTeamAColor = function(color){
 			$scope.teamA.team.shirtColor = color;
 			Teams.update($scope.teamA.team, function(response){
@@ -575,7 +560,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 						$scope.teamB.missingPlayers = $scope.totalPlayers - teams[1].users.length;
 						
 						//map positions
-						for(var i = 5; i <  $scope.totalPlayers * 2; i++){
+						for(var i = $scope.totalPlayers; i <  $scope.totalPlayers * 2; i++){
 							var xy = positions[i].split(",");
 							var position = {
 									x: xy[0] + "%",
@@ -601,19 +586,19 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 		
 		$scope.renderGoogleMap = function(){
 			//field map
-					var fieldPos = new google.maps.LatLng($scope.match.field.latitude, $scope.match.field.longitude);
-					var mapOptions = {
-						center: fieldPos,
-						zoom: 14,
-						mapTypeId: google.maps.MapTypeId.ROADMAP
-					};
-					var map = new google.maps.Map(document.getElementById("map_canvas"),
-									mapOptions); 
-					var marker = new google.maps.Marker({
-						position: fieldPos,
-						map: map,
-						title: '$scope.match.field.name'
-					});
+			var fieldPos = new google.maps.LatLng($scope.match.field.latitude, $scope.match.field.longitude);
+			var mapOptions = {
+				center: fieldPos,
+				zoom: 14,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			var map = new google.maps.Map(document.getElementById("map_canvas"),
+							mapOptions); 
+			var marker = new google.maps.Marker({
+							position: fieldPos,
+							map: map,
+							title: '$scope.match.field.name'
+			});
 		};
 		
 		$scope.match = $scope.renderMatch();
@@ -625,25 +610,8 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 		$scope.cancelMatch = function(){
 	    	$scope.match.cancelled = 1;
 	    	Matches.update($scope.match, function(){
-	    		var message = "Cancelamos el partido del día " + $scope.match.date + " en " + $scope.match.field.name;
-	    		var link = "http://www.futzapp.com";
-	    		var actions = null;
-	    		var tags = [];
-	    		for(var i = 0; i < $scope.guests.length; i++) {
-	                if($scope.guests[i].pivot.confirmed == "1" && $scope.guests[i].id != $rootScope.user.id && $scope.guests[i].fbId != null) {
-	                	tags.push($scope.guests[i].fbId);
-	                }
-	            }
-	    		tags = tags.join(',');
-	    		
-				/*
-				 * TODO: cambiar por notificacion por mail a todos los confirmados!
-				Facebook.postNotification(message, link, tags, actions, function(){
-		    		showAlert("Notitificación", "Se ha enviado una notificación!");
-				}, function(){
-					showAlert("Error", "No se pudo enviar la notificación. Avisale a tus amigos!");
-				});
-	    		*/
+	    		/* envio mail a todos los invitados */
+				Notifications.cancelado($scope.match, $scope.guests);
 	    	});
 	    };
 	    
@@ -652,7 +620,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    	var teamBUpdated = false;
 	    	var subsUpdated = false;
 	    	
-	    	//mark as confirmed
+			//mark as confirmed
 	    	var data = {
 		    	users: [],
 		    	matchId: $scope.match.id
@@ -684,7 +652,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 			    	   	teamId: $scope.teamB.team.id
 			    	};
 		    	
-		    	if($scope.teamA.missingPlayers > 0 && $scope.teamB.missingPlayers > $scope.teamA.missingPlayers && dataTeamB != null){ //add to teamB
+		    	if(dataTeamB != null && $scope.teamB.missingPlayers > 0 && $scope.teamB.missingPlayers > $scope.teamA.missingPlayers){ //add to teamB
 		    		dataTeamB.userIds.push($rootScope.user.fbId);
 		    		teamBUpdated = true;
 		    	} else if($scope.teamA.missingPlayers > 0){ //add to teamA
@@ -703,27 +671,21 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 			   		$scope.updateSubs(dataSubs);
 		    	
 		    	$scope.userConfirmed = 1;
-		    	
-		    	var message = "Juego el partido del día " + $scope.match.date + " en " + $scope.match.field.name;
-	    		var link = "http://www.futzapp.com";
-	    		var actions = null;
-	    		var tags = $scope.match.admin.fbId;
-	    		
-				$scope.match = $scope.renderMatch();
-				$scope.guests = $scope.renderGuests();
 				
-				/*
-				 * TODO: cambiar por notificacion por mail al admin!
-				Facebook.postNotification(message, link, tags, actions, function(){
-		    		showAlert("Notificación", "Se ha enviado una notificación!");
-				}, function(){
-					showAlert("Error", "No se pudo enviar la notificación. Avisale al admin!");
-				});
-	    		*/
+				/* si se llenaron los 2 equipos envio mail a todos */
+				if(parseInt($scope.teamA.missingPlayers) + parseInt($scope.teamB.missingPlayers) == 1)
+					Notifications.completo($scope.match, $scope.guests);
+				/* envio mail al admin */
+				Notifications.juego($scope.match);
+		    	
+		    	$scope.match = $scope.renderMatch();
+				$scope.guests = $scope.renderGuests();
 	    	});
 	    };
 	    
 	    $scope.answerNo = function(){
+			var wasConfirmed = false;
+			
 	    	//mark as rejected
 	    	var data = {
 			   	users: [],
@@ -731,8 +693,10 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 			};
 		    for(var i = 0; i < $scope.guests.length; i++){
 		    	var confirmed = $scope.guests[i].pivot.confirmed;
-		    	if($scope.guests[i].id == $rootScope.user.id)
-		    		confirmed = 0;
+				if($scope.guests[i].id == $rootScope.user.id){
+		    		if(confirmed == 1) wasConfirmed = true;
+					confirmed = 0;
+				}
 		    	var userItem = {
 		    		id: $scope.guests[i].fbId != null? $scope.guests[i].fbId.toString() : $scope.guests[i].id.toString(),
 		    		confirmed: confirmed
@@ -761,23 +725,13 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 			   	$scope.updateSubs(dataSubs,  $rootScope.user.id);
 			   	
 			   	$scope.userConfirmed = 0;
-			   	
-			   	var message = "No juego el partido del día " + $scope.match.date + " en " + $scope.match.field.name;
-	    		var link = "http://www.futzapp.com";
-	    		var actions = null;
-	    		var tags = $scope.match.admin.fbId;
-	    		
-				$scope.match = $scope.renderMatch();
-				$scope.guests = $scope.renderGuests();
 				
-				/*
-				 * TODO: cambiar por notificacion por mail al admin!
-				Facebook.postNotification(message, link, tags, actions, function(){
-		    		showAlert("Notificación", "Se ha enviado una notificación!");
-				}, function(){
-					showAlert("Error", "No se pudo enviar la notificación. Avisale al admin!");
-				});
-	    		*/
+				/* si estaba anotado, y se bajó => envio mail al admin */
+				if(wasConfirmed)
+					Notifications.meBajo($scope.match);
+			   	
+			   	$scope.match = $scope.renderMatch();
+				$scope.guests = $scope.renderGuests();
 		    });
 	    };
 	    
@@ -831,6 +785,10 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 			    	    	$scope.updateTeamB(dataTeamB);
 		    			}
 						
+						/* si se llenaron los 2 equipos envio mail a todos */
+						if(parseInt($scope.teamA.missingPlayers) + parseInt($scope.teamB.missingPlayers) == 1)
+							Notifications.completo($scope.match, $scope.guests);
+						
 						$scope.match = $scope.renderMatch();
 						$scope.guests = $scope.renderGuests();
 	    	    	});
@@ -851,8 +809,6 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    	if(update)
 		   		Matches.updateSubs(data, function(response){
 		   			$scope.subs = response;
-		   			/*if(toRemoveUserId != undefined) showAlert("Alerta", "Te diste de baja del partido!");
-		   			else showAlert("Alerta", "Te anotaste como suplente para el partido!");*/
 		    	});
 	    };
 	    $scope.updateTeamA = function(data, toRemoveUserId){
@@ -870,8 +826,6 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 		   		Teams.updateUsers(data, function(response){
 		   			$scope.teamA.team = response;
 					$scope.teamA.missingPlayers = $scope.totalPlayers - response.users.length;
-		   			/*if(toRemoveUserId != undefined) showAlert("Alerta", "Te diste de baja del partido!");
-		   			else showAlert("Alerta", "Te anotaste como titular para el partido!");*/
 		    	});
 	    };
 	    $scope.updateTeamB = function(data, toRemoveUserId){
@@ -889,8 +843,6 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 		   		Teams.updateUsers(data, function(response){
 		   			$scope.teamB.team = response;
 					$scope.teamB.missingPlayers = $scope.totalPlayers - response.users.length;
-					/*if(toRemoveUserId != undefined) showAlert("Alerta", "Te diste de baja del partido!");
-		   			else showAlert("Alerta", "Te anotaste como titular para el partido!");*/
 		    	});
 	    };
 	    
@@ -1001,10 +953,153 @@ fulboFilters.filter('getById', function() {
 'use strict';
 
 /* Services */
-var serverURL = "http://futzapp.com/back/public/";
-//var serverURL = "http://futbolizados.dev/";
+//var serverURL = "http://futzapp.com/back/public/"; //PRD
+var serverURL = "http://futbolizados.dev/"; //DEV
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
+
+/* Notifications Services */
+fulboServices.factory('MandrillAPI', ['$resource',
+  function($resource){
+    return $resource('https://mandrillapp.com/api/1.0/:category/:call.json', {}, {
+    	sendMessage: {
+			method: "POST",
+			isArray: true,
+			params: {
+			  category: "messages",
+			  call: "send"
+			}
+		},
+		ping: {
+			method: "POST",
+			params: {
+			  category: "users",
+			  call:"ping"
+			}
+		}
+    });
+}]);
+
+fulboServices.factory('MandrillHelper', ['MandrillAPI', function(Mandrill) {
+	var sdo = {
+		setup: {
+			apiKey: "fqI6qDsSxKpKcZW_PaYtUQ", //Mandrill API Key
+			fromEmail: "no-reply@futzapp.com" //sender mail
+		},
+		checkSetup: function(successCallBack, errorCallBack){
+			var _self = this;
+			Mandrill.ping(
+			  {"key": _self.setup.apiKey}, 
+				function(data,status,headers,config){ 
+					successCallBack();
+				},
+				function(data,status,headers,config){
+					errorCallBack();
+				}
+			)
+		},
+		sendMessage: function(subject, message, mailTo, successCallback, errorCallBack){
+			var _self = this;
+			Mandrill.sendMessage(
+				{
+					key: _self.setup.apiKey,
+					message: {
+					  html: message,
+					  subject: subject,
+					  from_email: _self.setup.fromEmail,
+					  to: mailTo
+					}
+				},
+				function(data,status,headers,config){
+					successCallback(data);
+				},
+				function(data,status,headers,config){
+					errorCallBack(data);
+				}
+			)
+		}
+	};
+	return sdo;
+}]);
+
+fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$location', 'MandrillHelper', function($rootScope, $filter, $sanitize, $location, MandrillHelper) {
+	var sdo = {
+		juego: function(match){
+			var message = "Juego el partido del día " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
+			message += "<br/>Entra a Futzapp y mira como quedaron los equipos: " + $sanitize("http://" + $location.host() + "/#/match/" + match.id);
+			MandrillHelper.checkSetup(function(){	
+				MandrillHelper.sendMessage("Juego!", message, [{email: match.admin.email}], function(data){
+					console.log("Mail enviado!" + data);
+				}, function(data) {
+					console.log("Error al enviar el mail!" + data);
+				});
+			}, function(){
+				console.log("Error con Mandrill, verificar API Key");
+			});
+		},
+		meBajo: function(match){
+			var message = "Me bajo del partido del día " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
+			message += "<br/>Entra a Futzapp y mira como quedaron los equipos: " + $sanitize("http://" + $location.host() + "/#/match/" + match.id);
+			MandrillHelper.checkSetup(function(){	
+				MandrillHelper.sendMessage("Me bajo!", message, [{email: match.admin.email}], function(data){
+					console.log("Mail enviado!" + data);
+				}, function(data) {
+					console.log("Error al enviar el mail!" + data);
+				});
+			}, function(){
+				console.log("Error con Mandrill, verificar API Key");
+			});
+		},
+		completo: function(match, guests){
+			var message = "Ya estamos todos para el partido del día " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
+			message += "<br/>Entra a Futzapp y mira como quedaron los equipos: " + $sanitize("http://" + $location.host() + "/#/match/" + match.id);
+			
+			var mails = [];
+			for(var i = 0; i < guests.length; i++) {
+				if(guests[i].pivot.confirmed == "1" && guests[i].email != null) {
+					mails.push({email: guests[i].email});
+				}
+	        }
+			mails.push({email: $rootScope.user.email});
+			if($rootScope.user.email != match.admin.email)
+				mails.push({email: match.admin.email});
+	    	
+			MandrillHelper.checkSetup(function(){	
+				MandrillHelper.sendMessage("Partido completo!", message, mails, function(data){
+					console.log("Mail enviado!" + data);
+				}, function(data) {
+					console.log("Error al enviar el mail!" + data);
+				});
+			}, function(){
+				console.log("Error con Mandrill, verificar API Key");
+			});
+		},
+		cancelado: function(match, guests){
+			var message = "Se cancela el partido del día " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
+			message += "<br/>Entra a futzapp y arma uno nuevo! " + $sanitize("http://" + $location.host());
+			
+			var mails = [];
+			for(var i = 0; i < guests.length; i++) {
+				if(guests[i].pivot.confirmed == "1" && guests[i].id != match.admin.id && guests[i].email != null) {
+					mails.push({email: guests[i].email});
+				}
+	        }
+	    	
+			MandrillHelper.checkSetup(function(){	
+				MandrillHelper.sendMessage("Partido cancelado!", message, mails, function(data){
+					console.log("Mail enviado!" + data);
+				}, function(data) {
+					console.log("Error al enviar el mail!" + data);
+				});
+			}, function(){
+				console.log("Error con Mandrill, verificar API Key");
+			});
+		}
+	};
+	
+	return sdo;
+}]);
+/* End Notifications Services */
 
 /* Facebook API Services */
 fulboServices.factory('Facebook', ['$rootScope', 'Users', function($rootScope, Users) {
