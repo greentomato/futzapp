@@ -1,6 +1,6 @@
 <div class="grid-frame vertical">
 	<!-- TitleBar -->
-	<form-title-bar cancelUrl="$root.newMatch.id != 0 ? 'match/$root.newMatch.id':'home'" title="$root.newMatch.id != 0 ? 'Editar Mi Futzapp':'Nuevo Futzapp'"></form-title-bar>
+	<form-title-bar cancelUrl="$root.newMatch.id != 0 ? ('#/match/' + $root.newMatch.id) : '#/home'" title="$root.newMatch.id != 0 ? 'Editar Mi Futzapp':'Nuevo Futzapp'"></form-title-bar>
 	
 	<div class="grid-block">
 	<div ng-class="['ui-animation']" class="match-content">

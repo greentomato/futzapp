@@ -93,7 +93,7 @@ fulboDirectives.directive('selectOnClick', function () {
     };
 });
 
-fulboDirectives.directive('backButton', function(){
+fulboDirectives.directive('backButton', ['$rootScope', '$location', function($rootScope, $location){
     return {
       restrict: 'A',
 
@@ -101,12 +101,13 @@ fulboDirectives.directive('backButton', function(){
         element.bind('click', goBack);
 
         function goBack() {
-          history.back();
-          scope.$apply();
+			var prevUrl = $rootScope.history.length > 1 ? $rootScope.history.splice(-2)[0] : "/home";
+			$location.path(prevUrl);
+			scope.$apply();
         }
       }
     }
-});
+}]);
 
 /**
  * PARTIALS

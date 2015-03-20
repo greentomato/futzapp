@@ -23,7 +23,7 @@
 	
 	futzApp.config(['$routeProvider', '$locationProvider', '$compileProvider', 'flowFactoryProvider', 
 		function($routeProvider, $locationProvider, $compileProvider, flowFactoryProvider) {
-			$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|whatsapp):/);
+			$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|whatsapp|tel):/);
 		
 			$routeProvider.
 			  when('/', {
@@ -94,15 +94,16 @@
 			/* FACEBOOK LOGIN VARIABLES */
 			$rootScope.fbUser = null;
 			$rootScope.user = null;
-			$rootScope.fbAppId = "1517377388534738"; //DEV
-			//$rootScope.fbAppId = "1450926871846457"; //PRD
+			//$rootScope.fbAppId = "1517377388534738"; //DEV
+			$rootScope.fbAppId = "1450926871846457"; //PRD
 			
 			/* GLOBAL VARIABLES */
 			$rootScope.fields = Fields.query();
 			$rootScope.matchTypes = MatchTypes.query();
 			$rootScope.towns = Towns.query();
 			$rootScope.states = States.query();
-			
+			$rootScope.history = [];
+
 			/* NEW/EDIT MATCH VARIABLES */
 			$rootScope.newMatch = {
 				date: '',
@@ -150,7 +151,7 @@
 				if($rootScope.newMatch.id != 0) {
 					Matches.update($rootScope.newMatch, function(updatedMatch){
 						$rootScope.newMatch = updatedMatch;
-						$rootScope.matchShareURL = $sanitize("http://" + $location.host() + "?token=" + $rootScope.newMatch.token);
+						$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "?token=" + $rootScope.newMatch.token));
 						console.log("Match updated, id:" + updatedMatch.id);
 						$location.path( "/step-3" );
 					}, function(){
@@ -160,8 +161,7 @@
 				} else {
 					Matches.save($rootScope.newMatch, function(newMatch){
 						$rootScope.newMatch = newMatch;
-						$rootScope.matchShareURL = $sanitize("http://" + $location.host() + "?token=" + $rootScope.newMatch.token);
-						
+						$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "?token=" + $rootScope.newMatch.token));
 						console.log("Match saved, id:" + newMatch.id);
 						$location.path( "/step-3" );
 					}, function(){
@@ -172,7 +172,7 @@
 			};
 			
 			$rootScope.shareFB = function(match){
-				var url = $rootScope.matchShareURL;
+				var url = decodeURIComponent($rootScope.matchShareURL);
 				var field = {};
 				for (var i=0, len=$rootScope.fields.length; i<len; i++) {
 					if (+$rootScope.fields[i].id == +match.fieldId) {
@@ -243,6 +243,11 @@
 					$location.path( "/" );
 					$rootScope.routeChanges++;
 				}
+			});
+			
+			/* HISTORY METHODS */
+			$rootScope.$on('$routeChangeSuccess', function() {
+				$rootScope.history.push($location.$$path);
 			});
 			
 			/* FB METHODS SDK */

@@ -20,8 +20,9 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 	    	$scope.selectedUser = user;
 	    };
 		
-		//TODO: mostrar solo las que DATE>NOW!! (BACK)
+		$scope.matches = [];
 		$scope.renderMatches = function(){
+			$scope.matches = [];
 			var userMatches = Users.getMatches({id: $rootScope.user.id}, function(){
 				for (var i=0, len=userMatches.Admin.length;i<len;i++){
 					$scope.matches.push(userMatches.Admin[i]);
@@ -31,11 +32,7 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 				}
 			});
 		};
-		$scope.matches = [];
 		$scope.renderMatches();
-		/*$scope.openMatch = function(matchId){
-			$location.path( "match/" + matchId );
-		};*/
 		
 		$scope.answerYes = function(match){
 	    	var teamAUpdated = false;
@@ -95,12 +92,12 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 			   		$scope.updateSubs(dataSubs, match.substitutes);
 			   	
 				/* si se llenaron los 2 equipos envio mail a todos */
-				if(parseInt($scope.teamA.missingPlayers) + parseInt($scope.teamB.missingPlayers) == 1)
+				if(parseInt(teamAMissingPlayers) + parseInt(teamBMissingPlayers) == 1)
 					Notifications.completo($scope.match, $scope.guests);
 				/* envio mail al admin */
 				Notifications.juego(match);
 			   	   	
-			   	$scope.matches = Users.getMatches({id: $rootScope.user.id});
+			   	$scope.renderMatches();
 	    	});
 	    };
 	    
@@ -150,7 +147,7 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 				if(wasConfirmed)
 					Notifications.meBajo(match);
 			   	
-			   	$scope.matches = Users.getMatches({id: $rootScope.user.id});
+			   	$scope.renderMatches();
 		    });
 	    };
 		
@@ -230,9 +227,11 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 		};
 		
 		$scope.matchShareURL = "";
+		$scope.currentURL = "";
 		$scope.renderMatch = function(){
 			return Matches.get({id: $routeParams.matchId}, function(){
-				$scope.matchShareURL = $sanitize("http://" + $location.host() + "?token=" + $scope.match.token);
+				$scope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "?token=" + $scope.match.token));
+				$scope.currentURL = $sanitize("http://" + $location.host() + "/match/" + $scope.match.id);
 				
 				if($rootScope.user.id == $scope.match.admin.id) $scope.adminMode = true;
 				var teams = Matches.getTeams({id: $routeParams.matchId}, function(){
@@ -554,7 +553,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    //match Share
 	    $scope.shareFB = function(){
 	    	//TODO: cambiar metodo feed (deprecated) por share_open_graph con story
-	    	var url = $scope.matchShareURL;
+	    	var url = decodeURIComponent($scope.matchShareURL);
 	    	//var url = "http://www.futzapp.com/back/public/matchSharer.php";
 			/*FB.ui({
 	    		method: 'share_open_graph',
