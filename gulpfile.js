@@ -53,8 +53,7 @@ var appJS = [
   'client/assets/js/filters.js',
   'client/assets/js/services.js',
   'client/assets/js/directives.js',
-  'client/assets/js/helpers.js',
-  'client/assets/js/whatsapp-button.js'
+  'client/assets/js/helpers.js'
 ];
 
 // 3. TASKS
