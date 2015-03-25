@@ -605,7 +605,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				name: fbShareTitle,
 				link: url,
 				picture: fbShareImage,
-				description: description: fbShareMsg.replace("%1$s", $filter('dateFormat')($scope.match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')($scope.match.date, 'hh:mm a')).replace("%3$s", $scope.match.field.name);
+				description: fbShareMsg.replace("%1$s", $filter('dateFormat')($scope.match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')($scope.match.date, 'hh:mm a')).replace("%3$s", $scope.match.field.name),
 				caption: fbShareCaption
 			}, function( response ) {
 				// do nothing

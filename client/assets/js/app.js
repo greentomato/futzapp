@@ -188,7 +188,7 @@
 					name: fbShareTitle,
 					link: url,
 					picture: fbShareImage,
-					description: fbShareMsg.replace("%1$s", $filter('dateFormat')($rootScope.newMatch.date, 'dddd d')).replace("%2$s", $filter('dateFormat')($rootScope.newMatch.date, 'hh:mm a')).replace("%3$s", field.name);
+					description: fbShareMsg.replace("%1$s", $filter('dateFormat')($rootScope.newMatch.date, 'dddd d')).replace("%2$s", $filter('dateFormat')($rootScope.newMatch.date, 'hh:mm a')).replace("%3$s", field.name),
 					caption: fbShareCaption
 				}, function( response ) {
 					// do nothing
