@@ -82,6 +82,15 @@ fulboDirectives.directive('dateTimePicker', ['$rootScope', function ($rootScope)
     };
 }]);
 
+/*fulboDirectives.directive('selectPicker', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            element.selectpicker();
+        }
+    };
+});*/
+
 fulboDirectives.directive('selectOnClick', function () {
     return {
         restrict: 'A',

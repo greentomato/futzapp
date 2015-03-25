@@ -116,6 +116,7 @@
 				admin_userId: 0,
 				id: 0
 			};
+			$rootScope.wpMsg = "";
 			$rootScope.matchShareURL = "";
 			
 			/* NEW/EDIT MATCH METHODS */
@@ -152,6 +153,7 @@
 					Matches.update($rootScope.newMatch, function(updatedMatch){
 						$rootScope.newMatch = updatedMatch;
 						$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "?token=" + $rootScope.newMatch.token));
+						$rootScope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $rootScope.matchShareURL);
 						console.log("Match updated, id:" + updatedMatch.id);
 						$location.path( "/step-3" );
 					}, function(){
@@ -162,6 +164,7 @@
 					Matches.save($rootScope.newMatch, function(newMatch){
 						$rootScope.newMatch = newMatch;
 						$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "?token=" + $rootScope.newMatch.token));
+						$rootScope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $rootScope.matchShareURL);
 						console.log("Match saved, id:" + newMatch.id);
 						$location.path( "/step-3" );
 					}, function(){
@@ -182,11 +185,11 @@
 				}
 				FB.ui( {
 					method: 'feed',
-					name: "Futzapp",
+					name: fbShareTitle,
 					link: url,
-					picture: "http://futzapp.com/images/field.jpg",
-					description: "Jugate un futzapp el " + $filter('dateFormat')($scope.match.date, 'dddd ') +  " a las " + $filter('dateFormat')($scope.match.date, 'hh:mm a') + " en " + field.name + "!",
-					caption: "Ya reservaste cancha y te faltan jugadores? Armar un partido de f&ucaute;tbol entre amigos nunca fue tan f&aacute;cil!"
+					picture: fbShareImage,
+					description: fbShareMsg.replace("%1$s", $filter('dateFormat')($rootScope.newMatch.date, 'dddd d')).replace("%2$s", $filter('dateFormat')($rootScope.newMatch.date, 'hh:mm a')).replace("%3$s", field.name);
+					caption: fbShareCaption
 				}, function( response ) {
 					// do nothing
 				} );
@@ -256,7 +259,7 @@
 
 				FB.init({ 
 					appId: $rootScope.fbAppId, 
-					channelUrl: 'channel.html', 
+					channelUrl: '../../channel.html', 
 					status: true, 
 					cookie: true, 
 					xfbml: true 

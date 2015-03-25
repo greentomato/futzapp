@@ -1,7 +1,7 @@
 'use strict';
 
 /* Services */
-var serverURL = "http://futzapp.com/back/public/"; //PRD
+var serverURL = "http://www.futzapp.com/back/public/"; //PRD
 //var serverURL = "http://futbolizados.dev/"; //DEV
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
@@ -72,11 +72,11 @@ fulboServices.factory('MandrillHelper', ['MandrillAPI', function(Mandrill) {
 
 fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$location', 'MandrillHelper', function($rootScope, $filter, $sanitize, $location, MandrillHelper) {
 	var sdo = {
-		juego: function(match){
-			var message = "Juego el partido del día " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
-			message += "<br/>Entra a Futzapp y mira como quedaron los equipos: " + $sanitize("http://" + $location.host() + "/#/match/" + match.id);
+		juego: function(match, userName){
+			var message = juegoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
+			var subject = juegoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
 			MandrillHelper.checkSetup(function(){	
-				MandrillHelper.sendMessage("Juego!", message, [{email: match.admin.email}], function(data){
+				MandrillHelper.sendMessage(subject, message, [{email: match.admin.email}], function(data){
 					console.log("Mail enviado!" + data);
 				}, function(data) {
 					console.log("Error al enviar el mail!" + data);
@@ -85,11 +85,11 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 				console.log("Error con Mandrill, verificar API Key");
 			});
 		},
-		meBajo: function(match){
-			var message = "Me bajo del partido del día " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
-			message += "<br/>Entra a Futzapp y mira como quedaron los equipos: " + $sanitize("http://" + $location.host() + "/#/match/" + match.id);
+		meBajo: function(match, userName){
+			var message = meBajoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
+			var subject = meBajoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
 			MandrillHelper.checkSetup(function(){	
-				MandrillHelper.sendMessage("Me bajo!", message, [{email: match.admin.email}], function(data){
+				MandrillHelper.sendMessage(subject, message, [{email: match.admin.email}], function(data){
 					console.log("Mail enviado!" + data);
 				}, function(data) {
 					console.log("Error al enviar el mail!" + data);
@@ -99,9 +99,8 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 			});
 		},
 		completo: function(match, guests){
-			var message = "Ya estamos todos para el partido del día " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
-			message += "<br/>Entra a Futzapp y mira como quedaron los equipos: " + $sanitize("http://" + $location.host() + "/#/match/" + match.id);
-			
+			var message = completoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			var subject = completoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
 			var mails = [];
 			for(var i = 0; i < guests.length; i++) {
 				if(guests[i].pivot.confirmed == "1" && guests[i].email != null) {
@@ -113,7 +112,7 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 				mails.push({email: match.admin.email});
 	    	
 			MandrillHelper.checkSetup(function(){	
-				MandrillHelper.sendMessage("Partido completo!", message, mails, function(data){
+				MandrillHelper.sendMessage(subject, message, mails, function(data){
 					console.log("Mail enviado!" + data);
 				}, function(data) {
 					console.log("Error al enviar el mail!" + data);
@@ -275,6 +274,8 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 				redirectToUrlAfterLogin.url = '/home';
 		},
 	    redirectToAttemptedUrl: function() {
+			if(redirectToUrlAfterLogin.url == "/step-1" || redirectToUrlAfterLogin.url == "/step-2" || redirectToUrlAfterLogin.url == "/step-3")
+				redirectToUrlAfterLogin.url = '/home';
 	    	$location.path(redirectToUrlAfterLogin.url);
 	    },
 		/* FB Methods */
@@ -339,7 +340,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 		},
 		login: function(callback) {
 			FB.login(function(response) {
-		    }, {scope: 'public_profile,email'});/*,user_friends,friends_photos,publish_actions*/
+		    }, {scope: 'public_profile,email,user_friends,friends_photos'});/*,user_friends,friends_photos,publish_actions*/
 		},
 		logout: function() {
 			var _self = this;

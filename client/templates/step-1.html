@@ -18,20 +18,20 @@
 					
 					<div class="small-6 grid-content">
 						<label>Provincia</label>
-						<select name="stateSelect" id="stateSelect" ng-model="$root.newMatch.stateId">
+						<select select-picker name="stateSelect" id="stateSelect" ng-model="$root.newMatch.stateId" data-live-search="true">
 							<option ng-repeat="state in $root.states" value="{{state.id}}">{{state.name}}</option>
 						</select>
 					</div>
 					<div class="small-6 grid-content">
 						<label>Localidad</label>
-						<select name="townSelect" id="townSelect" ng-model="$root.newMatch.townId">
+						<select select-picker name="townSelect" id="townSelect" ng-model="$root.newMatch.townId" data-live-search="true">
 							<option ng-repeat="town in $root.towns | filter:{stateId:$root.newMatch.stateId}" value="{{town.id}}">{{town.name}}</option>
 						</select>
 					</div>
 
 					<div class="small-12 medium-6 grid-content">
 						<label><i class="fa fa-map-marker"></i> Cancha</label>
-						<select name="" id="" ng-model="$root.newMatch.fieldId">
+						<select select-picker name="" id="" ng-model="$root.newMatch.fieldId" data-live-search="true">
 							<option ng-repeat="field in $root.fields | filter:{stateId:$root.newMatch.stateId} | filter:{townId:$root.newMatch.townId}" value="{{field.id}}">
 								{{field.name}}
 							</option>
