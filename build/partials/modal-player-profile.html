@@ -8,7 +8,7 @@
 		<div class="card">
 			<div class="card-section">
 				<div class="player-profile-picture">
-					<img src="{{player.photo_url}}" alt="">
+					<img src="{{player.photo_url == NULL ? 'assets/img/profile-placeholder.png': player.photo_url}}" alt="">
 				</div>
 				<div class="player-profile-info">
 					<h4>{{player.name}} {{player.lastname}}</h4> 

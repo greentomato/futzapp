@@ -9,7 +9,7 @@
 				<div class="card">
 					<div class="card-section">
 						<div class="player-profile-picture">
-							<img src="{{$root.user.photo_url}}" alt="">
+							<img src="{{$root.user.photo_url == NULL ? 'assets/img/profile-default.jpg': $root.user.photo_url}}" alt="">
 						</div>
 						<div class="player-profile-info">
 							<h4>{{$root.user.name}} {{$root.user.lastname}}</h4> 

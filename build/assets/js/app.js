@@ -1,3 +1,74 @@
+/* 
+ * Facebook share message 
+ *
+ * 
+ * @parameters fbShareMsg
+ * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
+ * %2$s: hora [HH:mm a]
+ * %3$s: nombre de la cancha
+ *
+ */
+var fbShareMsg = "Jugate un futzapp el %1$s a las %2$s en %3$s!";
+var fbShareCaption = "Ya reservaste cancha y te faltan jugadores? Armar un partido de f&uacute;tbol entre amigos nunca fue tan f&aacute;cil!";
+var fbShareImage = "http://futzapp.com/images/field.jpg";
+var fbShareTitle = "Futzapp";
+
+/* 
+ * Whatsapp share message 
+ *
+ * 
+ * @parameters wpShareMessage
+ * %s: URL del partido a compartir
+ *
+ */ 
+var wpShareMessage = "Sale Futzapp %s!";
+
+/* 
+ * 'Me bajo' email template
+ *
+ * 
+ * @parameters
+ * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
+ * %2$s: mes en que se juega el partido [Enero - Diciembre]
+ * %3$s: hora [HH:mm a]
+ * %4$s: nombre de la cancha
+ * %5$s: URL del partido
+ * %6$s: nombre del jugador
+ *
+ */
+var meBajoSubject = "%6$s - Me bajo!";
+var meBajoMessage = "Me bajo del partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
+			
+/* 
+ * 'Juego' email template
+ *
+ * 
+ * @parameters
+ * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
+ * %2$s: mes en que se juega el partido [Enero - Diciembre]
+ * %3$s: hora [HH:mm a]
+ * %4$s: nombre de la cancha
+ * %5$s: URL del partido
+ * %6$s: nombre del jugador
+ *
+ */
+var juegoSubject = "%6$s - Juego!";
+var juegoMessage = "Juego el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
+
+/* 
+ * 'Partido completo' email template
+ *
+ * 
+ * @parameters
+ * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
+ * %2$s: mes en que se juega el partido [Enero - Diciembre]
+ * %3$s: hora [HH:mm a]
+ * %4$s: nombre de la cancha
+ * %5$s: URL del partido
+ *
+ */
+var completoSubject = "Partido completo!";
+var completoMessage = "Ya estamos todos para el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
 (function() {
 	'use strict';
 
@@ -116,6 +187,7 @@
 				admin_userId: 0,
 				id: 0
 			};
+			$rootScope.wpMsg = "";
 			$rootScope.matchShareURL = "";
 			
 			/* NEW/EDIT MATCH METHODS */
@@ -152,6 +224,7 @@
 					Matches.update($rootScope.newMatch, function(updatedMatch){
 						$rootScope.newMatch = updatedMatch;
 						$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "?token=" + $rootScope.newMatch.token));
+						$rootScope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $rootScope.matchShareURL);
 						console.log("Match updated, id:" + updatedMatch.id);
 						$location.path( "/step-3" );
 					}, function(){
@@ -162,6 +235,7 @@
 					Matches.save($rootScope.newMatch, function(newMatch){
 						$rootScope.newMatch = newMatch;
 						$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "?token=" + $rootScope.newMatch.token));
+						$rootScope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $rootScope.matchShareURL);
 						console.log("Match saved, id:" + newMatch.id);
 						$location.path( "/step-3" );
 					}, function(){
@@ -182,11 +256,11 @@
 				}
 				FB.ui( {
 					method: 'feed',
-					name: "Futzapp",
+					name: fbShareTitle,
 					link: url,
-					picture: "http://futzapp.com/images/field.jpg",
-					description: "Jugate un futzapp el " + $filter('dateFormat')($scope.match.date, 'dddd ') +  " a las " + $filter('dateFormat')($scope.match.date, 'hh:mm a') + " en " + field.name + "!",
-					caption: "Ya reservaste cancha y te faltan jugadores? Armar un partido de f&ucaute;tbol entre amigos nunca fue tan f&aacute;cil!"
+					picture: fbShareImage,
+					description: fbShareMsg.replace("%1$s", $filter('dateFormat')($rootScope.newMatch.date, 'dddd d')).replace("%2$s", $filter('dateFormat')($rootScope.newMatch.date, 'hh:mm a')).replace("%3$s", field.name),
+					caption: fbShareCaption
 				}, function( response ) {
 					// do nothing
 				} );
@@ -256,7 +330,7 @@
 
 				FB.init({ 
 					appId: $rootScope.fbAppId, 
-					channelUrl: 'channel.html', 
+					channelUrl: '../../channel.html', 
 					status: true, 
 					cookie: true, 
 					xfbml: true 
@@ -395,7 +469,7 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 				if(parseInt(teamAMissingPlayers) + parseInt(teamBMissingPlayers) == 1)
 					Notifications.completo($scope.match, $scope.guests);
 				/* envio mail al admin */
-				Notifications.juego(match);
+				Notifications.juego(match, $rootScope.user.name + " " + $rootScope.user.lastname);
 			   	   	
 			   	$scope.renderMatches();
 	    	});
@@ -526,12 +600,14 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
     		});
 		};
 		
+		$scope.wpMsg = "";
 		$scope.matchShareURL = "";
 		$scope.currentURL = "";
 		$scope.renderMatch = function(){
 			return Matches.get({id: $routeParams.matchId}, function(){
-				$scope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "?token=" + $scope.match.token));
-				$scope.currentURL = $sanitize("http://" + $location.host() + "/match/" + $scope.match.id);
+				$scope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "/?token=" + $scope.match.token));
+				$scope.currentURL = $sanitize("http://" + $location.host() + "/#/match/" + $scope.match.id);
+				$scope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $scope.matchShareURL);
 				
 				if($rootScope.user.id == $scope.match.admin.id) $scope.adminMode = true;
 				var teams = Matches.getTeams({id: $routeParams.matchId}, function(){
@@ -550,6 +626,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 						$scope.teamA.missingPlayers = $scope.totalPlayers - teams[0].users.length;
 						
 						//map positions
+						$scope.teamA.positions = [];
 						for(var i = 0; i < $scope.totalPlayers; i++){
 							var xy = positions[i].split(",");
 							var position = {
@@ -564,6 +641,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 						$scope.teamB.missingPlayers = $scope.totalPlayers - teams[1].users.length;
 						
 						//map positions
+						$scope.teamB.positions = [];
 						for(var i = $scope.totalPlayers; i <  $scope.totalPlayers * 2; i++){
 							var xy = positions[i].split(",");
 							var position = {
@@ -680,7 +758,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				if(parseInt($scope.teamA.missingPlayers) + parseInt($scope.teamB.missingPlayers) == 1)
 					Notifications.completo($scope.match, $scope.guests);
 				/* envio mail al admin */
-				Notifications.juego($scope.match);
+				Notifications.juego($scope.match, $rootScope.user.name + " " + $rootScope.user.lastname);
 		    	
 		    	$scope.match = $scope.renderMatch();
 				$scope.guests = $scope.renderGuests();
@@ -732,22 +810,23 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				
 				/* si estaba anotado, y se bajÃ³ => envio mail al admin */
 				if(wasConfirmed)
-					Notifications.meBajo($scope.match);
+					Notifications.meBajo($scope.match, $rootScope.user.name + " " + $rootScope.user.lastname);
 			   	
 			   	$scope.match = $scope.renderMatch();
 				$scope.guests = $scope.renderGuests();
 		    });
 	    };
 	    
-	    $scope.selectedTeam = "A";
-	    $scope.changeSelectedTeam = function(team){
+		$scope.newPlayerName = "";
+	    $scope.selectedTeam = "";
+		$scope.changeSelectedTeam = function(team){
 	    	$scope.selectedTeam = team;
 	    };
 	    $scope.addPlayer = function(playerName){
 	    	if(playerName == "" || playerName == undefined){
 	    		showAlert("Error", "TenÃ©s que poner el nombre de tu amigo!");
 	    	} else {
-	    		//crear usuario con solo nombre
+				//crear usuario con solo nombre
 	    		var user = {
 	    			"name": playerName	
 	    		};
@@ -771,28 +850,70 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    			};
 	    			data.users.push(userItem);
 	    			Matches.updateGuests(data, function(teamGuests){
-	    				//agregar usuario al equipo elegido
-						if($scope.selectedTeam == "A"){
-		    				var dataTeamA = {
-		    					userIds: [],
-		    	    		    teamId: $scope.teamA.team.id
-		    	    		};
-		    				dataTeamA.userIds.push(response.id);
-		    	    		$scope.updateTeamA(dataTeamA);
-		    			}
-		    			if($scope.selectedTeam == "B"){
-		    				var dataTeamB = {
-			    				userIds: [],
-			    	    		teamId: $scope.teamB.team.id
-			    	    	};
-		    				dataTeamB.userIds.push(response.id);
-			    	    	$scope.updateTeamB(dataTeamB);
-		    			}
+	    				//agregar usuario al equipo elegido o al que le falten mÃ¡s jugadores
+						if($scope.selectedTeam == ""){
+							var teamAUpdated = false;
+							var teamBUpdated = false;
+							var subsUpdated = false;
+							
+							//add player to team or subs
+							var dataSubs = {
+								userIds: [],
+								matchId: $scope.match.id
+							};
+							var dataTeamA = {
+								userIds: [],
+								teamId: $scope.teamA.team.id
+							};
+							var dataTeamB = null;
+							if($scope.teamB.team != null)
+								dataTeamB = {
+									userIds: [],
+									teamId: $scope.teamB.team.id
+								};
+							
+							if(dataTeamB != null && $scope.teamB.missingPlayers > 0 && $scope.teamB.missingPlayers > $scope.teamA.missingPlayers){ //add to teamB
+								dataTeamB.userIds.push(response.id);
+								teamBUpdated = true;
+							} else if($scope.teamA.missingPlayers > 0){ //add to teamA
+								dataTeamA.userIds.push(response.id);
+								teamAUpdated = true;
+							} else { //add to subs
+								dataSubs.userIds.push(response.id);
+								subsUpdated = true;
+							}
+							
+							if(teamAUpdated)
+								$scope.updateTeamA(dataTeamA);
+							if(teamBUpdated)
+								$scope.updateTeamB(dataTeamB);
+							if(subsUpdated)
+								$scope.updateSubs(dataSubs);
+						} else {
+							if($scope.selectedTeam == "A"){
+								var dataTeamA = {
+									userIds: [],
+									teamId: $scope.teamA.team.id
+								};
+								dataTeamA.userIds.push(response.id);
+								$scope.updateTeamA(dataTeamA);
+							}
+							if($scope.selectedTeam == "B"){
+								var dataTeamB = {
+									userIds: [],
+									teamId: $scope.teamB.team.id
+								};
+								dataTeamB.userIds.push(response.id);
+								$scope.updateTeamB(dataTeamB);
+							}
+						}
 						
 						/* si se llenaron los 2 equipos envio mail a todos */
 						if(parseInt($scope.teamA.missingPlayers) + parseInt($scope.teamB.missingPlayers) == 1)
 							Notifications.completo($scope.match, $scope.guests);
 						
+						$scope.newPlayerName = "";
+						$scope.selectedTeam = "";
 						$scope.match = $scope.renderMatch();
 						$scope.guests = $scope.renderGuests();
 	    	    	});
@@ -852,29 +973,14 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    
 	    //match Share
 	    $scope.shareFB = function(){
-	    	//TODO: cambiar metodo feed (deprecated) por share_open_graph con story
 	    	var url = decodeURIComponent($scope.matchShareURL);
-	    	//var url = "http://www.futzapp.com/back/public/matchSharer.php";
-			/*FB.ui({
-	    		method: 'share_open_graph',
-	    		action_type: 'futzapp_test:jugar',
-	    		action_properties: JSON.stringify({
-	    			ref: $scope.match.token,
-	    			start_time: $scope.match.date,
-	    			fulbo: url
-	    		})
-	    	}, function(response){});
-			FB.ui({
-	    		method: 'share',
-	    		href: url 
-	    	}, function(response){});*/
-			FB.ui( {
+	    	FB.ui( {
 				method: 'feed',
-				name: "Futzapp",
+				name: fbShareTitle,
 				link: url,
-				picture: "http://futzapp.com/images/field.jpg",
-				description: "Jugate un futzapp el " + $filter('dateFormat')($scope.match.date, 'dddd ') +  " a las " + $filter('dateFormat')($scope.match.date, 'hh:mm a') + " en " + $scope.match.field.name + "!",
-				caption: "Ya reservaste cancha y te faltan jugadores? Armar un partido de f&uacute;tbol entre amigos nunca fue tan f&aacute;cil!"
+				picture: fbShareImage,
+				description: fbShareMsg.replace("%1$s", $filter('dateFormat')($scope.match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')($scope.match.date, 'hh:mm a')).replace("%3$s", $scope.match.field.name),
+				caption: fbShareCaption
 			}, function( response ) {
 				// do nothing
 			} );
@@ -957,7 +1063,7 @@ fulboFilters.filter('getById', function() {
 'use strict';
 
 /* Services */
-var serverURL = "http://futzapp.com/back/public/"; //PRD
+var serverURL = "http://www.futzapp.com/back/public/"; //PRD
 //var serverURL = "http://futbolizados.dev/"; //DEV
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
@@ -1028,11 +1134,11 @@ fulboServices.factory('MandrillHelper', ['MandrillAPI', function(Mandrill) {
 
 fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$location', 'MandrillHelper', function($rootScope, $filter, $sanitize, $location, MandrillHelper) {
 	var sdo = {
-		juego: function(match){
-			var message = "Juego el partido del dÃ­a " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
-			message += "<br/>Entra a Futzapp y mira como quedaron los equipos: " + $sanitize("http://" + $location.host() + "/#/match/" + match.id);
+		juego: function(match, userName){
+			var message = juegoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
+			var subject = juegoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
 			MandrillHelper.checkSetup(function(){	
-				MandrillHelper.sendMessage("Juego!", message, [{email: match.admin.email}], function(data){
+				MandrillHelper.sendMessage(subject, message, [{email: match.admin.email}], function(data){
 					console.log("Mail enviado!" + data);
 				}, function(data) {
 					console.log("Error al enviar el mail!" + data);
@@ -1041,11 +1147,11 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 				console.log("Error con Mandrill, verificar API Key");
 			});
 		},
-		meBajo: function(match){
-			var message = "Me bajo del partido del dÃ­a " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
-			message += "<br/>Entra a Futzapp y mira como quedaron los equipos: " + $sanitize("http://" + $location.host() + "/#/match/" + match.id);
+		meBajo: function(match, userName){
+			var message = meBajoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
+			var subject = meBajoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
 			MandrillHelper.checkSetup(function(){	
-				MandrillHelper.sendMessage("Me bajo!", message, [{email: match.admin.email}], function(data){
+				MandrillHelper.sendMessage(subject, message, [{email: match.admin.email}], function(data){
 					console.log("Mail enviado!" + data);
 				}, function(data) {
 					console.log("Error al enviar el mail!" + data);
@@ -1055,9 +1161,8 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 			});
 		},
 		completo: function(match, guests){
-			var message = "Ya estamos todos para el partido del dÃ­a " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
-			message += "<br/>Entra a Futzapp y mira como quedaron los equipos: " + $sanitize("http://" + $location.host() + "/#/match/" + match.id);
-			
+			var message = completoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			var subject = completoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
 			var mails = [];
 			for(var i = 0; i < guests.length; i++) {
 				if(guests[i].pivot.confirmed == "1" && guests[i].email != null) {
@@ -1069,7 +1174,7 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 				mails.push({email: match.admin.email});
 	    	
 			MandrillHelper.checkSetup(function(){	
-				MandrillHelper.sendMessage("Partido completo!", message, mails, function(data){
+				MandrillHelper.sendMessage(subject, message, mails, function(data){
 					console.log("Mail enviado!" + data);
 				}, function(data) {
 					console.log("Error al enviar el mail!" + data);
@@ -1231,6 +1336,8 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 				redirectToUrlAfterLogin.url = '/home';
 		},
 	    redirectToAttemptedUrl: function() {
+			if(redirectToUrlAfterLogin.url == "/step-1" || redirectToUrlAfterLogin.url == "/step-2" || redirectToUrlAfterLogin.url == "/step-3")
+				redirectToUrlAfterLogin.url = '/home';
 	    	$location.path(redirectToUrlAfterLogin.url);
 	    },
 		/* FB Methods */
@@ -1295,7 +1402,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 		},
 		login: function(callback) {
 			FB.login(function(response) {
-		    }, {scope: 'public_profile,email'});/*,user_friends,friends_photos,publish_actions*/
+		    }, {scope: 'public_profile,email,user_friends,friends_photos'});/*,user_friends,friends_photos,publish_actions*/
 		},
 		logout: function() {
 			var _self = this;
@@ -1611,6 +1718,15 @@ fulboDirectives.directive('dateTimePicker', ['$rootScope', function ($rootScope)
         }
     };
 }]);
+
+/*fulboDirectives.directive('selectPicker', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            element.selectpicker();
+        }
+    };
+});*/
 
 fulboDirectives.directive('selectOnClick', function () {
     return {
