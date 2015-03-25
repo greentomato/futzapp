@@ -3,7 +3,7 @@
  *
  * 
  * @parameters fbShareMsg
- * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
+ * %1$s: fecha y dÃ­a en que se juega el partido [lunes - viernes] [1 - 31]
  * %2$s: hora [HH:mm a]
  * %3$s: nombre de la cancha
  *
@@ -28,7 +28,7 @@ var wpShareMessage = "Sale Futzapp %s!";
  *
  * 
  * @parameters
- * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
+ * %1$s: fecha y dÃ­a en que se juega el partido [lunes - viernes] [1 - 31]
  * %2$s: mes en que se juega el partido [Enero - Diciembre]
  * %3$s: hora [HH:mm a]
  * %4$s: nombre de la cancha
@@ -37,14 +37,14 @@ var wpShareMessage = "Sale Futzapp %s!";
  *
  */
 var meBajoSubject = "%6$s - Me bajo!";
-var meBajoMessage = "Me bajo del partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
+var meBajoMessage = "Me bajo del partido del dÃ­a %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
 			
 /* 
  * 'Juego' email template
  *
  * 
  * @parameters
- * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
+ * %1$s: fecha y dÃ­a en que se juega el partido [lunes - viernes] [1 - 31]
  * %2$s: mes en que se juega el partido [Enero - Diciembre]
  * %3$s: hora [HH:mm a]
  * %4$s: nombre de la cancha
@@ -53,14 +53,14 @@ var meBajoMessage = "Me bajo del partido del día %1$s de %2$s a las %3$s en %4$s
  *
  */
 var juegoSubject = "%6$s - Juego!";
-var juegoMessage = "Juego el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
+var juegoMessage = "Juego el partido del dÃ­a %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
 
 /* 
  * 'Partido completo' email template
  *
  * 
  * @parameters
- * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
+ * %1$s: fecha y dÃ­a en que se juega el partido [lunes - viernes] [1 - 31]
  * %2$s: mes en que se juega el partido [Enero - Diciembre]
  * %3$s: hora [HH:mm a]
  * %4$s: nombre de la cancha
@@ -68,7 +68,7 @@ var juegoMessage = "Juego el partido del día %1$s de %2$s a las %3$s en %4$s<br/
  *
  */
 var completoSubject = "Partido completo!";
-var completoMessage = "Ya estamos todos para el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
+var completoMessage = "Ya estamos todos para el partido del dÃ­a %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
 (function() {
 	'use strict';
 
