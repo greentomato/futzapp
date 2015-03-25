@@ -32,6 +32,7 @@ var foundationJS = [
   'bower_components/fastclick/lib/fastclick.js',
   'bower_components/viewport-units-buggyfill/viewport-units-buggyfill.js',
   'bower_components/tether/tether.js',
+  'bower_components/fastclick/lib/fastclick.js',
   'bower_components/moment/min/moment-with-locales.min.js',
   'bower_components/angular/angular.js',
   'bower_components/ryanmullins-angular-hammer/angular.hammer.min.js',
@@ -42,12 +43,14 @@ var foundationJS = [
   'bower_components/angular-sanitize/angular-sanitize.min.js',
   'bower_components/ng-flow/dist/ng-flow-standalone.min.js',
   'bower_components/jquery/dist/jquery.min.js',
+  'bower_components/bootstrap-select/dist/js/bootstrap-select.min.js',
   'bower_components/foundation-apps/js/vendor/**/*.js',
   'bower_components/foundation-apps/js/angular/**/*.js',
   '!bower_components/foundation-apps/js/angular/app.js'
 ];
 // These files are for your app's JavaScript
 var appJS = [
+  'client/assets/js/config.js',
   'client/assets/js/app.js',
   'client/assets/js/controllers.js',
   'client/assets/js/filters.js',
