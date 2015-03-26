@@ -69,3 +69,8 @@ var juegoMessage = "Juego el partido del día %1$s de %2$s a las %3$s en %4$s<br
  */
 var completoSubject = "Partido completo!";
 var completoMessage = "Ya estamos todos para el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
+
+/*
+ * Set PRD or DEV mode
+ */
+var prd = true;

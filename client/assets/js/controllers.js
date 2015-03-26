@@ -601,9 +601,11 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    $scope.shareFB = function(){
 	    	var url = decodeURIComponent($scope.matchShareURL);
 	    	FB.ui( {
-				method: 'feed',
+				//method: 'feed',
+				method: 'share',
 				name: fbShareTitle,
 				link: url,
+				href: url,
 				picture: fbShareImage,
 				description: fbShareMsg.replace("%1$s", $filter('dateFormat')($scope.match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')($scope.match.date, 'hh:mm a')).replace("%3$s", $scope.match.field.name),
 				caption: fbShareCaption

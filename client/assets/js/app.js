@@ -94,8 +94,7 @@
 			/* FACEBOOK LOGIN VARIABLES */
 			$rootScope.fbUser = null;
 			$rootScope.user = null;
-			//$rootScope.fbAppId = "1517377388534738"; //DEV
-			$rootScope.fbAppId = "1450926871846457"; //PRD
+			$rootScope.fbAppId = prd ? "1450926871846457": "1517377388534738";
 			
 			/* GLOBAL VARIABLES */
 			$rootScope.fields = Fields.query();
@@ -184,9 +183,11 @@
 					}
 				}
 				FB.ui( {
-					method: 'feed',
+					//method: 'feed',
+					method: 'share',
 					name: fbShareTitle,
 					link: url,
+					href: url,
 					picture: fbShareImage,
 					description: fbShareMsg.replace("%1$s", $filter('dateFormat')($rootScope.newMatch.date, 'dddd d')).replace("%2$s", $filter('dateFormat')($rootScope.newMatch.date, 'hh:mm a')).replace("%3$s", field.name),
 					caption: fbShareCaption
