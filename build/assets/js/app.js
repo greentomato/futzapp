@@ -69,6 +69,11 @@ var juegoMessage = "Juego el partido del día %1$s de %2$s a las %3$s en %4$s<br
  */
 var completoSubject = "Partido completo!";
 var completoMessage = "Ya estamos todos para el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
+
+/*
+ * Set PRD or DEV mode
+ */
+var prd = true;
 (function() {
 	'use strict';
 
@@ -165,8 +170,7 @@ var completoMessage = "Ya estamos todos para el partido del día %1$s de %2$s a 
 			/* FACEBOOK LOGIN VARIABLES */
 			$rootScope.fbUser = null;
 			$rootScope.user = null;
-			//$rootScope.fbAppId = "1517377388534738"; //DEV
-			$rootScope.fbAppId = "1450926871846457"; //PRD
+			$rootScope.fbAppId = prd ? "1450926871846457": "1517377388534738";
 			
 			/* GLOBAL VARIABLES */
 			$rootScope.fields = Fields.query();
@@ -255,9 +259,11 @@ var completoMessage = "Ya estamos todos para el partido del día %1$s de %2$s a 
 					}
 				}
 				FB.ui( {
-					method: 'feed',
+					//method: 'feed',
+					method: 'share',
 					name: fbShareTitle,
 					link: url,
+					href: url,
 					picture: fbShareImage,
 					description: fbShareMsg.replace("%1$s", $filter('dateFormat')($rootScope.newMatch.date, 'dddd d')).replace("%2$s", $filter('dateFormat')($rootScope.newMatch.date, 'hh:mm a')).replace("%3$s", field.name),
 					caption: fbShareCaption
@@ -975,9 +981,11 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    $scope.shareFB = function(){
 	    	var url = decodeURIComponent($scope.matchShareURL);
 	    	FB.ui( {
-				method: 'feed',
+				//method: 'feed',
+				method: 'share',
 				name: fbShareTitle,
 				link: url,
+				href: url,
 				picture: fbShareImage,
 				description: fbShareMsg.replace("%1$s", $filter('dateFormat')($scope.match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')($scope.match.date, 'hh:mm a')).replace("%3$s", $scope.match.field.name),
 				caption: fbShareCaption
@@ -1063,8 +1071,7 @@ fulboFilters.filter('getById', function() {
 'use strict';
 
 /* Services */
-var serverURL = "http://www.futzapp.com/back/public/"; //PRD
-//var serverURL = "http://futbolizados.dev/"; //DEV
+var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://futbolizados.dev/"; //DEV
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
