@@ -94,7 +94,7 @@
 			/* FACEBOOK LOGIN VARIABLES */
 			$rootScope.fbUser = null;
 			$rootScope.user = null;
-			$rootScope.fbAppId = prd ? "1450926871846457": "1517377388534738";
+			$rootScope.fbAppId = prd ? fbAppIdPRD : fbAppIdDEV;
 			
 			/* GLOBAL VARIABLES */
 			$rootScope.loading = true;

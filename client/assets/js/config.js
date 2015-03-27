@@ -3,6 +3,12 @@
  */
 var prd = true;
 
+/*
+ * Set PRD or DEV mode
+ */
+var fbAppIdDEV = "1517377388534738";
+var fbAppIdPRD = "1450926871846457";
+ 
 /* 
  * Facebook share message 
  *

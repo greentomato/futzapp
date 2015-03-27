@@ -3,6 +3,12 @@
  */
 var prd = true;
 
+/*
+ * Set PRD or DEV mode
+ */
+var fbAppIdDEV = "1517377388534738";
+var fbAppIdPRD = "1450926871846457";
+ 
 /* 
  * Facebook share message 
  *
@@ -200,7 +206,7 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 			/* FACEBOOK LOGIN VARIABLES */
 			$rootScope.fbUser = null;
 			$rootScope.user = null;
-			$rootScope.fbAppId = prd ? "1450926871846457": "1517377388534738";
+			$rootScope.fbAppId = prd ? fbAppIdPRD : fbAppIdDEV;
 			
 			/* GLOBAL VARIABLES */
 			$rootScope.loading = true;
