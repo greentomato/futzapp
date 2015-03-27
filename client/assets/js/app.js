@@ -97,6 +97,7 @@
 			$rootScope.fbAppId = prd ? "1450926871846457": "1517377388534738";
 			
 			/* GLOBAL VARIABLES */
+			$rootScope.loading = true;
 			$rootScope.fields = Fields.query();
 			$rootScope.matchTypes = MatchTypes.query();
 			$rootScope.towns = Towns.query();
@@ -236,6 +237,7 @@
 			
 			/* USER AUTH METHODS */
 			$rootScope.$on('$routeChangeStart', function (event, next) {
+				$rootScope.loading = true;
 				if($rootScope.routeChanges == 0){
 					UsersAuth.saveAttemptUrl();
 					var token = getURLParameter('token');
@@ -252,6 +254,7 @@
 			/* HISTORY METHODS */
 			$rootScope.$on('$routeChangeSuccess', function() {
 				$rootScope.history.push($location.$$path);
+				$rootScope.loading = false;
 			});
 			
 			/* FB METHODS SDK */
@@ -267,7 +270,7 @@
 				});
 				UsersAuth.watchAuthenticationStatusChange();
 				
-				$("#loaderDiv").hide();
+				$rootScope.loading = false;
 			};
 
 			// Are you familiar to IIFE ( http://bit.ly/iifewdb ) ?

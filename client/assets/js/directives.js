@@ -205,7 +205,7 @@ fulboDirectives.directive('playerProfile', function() {
         restrict: 'E',
         templateUrl: 'partials/modal-player-profile.html', // markup for template
         scope: { 
-			'player': '=player', 
+			'selectedUser': '=player', 
 			'matchesPlayed': '=matchesPlayed', 
 			'matchesOrganized': '=matchesOrganized',
 			'adminMode': '=adminMode'

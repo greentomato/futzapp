@@ -16,6 +16,12 @@
     <div ng-view class="main-content">
       <!-- View Content goes here -->
     </div>
-  
+	<div ng-show="$root.loading" class="loader">
+		<div class="loader-wrapper">
+			<div class="ball">
+			  Loading...
+			</div>
+		</div>
+	</div>
   </body>
 </html>

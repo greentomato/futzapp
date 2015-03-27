@@ -1,4 +1,9 @@
-﻿/* 
+﻿/*
+ * Set PRD or DEV mode
+ */
+var prd = false;
+
+/* 
  * Facebook share message 
  *
  * 
@@ -70,7 +75,32 @@ var juegoMessage = "Juego el partido del día %1$s de %2$s a las %3$s en %4$s<br
 var completoSubject = "Partido completo!";
 var completoMessage = "Ya estamos todos para el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
 
-/*
- * Set PRD or DEV mode
+/* 
+ * 'Partido cancelado' email template
+ *
+ * 
+ * @parameters
+ * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
+ * %2$s: mes en que se juega el partido [Enero - Diciembre]
+ * %3$s: hora [HH:mm a]
+ * %4$s: nombre de la cancha
+ * %5$s: URL del partido
+ *
  */
-var prd = true;
+var completoSubject = "Partido cancelado!";
+var completoMessage = "Se cancela el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
+
+/* 
+ * 'Te dieron de baja' email template
+ *
+ * 
+ * @parameters
+ * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
+ * %2$s: mes en que se juega el partido [Enero - Diciembre]
+ * %3$s: hora [HH:mm a]
+ * %4$s: nombre de la cancha
+ * %5$s: URL del partido
+ *
+ */
+var teBajaronSubject = "Te dieron de baja!";
+var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";

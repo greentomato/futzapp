@@ -56,14 +56,14 @@
 				<header ng-if="!adminMode"><i style="color: {{teamB.team.shirtColor}};" class="fa fa-square"></i> Equipo B</header>
 					<ul>					
 						<li ng-repeat="player in teamB.team.users">
-							<a  ng-click="changeSelectedUser(player)" zf-open="playerProfile">
+							<a ng-click="changeSelectedUser(player)" zf-open="playerProfile">
 								<!-- <img src="{{player.photo_url == NULL ? 'assets/img/profile-placeholder.png': player.photo_url}}" alt=""> -->
 								<span>{{player.name}} {{player.lastname}}</span>
 							</a>				
 						</li>
 						
 						<li ng-if="!adminMode" ng-repeat="i in getNumber(teamB.missingPlayers) track by $index">
-							<a  zf-open="team-player">
+							<a zf-open="team-player">
 								<span class="empty-player">&nbsp;</span>
 							</a>				
 						</li>

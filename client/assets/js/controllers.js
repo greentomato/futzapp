@@ -33,156 +33,6 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 			});
 		};
 		$scope.renderMatches();
-		
-		$scope.answerYes = function(match){
-	    	var teamAUpdated = false;
-	    	var teamBUpdated = false;
-	    	var subsUpdated = false;
-	    	
-	    	//mark as confirmed
-	    	var data = {
-		    	users: [],
-		    	matchId: match.id
-		    };
-	    	for(var i = 0; i < match.guests.length; i++){
-	    		var confirmed = match.guests[i].pivot.confirmed;
-	    		if(match.guests[i].id == $rootScope.user.id)
-	    			confirmed = 1;
-	    		var userItem = {
-	    			id: match.guests[i].fbId != null? match.guests[i].fbId.toString() : match.guests[i].id.toString(),
-	    			confirmed: confirmed
-	    		};
-	    		data.users.push(userItem);
-	    	}
-	    	Matches.updateGuests(data, function(response){
-	    		//add player to team or subs
-		    	var dataSubs = {
-		    	    userIds: [],
-		    	    matchId: match.id
-		    	};
-		    	var dataTeamA = {
-		    	    userIds: [],
-		    	    teamId: match.teams[0].id
-		    	};
-		    	var dataTeamB = null;
-		    	if(match.teams.length > 1)
-			    	dataTeamB = {
-			    	   	userIds: [],
-			    	   	teamId: match.teams[1].id
-			    	};
-		    	
-		    	var teamAMissingPlayers = match.type.totalPlayers / 2 - match.teams[0].users.length;
-		    	var teamBMissingPlayers = dataTeamB != null ? (match.type.totalPlayers / 2 - match.teams[1].users.length) : 0;
-		    	if(teamBMissingPlayers > 0 && teamBMissingPlayers > teamAMissingPlayers && dataTeamB != null){ //add to teamB
-		    		dataTeamB.userIds.push($rootScope.user.fbId);
-		    		teamBUpdated = true;
-		    	} else if(teamAMissingPlayers > 0){ //add to teamA
-		    		dataTeamA.userIds.push($rootScope.user.fbId);
-		    		teamAUpdated = true;
-		    	} else { //add to subs
-		    		dataSubs.userIds.push($rootScope.user.fbId);
-		    		subsUpdated = true;
-		    	}
-		    	
-		    	if(teamAUpdated)
-			   		$scope.updateTeam(dataTeamA, match.teams[0]);
-			   	if(teamBUpdated)
-			   		$scope.updateTeam(dataTeamB, match.teams[1]);
-			   	if(subsUpdated)
-			   		$scope.updateSubs(dataSubs, match.substitutes);
-			   	
-				/* si se llenaron los 2 equipos envio mail a todos */
-				if(parseInt(teamAMissingPlayers) + parseInt(teamBMissingPlayers) == 1)
-					Notifications.completo($scope.match, $scope.guests);
-				/* envio mail al admin */
-				Notifications.juego(match, $rootScope.user.name + " " + $rootScope.user.lastname);
-			   	   	
-			   	$scope.renderMatches();
-	    	});
-	    };
-	    
-	    $scope.answerNo = function(match){
-	    	var wasConfirmed = false;
-			
-			//mark as rejected
-	    	var data = {
-			   	users: [],
-			   	matchId: match.id
-			};
-		    for(var i = 0; i < match.guests.length; i++){
-		    	var confirmed = match.guests[i].pivot.confirmed;
-		    	if(match.guests[i].id == $rootScope.user.id){
-		    		if(confirmed == 1) wasConfirmed = true;
-					confirmed = 0;
-				}
-		    	var userItem = {
-		    		id: match.guests[i].fbId != null? match.guests[i].fbId.toString() : match.guests[i].id.toString(),
-		    		confirmed: confirmed
-		    	};
-		    	data.users.push(userItem);
-		    }
-		    Matches.updateGuests(data, function(response){
-		    	//remove player from team or subs
-		    	var dataSubs = {
-		    		userIds: [],
-			    	matchId: match.id
-			    };
-			    var dataTeamA = {
-			        userIds: [],
-			        teamId: match.teams[0].id
-			    };
-			    var dataTeamB = null;
-		    	if(match.teams.length > 1)
-			    	dataTeamB = {
-			    	   	userIds: [],
-			    	   	teamId: match.teams[1].id
-			    	};
-		    	
-			   	$scope.updateTeam(dataTeamA, match.teams[0], $rootScope.user.id);
-			   	if(dataTeamB != null)
-			   		$scope.updateTeam(dataTeamB, match.teams[1], $rootScope.user.id);
-			   	$scope.updateSubs(dataSubs, match.substitutes, $rootScope.user.id);
-			   	
-				/* si estaba anotado, y se bajó => envio mail al admin */
-				if(wasConfirmed)
-					Notifications.meBajo(match);
-			   	
-			   	$scope.renderMatches();
-		    });
-	    };
-		
-	    
-	    $scope.updateSubs = function(data, subs, toRemoveUserId){
-	    	var update = toRemoveUserId == undefined ? true : false;
-	    	//add existing subs
-	    	for(var i = 0; i < subs.length; i++){
-	    		if(toRemoveUserId != undefined && subs[i].id == toRemoveUserId){
-	    			update = true;
-	    			continue;
-	    		}
-	    		data.userIds.push(subs[i].fbId.toString());
-	    	}
-	    	if(update)
-		   		Matches.updateSubs(data, function(response){
-		   			
-		    	});
-	    };
-	    $scope.updateTeam = function(data, team, toRemoveUserId){
-	    	var update = toRemoveUserId == undefined ? true : false;
-	    	//add existing players
-	    	for(var i = 0; i < team.users.length; i++){
-	    		if(toRemoveUserId != undefined && team.users[i].id == toRemoveUserId){
-	    			update = true;
-	    			continue;
-	    		}
-	    		var id = team.users[i].fbId != undefined ? team.users[i].fbId.toString() : team.users[i].id.toString();
-	    		data.userIds.push(id);
-	    	}
-	    	if(update)
-		   		Teams.updateUsers(data, function(response){
-		   			
-		    	});
-	    };
 }]);
 
 fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeParams', '$filter', '$sanitize', '$location', 'Matches', 'Teams', 'Users', 'Notifications',
@@ -322,8 +172,57 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				Notifications.cancelado($scope.match, $scope.guests);
 	    	});
 	    };
-	    
-	    $scope.answerYes = function(){
+		
+		$scope.deletePlayer = function(userId){
+			var userMail = "";
+			
+			//mark as rejected
+	    	var data = {
+			   	users: [],
+			   	matchId: $scope.match.id
+			};
+		    for(var i = 0; i < $scope.guests.length; i++){
+		    	var confirmed = $scope.guests[i].pivot.confirmed;
+				if($scope.guests[i].id == userId){
+					userMail = $scope.guests[i].email;
+		    		confirmed = 0;
+				}
+		    	var userItem = {
+		    		id: $scope.guests[i].fbId != null? $scope.guests[i].fbId.toString() : $scope.guests[i].id.toString(),
+		    		confirmed: confirmed
+		    	};
+		    	data.users.push(userItem);
+		    }
+		    Matches.updateGuests(data, function(response){
+		    	//remove player from team or subs
+		    	var dataSubs = {
+		    		userIds: [],
+			    	matchId: $scope.match.id
+			    };
+			    var dataTeamA = {
+			        userIds: [],
+			        teamId: $scope.teamA.team.id
+			    };
+			    var dataTeamB = null;
+		    	if($scope.teamB.team != null)
+			    	dataTeamB = {
+			    	   	userIds: [],
+			    	   	teamId: $scope.teamB.team.id
+			    	};
+			   	$scope.updateTeamA(dataTeamA, userId);
+			   	if(dataTeamB != null)
+			   		$scope.updateTeamB(dataTeamB,  userId);
+			   	$scope.updateSubs(dataSubs,  userId);
+			   	
+			   	/* envio mail al usuario que di de baja */
+				Notifications.teBajaron($scope.match, userMail);
+			   	
+			   	$scope.match = $scope.renderMatch();
+				$scope.guests = $scope.renderGuests();
+		    });
+		};
+		
+		$scope.answerYes = function(){
 	    	var teamAUpdated = false;
 	    	var teamBUpdated = false;
 	    	var subsUpdated = false;

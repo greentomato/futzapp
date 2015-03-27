@@ -120,9 +120,23 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 				console.log("Error con Mandrill, verificar API Key");
 			});
 		},
+		teBajaron: function(match, userMail){
+			var message = teBajaronMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			var subject = teBajaronSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			
+			MandrillHelper.checkSetup(function(){	
+				MandrillHelper.sendMessage(subject, message, [{email: userMail}], function(data){
+					console.log("Mail enviado!" + data);
+				}, function(data) {
+					console.log("Error al enviar el mail!" + data);
+				});
+			}, function(){
+				console.log("Error con Mandrill, verificar API Key");
+			});
+		},
 		cancelado: function(match, guests){
-			var message = "Se cancela el partido del día " + $filter('dateFormat')(match.date, 'dddd d') + " de " + $filter('dateFormat')(match.date, 'MMMM') +  " a las " + $filter('dateFormat')(match.date, 'hh:mm a') + " en " + match.field.name;
-			message += "<br/>Entra a futzapp y arma uno nuevo! " + $sanitize("http://" + $location.host());
+			var message = completoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			var subject = completoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
 			
 			var mails = [];
 			for(var i = 0; i < guests.length; i++) {
@@ -132,7 +146,7 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 	        }
 	    	
 			MandrillHelper.checkSetup(function(){	
-				MandrillHelper.sendMessage("Partido cancelado!", message, mails, function(data){
+				MandrillHelper.sendMessage(subject, message, mails, function(data){
 					console.log("Mail enviado!" + data);
 				}, function(data) {
 					console.log("Error al enviar el mail!" + data);
@@ -221,10 +235,12 @@ fulboServices.factory('Facebook', ['$rootScope', 'Users', function($rootScope, U
 						Users.update(authedUser, function(){
 							$rootScope.user = authedUser;
 							console.log("user updated!");
+							$rootScope.loading = false;
 						}, function(){
 							console.log("user save failed!");
-							authedUser.photo_url = ""; //TODO: default photo
+							authedUser.photo_url = "assets/img/profile-placeholder.png"; 
 							$rootScope.user = authedUser;
+							$rootScope.loading = false;
 						});
 					});
 				}
@@ -291,8 +307,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 							$rootScope.user = _self.user = storedUser;
 							console.log("user updated!");
 							Facebook.getPhoto();
-							$("#loaderDiv").hide();
-
+							
 							if($rootScope.matchToken != undefined && $rootScope.matchToken != null)
 								_self.addToMatchByToken($rootScope.matchToken);
 							else
@@ -300,7 +315,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 						}, function(){
 							console.log("user save failed!");
 							//_self.logout();
-							$("#loaderDiv").hide();
+							$rootScope.loading = false;
 						});
 					}, function(error){
 						if(error.status == 404){
@@ -320,7 +335,6 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 								$rootScope.user = _self.user = newUser;
 								console.log("user saved!");
 								Facebook.getPhoto();
-								$("#loaderDiv").hide();
 								
 								if($rootScope.matchToken != undefined && $rootScope.matchToken != null)
 									_self.addToMatchByToken($rootScope.matchToken);
@@ -329,7 +343,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 							}, function(){
 								console.log("user save failed!");
 								//_self.logout();
-								$("#loaderDiv").hide();
+								$rootScope.loading = false;
 							});
 						}
 					});
@@ -344,7 +358,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 		logout: function() {
 			var _self = this;
 			FB.logout(function(response) {
-				$("#loaderDiv").hide();
+				$rootScope.loading = false;
 				
 				//erase fbToken
 				var authedUser = _self.user;
@@ -370,7 +384,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 		watchAuthenticationStatusChange: function() {
 			var _self = this;
 			FB.Event.subscribe('auth.authResponseChange', function(response) {
-				$("#loaderDiv").show();
+				$rootScope.loading = true;
 				if (response.status === 'connected') {
 					console.log('Welcome!  Fetching your information.... ');
 					var fbToken = response.authResponse.accessToken;
@@ -378,7 +392,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 					_self.isLogged = true;
 				} 
 				else {
-					$("#loaderDiv").hide();
+					$rootScope.loading = false;
 					console.log('User logged out.');
 					if(_self.user != null){
 						//_self.logout();
