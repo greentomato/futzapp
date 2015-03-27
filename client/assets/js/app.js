@@ -269,8 +269,6 @@
 					xfbml: true 
 				});
 				UsersAuth.watchAuthenticationStatusChange();
-				
-				$rootScope.loading = false;
 			};
 
 			// Are you familiar to IIFE ( http://bit.ly/iifewdb ) ?

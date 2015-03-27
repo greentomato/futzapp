@@ -1,7 +1,7 @@
 ﻿/*
  * Set PRD or DEV mode
  */
-var prd = false;
+var prd = true;
 
 /* 
  * Facebook share message 
