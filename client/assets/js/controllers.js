@@ -215,7 +215,8 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 			   	$scope.updateSubs(dataSubs,  userId);
 			   	
 			   	/* envio mail al usuario que di de baja */
-				Notifications.teBajaron($scope.match, userMail);
+				if(userMail != undefined && userMail != "")
+					Notifications.teBajaron($scope.match, userMail);
 			   	
 			   	$scope.match = $scope.renderMatch();
 				$scope.guests = $scope.renderGuests();

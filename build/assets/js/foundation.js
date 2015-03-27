@@ -38076,178 +38076,6 @@ angular.module('markdown', [])
 (function() {
   'use strict';
 
-  angular.module('foundation.common', ['foundation.core'])
-    .directive('zfClose', zfClose)
-    .directive('zfOpen', zfOpen)
-    .directive('zfToggle', zfToggle)
-    .directive('zfEscClose', zfEscClose)
-    .directive('zfSwipeClose', zfSwipeClose)
-    .directive('zfHardToggle', zfHardToggle)
-  ;
-
-  zfClose.$inject = ['FoundationApi'];
-
-  function zfClose(foundationApi) {
-    var directive = {
-      restrict: 'A',
-      link: link
-    };
-
-    return directive;
-
-    function link(scope, element, attrs) {
-      var targetId = '';
-      if (attrs.zfClose) {
-        targetId = attrs.zfClose;
-      } else {
-        var parentElement= false;
-        var tempElement = element.parent();
-        //find parent modal
-        while(parentElement === false) {
-          if(tempElement[0].nodeName == 'BODY') {
-            parentElement = '';
-          }
-
-          if(typeof tempElement.attr('zf-closable') !== 'undefined' && tempElement.attr('zf-closable') !== false) {
-            parentElement = tempElement;
-          }
-
-          tempElement = tempElement.parent();
-        }
-        targetId = parentElement.attr('id');
-      }
-
-      element.on('click', function(e) {
-        foundationApi.publish(targetId, 'close');
-        e.preventDefault();
-      });
-    }
-  }
-
-  zfOpen.$inject = ['FoundationApi'];
-
-  function zfOpen(foundationApi) {
-    var directive = {
-      restrict: 'A',
-      link: link
-    };
-
-    return directive;
-
-    function link(scope, element, attrs) {
-      element.on('click', function(e) {
-        foundationApi.publish(attrs.zfOpen, 'open');
-        e.preventDefault();
-      });
-    }
-  }
-
-  zfToggle.$inject = ['FoundationApi'];
-
-  function zfToggle(foundationApi) {
-    var directive = {
-      restrict: 'A',
-      link: link
-    }
-
-    return directive;
-
-    function link(scope, element, attrs) {
-      element.on('click', function(e) {
-        foundationApi.publish(attrs.zfToggle, 'toggle');
-        e.preventDefault();
-      });
-    }
-  }
-
-  zfEscClose.$inject = ['FoundationApi'];
-
-  function zfEscClose(foundationApi) {
-    var directive = {
-      restrict: 'A',
-      link: link
-    };
-
-    return directive;
-
-    function link(scope, element, attrs) {
-      element.on('keyup', function(e) {
-        if (e.keyCode === 27) {
-          foundationApi.closeActiveElements();
-        }
-        e.preventDefault();
-      });
-    }
-  }
-
-  zfSwipeClose.$inject = ['FoundationApi'];
-
-  function zfSwipeClose(foundationApi) {
-    var directive = {
-      restrict: 'A',
-      link: link
-    };
-    return directive;
-
-    function link($scope, element, attrs) {
-      var swipeDirection;
-      var hammerElem;
-      if (Hammer) {
-        hammerElem = new Hammer(element[0]);
-        // set the options for swipe (to make them a bit more forgiving in detection)
-        hammerElem.get('swipe').set({
-          direction: Hammer.DIRECTION_ALL,
-          threshold: 5, // this is how far the swipe has to travel
-          velocity: 0.5 // and this is how fast the swipe must travel
-        });
-      }
-      // detect what direction the directive is pointing
-      switch (attrs.zfSwipeClose) {
-        case 'right':
-          swipeDirection = 'swiperight';
-          break;
-        case 'left':
-          swipeDirection = 'swipeleft';
-          break;
-        case 'up':
-          swipeDirection = 'swipeup';
-          break;
-        case 'down':
-          swipeDirection = 'swipedown';
-          break;
-        default:
-          swipeDirection = 'swipe';
-      }
-      hammerElem.on(swipeDirection, function() {
-        foundationApi.publish(attrs.id, 'close');
-      });
-    }
-  }
-
-  zfHardToggle.$inject = ['FoundationApi'];
-
-  function zfHardToggle(foundationApi) {
-    var directive = {
-      restrict: 'A',
-      link: link
-    };
-
-    return directive;
-
-    function link(scope, element, attrs) {
-      element.on('click', function(e) {
-        foundationApi.closeActiveElements({exclude: attrs.zfHardToggle});
-        foundationApi.publish(attrs.zfHardToggle, 'toggle');
-        e.preventDefault();
-      });
-    }
-  }
-
-})();
-
-(function() {
-  'use strict';
-
   angular.module('foundation.iconic', [])
     .service('Iconic', iconic)
     .directive('zfIconic', zfIconic)
@@ -38499,18 +38327,19 @@ angular.module('markdown', [])
 (function() {
   'use strict';
 
-  angular.module('foundation.offcanvas', ['foundation.core'])
-    .directive('zfOffcanvas', zfOffcanvas)
-    .service('FoundationOffcanvas', FoundationOffcanvas)
+  angular.module('foundation.modal', ['foundation.core'])
+    .directive('zfModal', modalDirective)
+    .factory('ModalFactory', ModalFactory)
   ;
 
-  FoundationOffcanvas.$inject = ['FoundationApi'];
+  FoundationModal.$inject = ['FoundationApi', 'ModalFactory'];
 
-  function FoundationOffcanvas(foundationApi) {
+  function FoundationModal(foundationApi, ModalFactory) {
     var service    = {};
 
     service.activate = activate;
     service.deactivate = deactivate;
+    service.newModal = newModal;
 
     return service;
 
@@ -38524,21 +38353,21 @@ angular.module('markdown', [])
       foundationApi.publish(target, 'hide');
     }
 
-    function toggle(target) {
-      foundationApi.publish(target, 'toggle');
+    //new modal has to be controlled via the new instance
+    function newModal(config) {
+      return new ModalFactory(config);
     }
   }
 
-  zfOffcanvas.$inject = ['FoundationApi'];
+  modalDirective.$inject = ['FoundationApi'];
 
-  function zfOffcanvas(foundationApi) {
+  function modalDirective(foundationApi) {
+
     var directive = {
       restrict: 'EA',
-      templateUrl: 'components/offcanvas/offcanvas.html',
+      templateUrl: 'components/modal/modal.html',
       transclude: true,
-      scope: {
-        position: '@'
-      },
+      scope: true,
       replace: true,
       compile: compile
     };
@@ -38546,22 +38375,57 @@ angular.module('markdown', [])
     return directive;
 
     function compile(tElement, tAttrs, transclude) {
-      var type = 'offcanvas';
+      var type = 'modal';
 
       return {
         pre: preLink,
         post: postLink
-      }
+      };
 
       function preLink(scope, iElement, iAttrs, controller) {
-        iAttrs.$set('zf-closable', type);
-        document.body.classList.add('has-off-canvas');
+          iAttrs.$set('zf-closable', type);
       }
 
       function postLink(scope, element, attrs) {
-        scope.position = scope.position || 'left';
+        var dialog = angular.element(element.children()[0]);
 
-        scope.active = false;
+        scope.active = scope.active || false;
+        scope.overlay = attrs.overlay === 'false' ? false : true;
+        scope.overlayClose = attrs.overlayClose === 'false' ? false : true;
+
+        var animationIn = attrs.animationIn || 'fadeIn';
+        var animationOut = attrs.animationOut || 'fadeOut';
+        var overlayIn = 'fadeIn';
+        var overlayOut = 'fadeOut';
+
+        scope.hideOverlay = function() {
+          if(scope.overlayClose) {
+            scope.hide();
+          }
+        };
+
+        scope.hide = function() {
+          scope.active = false;
+          animate();
+          return;
+        };
+
+        scope.show = function() {
+          scope.active = true;
+          animate();
+          dialog.tabIndex = -1;
+          dialog[0].focus();
+          return;
+        };
+
+        scope.toggle = function() {
+          scope.active = !scope.active;
+          animate();
+          return;
+        };
+
+        init();
+
         //setup
         foundationApi.subscribe(attrs.id, function(msg) {
           if(msg === 'show' || msg === 'open') {
@@ -38572,27 +38436,148 @@ angular.module('markdown', [])
             scope.toggle();
           }
 
-          scope.$apply();
+          if (!scope.$root.$$phase) {
+            scope.$apply();
+          }
 
           return;
         });
 
-        scope.hide = function() {
-          scope.active = false;
-          return;
-        };
+        function animate() {
+          //animate both overlay and dialog
+          if(!scope.overlay) {
+            element.css('background', 'transparent');
+          }
 
-        scope.show = function() {
-          scope.active = true;
-          return;
-        };
+          foundationApi.animate(element, scope.active, overlayIn, overlayOut);
+          foundationApi.animate(dialog, scope.active, animationIn, animationOut);
+        }
 
-        scope.toggle = function() {
-          scope.active = !scope.active;
-          return;
-        };
+        function init() {
+          if(scope.active) {
+            scope.show();
+          }
+        }
       }
     }
+  }
+
+  ModalFactory.$inject = ['$http', '$templateCache', '$rootScope', '$compile', '$timeout', 'FoundationApi'];
+
+  function ModalFactory($http, $templateCache, $rootScope, $compile, $timeout, foundationApi) {
+    return modalFactory;
+
+    function modalFactory(config) {
+      var self = this, //for prototype functions
+          container = angular.element(config.container || document.body),
+          id = config.id || foundationApi.generateUuid(),
+          attached = false,
+          destroyed = false,
+          html,
+          element,
+          scope
+      ;
+
+      var props = [
+        'animationIn',
+        'animationOut',
+        'overlay',
+        'overlayClose'
+      ];
+
+      if(config.templateUrl) {
+        //get template
+        $http.get(config.templateUrl, {
+          cache: $templateCache
+        }).then(function (response) {
+          html = response.data;
+          assembleDirective();
+        });
+
+      } else if(config.template) {
+        //use provided template
+        html = config.template;
+        assembleDirective();
+      }
+
+      self.activate = activate;
+      self.deactivate = deactivate;
+      self.toggle = toggle;
+      self.destroy = destroy;
+
+
+      return {
+        activate: activate,
+        deactivate: deactivate,
+        toggle: toggle,
+        destroy: destroy
+      };
+
+      function checkStatus() {
+        if(destroyed) {
+          throw "Error: Modal was destroyed. Delete the object and create a new ModalFactory instance."
+        }
+      }
+
+      function activate() {
+        checkStatus();
+        $timeout(function() {
+          init(true);
+          foundationApi.publish(id, 'show');
+        }, 0, false);
+      }
+
+      function deactivate() {
+        checkStatus();
+        $timeout(function() {
+          init(false);
+          foundationApi.publish(id, 'hide');
+        }, 0, false);
+      }
+
+      function toggle() {
+        checkStatus();
+        $timeout(function() {
+          init(true);
+          foundationApi.publish(id, 'toggle');
+        }, 0, false);
+      }
+
+      function init(state) {
+        if(!attached && html.length > 0) {
+          var modalEl = container.append(element);
+
+          scope.active = state;
+          $compile(element)(scope);
+          attached = true;
+        }
+      }
+
+      function assembleDirective() {
+        html = '<zf-modal id="' + id + '">' + html + '</zf-modal>';
+
+        element = angular.element(html);
+
+        scope = $rootScope.$new();
+
+        for(var prop in props) {
+          if(config[prop]) {
+            element.attr(prop, config[prop]);
+          }
+        }
+      }
+
+      function destroy() {
+        self.deactivate();
+        setTimeout(function() {
+          scope.$destroy();
+          element.remove();
+          destroyed = true;
+        }, 3000);
+      }
+
+    }
+
   }
 
 })();
@@ -38995,6 +38980,243 @@ angular.module('markdown', [])
 (function() {
   'use strict';
 
+  angular.module('foundation.offcanvas', ['foundation.core'])
+    .directive('zfOffcanvas', zfOffcanvas)
+    .service('FoundationOffcanvas', FoundationOffcanvas)
+  ;
+
+  FoundationOffcanvas.$inject = ['FoundationApi'];
+
+  function FoundationOffcanvas(foundationApi) {
+    var service    = {};
+
+    service.activate = activate;
+    service.deactivate = deactivate;
+
+    return service;
+
+    //target should be element ID
+    function activate(target) {
+      foundationApi.publish(target, 'show');
+    }
+
+    //target should be element ID
+    function deactivate(target) {
+      foundationApi.publish(target, 'hide');
+    }
+
+    function toggle(target) {
+      foundationApi.publish(target, 'toggle');
+    }
+  }
+
+  zfOffcanvas.$inject = ['FoundationApi'];
+
+  function zfOffcanvas(foundationApi) {
+    var directive = {
+      restrict: 'EA',
+      templateUrl: 'components/offcanvas/offcanvas.html',
+      transclude: true,
+      scope: {
+        position: '@'
+      },
+      replace: true,
+      compile: compile
+    };
+
+    return directive;
+
+    function compile(tElement, tAttrs, transclude) {
+      var type = 'offcanvas';
+
+      return {
+        pre: preLink,
+        post: postLink
+      }
+
+      function preLink(scope, iElement, iAttrs, controller) {
+        iAttrs.$set('zf-closable', type);
+        document.body.classList.add('has-off-canvas');
+      }
+
+      function postLink(scope, element, attrs) {
+        scope.position = scope.position || 'left';
+
+        scope.active = false;
+        //setup
+        foundationApi.subscribe(attrs.id, function(msg) {
+          if(msg === 'show' || msg === 'open') {
+            scope.show();
+          } else if (msg === 'close' || msg === 'hide') {
+            scope.hide();
+          } else if (msg === 'toggle') {
+            scope.toggle();
+          }
+
+          scope.$apply();
+
+          return;
+        });
+
+        scope.hide = function() {
+          scope.active = false;
+          return;
+        };
+
+        scope.show = function() {
+          scope.active = true;
+          return;
+        };
+
+        scope.toggle = function() {
+          scope.active = !scope.active;
+          return;
+        };
+      }
+    }
+  }
+
+})();
+
+(function() {
+  'use strict';
+
+  angular.module('foundation.panel', ['foundation.core'])
+    .directive('zfPanel', zfPanel)
+    .service('FoundationPanel', FoundationPanel)
+  ;
+
+  FoundationPanel.$inject = ['FoundationApi'];
+
+  function FoundationPanel(foundationApi) {
+    var service    = {};
+
+    service.activate = activate;
+    service.deactivate = deactivate;
+
+    return service;
+
+    //target should be element ID
+    function activate(target) {
+      foundationApi.publish(target, 'show');
+    }
+
+    //target should be element ID
+    function deactivate(target) {
+      foundationApi.publish(target, 'hide');
+    }
+  }
+
+  zfPanel.$inject = ['FoundationApi'];
+
+  function zfPanel(foundationApi) {
+    var directive = {
+      restrict: 'EA',
+      templateUrl: 'components/panel/panel.html',
+      transclude: true,
+      scope: {
+        position: '@?'
+      },
+      replace: true,
+      compile: compile
+    };
+
+    return directive;
+
+    function compile(tElement, tAttrs, transclude) {
+      var type = 'panel';
+
+      return {
+        pre: preLink,
+        post: postLink
+      };
+
+      function preLink(scope, iElement, iAttrs, controller) {
+        iAttrs.$set('zf-closable', type);
+        scope.position = scope.position || 'left';
+        scope.positionClass = 'panel-' + scope.position;
+      }
+
+      function postLink(scope, element, attrs) {
+        scope.active = false;
+        var animationIn, animationOut;
+        var globalQueries = foundationApi.getSettings().mediaQueries;
+
+        //urgh, there must be a better way
+        if(scope.position === 'left') {
+          animationIn  = attrs.animationIn || 'slideInRight';
+          animationOut = attrs.animationOut || 'slideOutLeft';
+        } else if (scope.position === 'right') {
+          animationIn  = attrs.animationIn || 'slideInLeft';
+          animationOut = attrs.animationOut || 'slideOutRight';
+        } else if (scope.position === 'top') {
+          animationIn  = attrs.animationIn || 'slideInDown';
+          animationOut = attrs.animationOut || 'slideOutUp';
+        } else if (scope.position === 'bottom') {
+          animationIn  = attrs.animationIn || 'slideInUp';
+          animationOut = attrs.animationOut || 'slideOutBottom';
+        }
+
+
+        //setup
+        foundationApi.subscribe(attrs.id, function(msg) {
+          if(msg == 'show' || msg == 'open') {
+            scope.show();
+          } else if (msg == 'close' || msg == 'hide') {
+            scope.hide();
+          } else if (msg == 'toggle') {
+            scope.toggle();
+          }
+
+          scope.$apply();
+
+          return;
+        });
+
+        scope.hide = function() {
+          if(scope.active){
+            scope.active = false;
+            foundationApi.animate(element, scope.active, animationIn, animationOut);
+          }
+
+          return;
+        };
+
+        scope.show = function() {
+          if(!scope.active){
+            scope.active = true;
+            foundationApi.animate(element, scope.active, animationIn, animationOut);
+          }
+
+          return;
+        };
+
+        scope.toggle = function() {
+          scope.active = !scope.active;
+          foundationApi.animate(element, scope.active, animationIn, animationOut);
+          
+          return;
+        };
+
+        element.on('click', function(e) {
+          //check sizing
+          var srcEl = e.srcElement;
+
+          if(!matchMedia(globalQueries.medium).matches && srcEl.href && srcEl.href.length > 0) {
+            //hide element if it can't match at least medium
+            scope.hide();
+            foundationApi.animate(element, scope.active, animationIn, animationOut);
+          }
+        });
+      }
+    }
+  }
+
+})();
+
+(function() {
+  'use strict';
+
   angular.module('foundation.popup', ['foundation.core'])
     .directive('zfPopup', zfPopup)
     .directive('zfPopupToggle', zfPopupToggle)
@@ -39148,142 +39370,6 @@ angular.module('markdown', [])
         foundationApi.publish(target, ['toggle', id]);
         e.preventDefault();
       });
-    }
-  }
-
-})();
-
-(function() {
-  'use strict';
-
-  angular.module('foundation.panel', ['foundation.core'])
-    .directive('zfPanel', zfPanel)
-    .service('FoundationPanel', FoundationPanel)
-  ;
-
-  FoundationPanel.$inject = ['FoundationApi'];
-
-  function FoundationPanel(foundationApi) {
-    var service    = {};
-
-    service.activate = activate;
-    service.deactivate = deactivate;
-
-    return service;
-
-    //target should be element ID
-    function activate(target) {
-      foundationApi.publish(target, 'show');
-    }
-
-    //target should be element ID
-    function deactivate(target) {
-      foundationApi.publish(target, 'hide');
-    }
-  }
-
-  zfPanel.$inject = ['FoundationApi'];
-
-  function zfPanel(foundationApi) {
-    var directive = {
-      restrict: 'EA',
-      templateUrl: 'components/panel/panel.html',
-      transclude: true,
-      scope: {
-        position: '@?'
-      },
-      replace: true,
-      compile: compile
-    };
-
-    return directive;
-
-    function compile(tElement, tAttrs, transclude) {
-      var type = 'panel';
-
-      return {
-        pre: preLink,
-        post: postLink
-      };
-
-      function preLink(scope, iElement, iAttrs, controller) {
-        iAttrs.$set('zf-closable', type);
-        scope.position = scope.position || 'left';
-        scope.positionClass = 'panel-' + scope.position;
-      }
-
-      function postLink(scope, element, attrs) {
-        scope.active = false;
-        var animationIn, animationOut;
-        var globalQueries = foundationApi.getSettings().mediaQueries;
-
-        //urgh, there must be a better way
-        if(scope.position === 'left') {
-          animationIn  = attrs.animationIn || 'slideInRight';
-          animationOut = attrs.animationOut || 'slideOutLeft';
-        } else if (scope.position === 'right') {
-          animationIn  = attrs.animationIn || 'slideInLeft';
-          animationOut = attrs.animationOut || 'slideOutRight';
-        } else if (scope.position === 'top') {
-          animationIn  = attrs.animationIn || 'slideInDown';
-          animationOut = attrs.animationOut || 'slideOutUp';
-        } else if (scope.position === 'bottom') {
-          animationIn  = attrs.animationIn || 'slideInUp';
-          animationOut = attrs.animationOut || 'slideOutBottom';
-        }
-
-
-        //setup
-        foundationApi.subscribe(attrs.id, function(msg) {
-          if(msg == 'show' || msg == 'open') {
-            scope.show();
-          } else if (msg == 'close' || msg == 'hide') {
-            scope.hide();
-          } else if (msg == 'toggle') {
-            scope.toggle();
-          }
-
-          scope.$apply();
-
-          return;
-        });
-
-        scope.hide = function() {
-          if(scope.active){
-            scope.active = false;
-            foundationApi.animate(element, scope.active, animationIn, animationOut);
-          }
-
-          return;
-        };
-
-        scope.show = function() {
-          if(!scope.active){
-            scope.active = true;
-            foundationApi.animate(element, scope.active, animationIn, animationOut);
-          }
-
-          return;
-        };
-
-        scope.toggle = function() {
-          scope.active = !scope.active;
-          foundationApi.animate(element, scope.active, animationIn, animationOut);
-          
-          return;
-        };
-
-        element.on('click', function(e) {
-          //check sizing
-          var srcEl = e.srcElement;
-
-          if(!matchMedia(globalQueries.medium).matches && srcEl.href && srcEl.href.length > 0) {
-            //hide element if it can't match at least medium
-            scope.hide();
-            foundationApi.animate(element, scope.active, animationIn, animationOut);
-          }
-        });
-      }
     }
   }
 
@@ -39604,257 +39690,171 @@ angular.module('markdown', [])
 (function() {
   'use strict';
 
-  angular.module('foundation.modal', ['foundation.core'])
-    .directive('zfModal', modalDirective)
-    .factory('ModalFactory', ModalFactory)
+  angular.module('foundation.common', ['foundation.core'])
+    .directive('zfClose', zfClose)
+    .directive('zfOpen', zfOpen)
+    .directive('zfToggle', zfToggle)
+    .directive('zfEscClose', zfEscClose)
+    .directive('zfSwipeClose', zfSwipeClose)
+    .directive('zfHardToggle', zfHardToggle)
   ;
 
-  FoundationModal.$inject = ['FoundationApi', 'ModalFactory'];
+  zfClose.$inject = ['FoundationApi'];
 
-  function FoundationModal(foundationApi, ModalFactory) {
-    var service    = {};
-
-    service.activate = activate;
-    service.deactivate = deactivate;
-    service.newModal = newModal;
-
-    return service;
-
-    //target should be element ID
-    function activate(target) {
-      foundationApi.publish(target, 'show');
-    }
-
-    //target should be element ID
-    function deactivate(target) {
-      foundationApi.publish(target, 'hide');
-    }
-
-    //new modal has to be controlled via the new instance
-    function newModal(config) {
-      return new ModalFactory(config);
-    }
-  }
-
-  modalDirective.$inject = ['FoundationApi'];
-
-  function modalDirective(foundationApi) {
-
+  function zfClose(foundationApi) {
     var directive = {
-      restrict: 'EA',
-      templateUrl: 'components/modal/modal.html',
-      transclude: true,
-      scope: true,
-      replace: true,
-      compile: compile
+      restrict: 'A',
+      link: link
     };
 
     return directive;
 
-    function compile(tElement, tAttrs, transclude) {
-      var type = 'modal';
+    function link(scope, element, attrs) {
+      var targetId = '';
+      if (attrs.zfClose) {
+        targetId = attrs.zfClose;
+      } else {
+        var parentElement= false;
+        var tempElement = element.parent();
+        //find parent modal
+        while(parentElement === false) {
+          if(tempElement[0].nodeName == 'BODY') {
+            parentElement = '';
+          }
 
-      return {
-        pre: preLink,
-        post: postLink
-      };
+          if(typeof tempElement.attr('zf-closable') !== 'undefined' && tempElement.attr('zf-closable') !== false) {
+            parentElement = tempElement;
+          }
 
-      function preLink(scope, iElement, iAttrs, controller) {
-          iAttrs.$set('zf-closable', type);
+          tempElement = tempElement.parent();
+        }
+        targetId = parentElement.attr('id');
       }
 
-      function postLink(scope, element, attrs) {
-        var dialog = angular.element(element.children()[0]);
-
-        scope.active = scope.active || false;
-        scope.overlay = attrs.overlay === 'false' ? false : true;
-        scope.overlayClose = attrs.overlayClose === 'false' ? false : true;
-
-        var animationIn = attrs.animationIn || 'fadeIn';
-        var animationOut = attrs.animationOut || 'fadeOut';
-        var overlayIn = 'fadeIn';
-        var overlayOut = 'fadeOut';
-
-        scope.hideOverlay = function() {
-          if(scope.overlayClose) {
-            scope.hide();
-          }
-        };
-
-        scope.hide = function() {
-          scope.active = false;
-          animate();
-          return;
-        };
-
-        scope.show = function() {
-          scope.active = true;
-          animate();
-          dialog.tabIndex = -1;
-          dialog[0].focus();
-          return;
-        };
-
-        scope.toggle = function() {
-          scope.active = !scope.active;
-          animate();
-          return;
-        };
-
-        init();
-
-        //setup
-        foundationApi.subscribe(attrs.id, function(msg) {
-          if(msg === 'show' || msg === 'open') {
-            scope.show();
-          } else if (msg === 'close' || msg === 'hide') {
-            scope.hide();
-          } else if (msg === 'toggle') {
-            scope.toggle();
-          }
-
-          if (!scope.$root.$$phase) {
-            scope.$apply();
-          }
-
-          return;
-        });
-
-        function animate() {
-          //animate both overlay and dialog
-          if(!scope.overlay) {
-            element.css('background', 'transparent');
-          }
-
-          foundationApi.animate(element, scope.active, overlayIn, overlayOut);
-          foundationApi.animate(dialog, scope.active, animationIn, animationOut);
-        }
-
-        function init() {
-          if(scope.active) {
-            scope.show();
-          }
-        }
-      }
+      element.on('click', function(e) {
+        foundationApi.publish(targetId, 'close');
+        e.preventDefault();
+      });
     }
   }
 
-  ModalFactory.$inject = ['$http', '$templateCache', '$rootScope', '$compile', '$timeout', 'FoundationApi'];
+  zfOpen.$inject = ['FoundationApi'];
 
-  function ModalFactory($http, $templateCache, $rootScope, $compile, $timeout, foundationApi) {
-    return modalFactory;
+  function zfOpen(foundationApi) {
+    var directive = {
+      restrict: 'A',
+      link: link
+    };
 
-    function modalFactory(config) {
-      var self = this, //for prototype functions
-          container = angular.element(config.container || document.body),
-          id = config.id || foundationApi.generateUuid(),
-          attached = false,
-          destroyed = false,
-          html,
-          element,
-          scope
-      ;
+    return directive;
 
-      var props = [
-        'animationIn',
-        'animationOut',
-        'overlay',
-        'overlayClose'
-      ];
+    function link(scope, element, attrs) {
+      element.on('click', function(e) {
+        foundationApi.publish(attrs.zfOpen, 'open');
+        e.preventDefault();
+      });
+    }
+  }
 
-      if(config.templateUrl) {
-        //get template
-        $http.get(config.templateUrl, {
-          cache: $templateCache
-        }).then(function (response) {
-          html = response.data;
-          assembleDirective();
-        });
+  zfToggle.$inject = ['FoundationApi'];
 
-      } else if(config.template) {
-        //use provided template
-        html = config.template;
-        assembleDirective();
-      }
-
-      self.activate = activate;
-      self.deactivate = deactivate;
-      self.toggle = toggle;
-      self.destroy = destroy;
-
-
-      return {
-        activate: activate,
-        deactivate: deactivate,
-        toggle: toggle,
-        destroy: destroy
-      };
-
-      function checkStatus() {
-        if(destroyed) {
-          throw "Error: Modal was destroyed. Delete the object and create a new ModalFactory instance."
-        }
-      }
-
-      function activate() {
-        checkStatus();
-        $timeout(function() {
-          init(true);
-          foundationApi.publish(id, 'show');
-        }, 0, false);
-      }
-
-      function deactivate() {
-        checkStatus();
-        $timeout(function() {
-          init(false);
-          foundationApi.publish(id, 'hide');
-        }, 0, false);
-      }
-
-      function toggle() {
-        checkStatus();
-        $timeout(function() {
-          init(true);
-          foundationApi.publish(id, 'toggle');
-        }, 0, false);
-      }
-
-      function init(state) {
-        if(!attached && html.length > 0) {
-          var modalEl = container.append(element);
-
-          scope.active = state;
-          $compile(element)(scope);
-          attached = true;
-        }
-      }
-
-      function assembleDirective() {
-        html = '<zf-modal id="' + id + '">' + html + '</zf-modal>';
-
-        element = angular.element(html);
-
-        scope = $rootScope.$new();
-
-        for(var prop in props) {
-          if(config[prop]) {
-            element.attr(prop, config[prop]);
-          }
-        }
-      }
-
-      function destroy() {
-        self.deactivate();
-        setTimeout(function() {
-          scope.$destroy();
-          element.remove();
-          destroyed = true;
-        }, 3000);
-      }
-
+  function zfToggle(foundationApi) {
+    var directive = {
+      restrict: 'A',
+      link: link
     }
 
+    return directive;
+
+    function link(scope, element, attrs) {
+      element.on('click', function(e) {
+        foundationApi.publish(attrs.zfToggle, 'toggle');
+        e.preventDefault();
+      });
+    }
+  }
+
+  zfEscClose.$inject = ['FoundationApi'];
+
+  function zfEscClose(foundationApi) {
+    var directive = {
+      restrict: 'A',
+      link: link
+    };
+
+    return directive;
+
+    function link(scope, element, attrs) {
+      element.on('keyup', function(e) {
+        if (e.keyCode === 27) {
+          foundationApi.closeActiveElements();
+        }
+        e.preventDefault();
+      });
+    }
+  }
+
+  zfSwipeClose.$inject = ['FoundationApi'];
+
+  function zfSwipeClose(foundationApi) {
+    var directive = {
+      restrict: 'A',
+      link: link
+    };
+    return directive;
+
+    function link($scope, element, attrs) {
+      var swipeDirection;
+      var hammerElem;
+      if (Hammer) {
+        hammerElem = new Hammer(element[0]);
+        // set the options for swipe (to make them a bit more forgiving in detection)
+        hammerElem.get('swipe').set({
+          direction: Hammer.DIRECTION_ALL,
+          threshold: 5, // this is how far the swipe has to travel
+          velocity: 0.5 // and this is how fast the swipe must travel
+        });
+      }
+      // detect what direction the directive is pointing
+      switch (attrs.zfSwipeClose) {
+        case 'right':
+          swipeDirection = 'swiperight';
+          break;
+        case 'left':
+          swipeDirection = 'swipeleft';
+          break;
+        case 'up':
+          swipeDirection = 'swipeup';
+          break;
+        case 'down':
+          swipeDirection = 'swipedown';
+          break;
+        default:
+          swipeDirection = 'swipe';
+      }
+      hammerElem.on(swipeDirection, function() {
+        foundationApi.publish(attrs.id, 'close');
+      });
+    }
+  }
+
+  zfHardToggle.$inject = ['FoundationApi'];
+
+  function zfHardToggle(foundationApi) {
+    var directive = {
+      restrict: 'A',
+      link: link
+    };
+
+    return directive;
+
+    function link(scope, element, attrs) {
+      element.on('click', function(e) {
+        foundationApi.closeActiveElements({exclude: attrs.zfHardToggle});
+        foundationApi.publish(attrs.zfHardToggle, 'toggle');
+        e.preventDefault();
+      });
+    }
   }
 
 })();

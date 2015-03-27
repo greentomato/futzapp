@@ -12,7 +12,7 @@
 				</div>
 				<div class="player-profile-info">
 					<h4>{{selectedUser.name}} {{selectedUser.lastname}}</h4> 
-					<p ng-if="selectedUser.fanOf != ''" class="match-owner"><i class="fa fa-shield"></i> Hincha de <strong>{{selectedUser.fanOf}}</strong></p>
+					<p ng-if="selectedUser.fanOf != undefined && selectedUser.fanOf != ''" class="match-owner"><i class="fa fa-shield"></i> Hincha de <strong>{{selectedUser.fanOf}}</strong></p>
 				</div>
 				<!--<hr>
 				<div class="grid-block small-2-up align-center">
