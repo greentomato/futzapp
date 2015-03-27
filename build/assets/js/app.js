@@ -1,7 +1,7 @@
 /*
  * Set PRD or DEV mode
  */
-var prd = false;
+var prd = true;
 
 /* 
  * Facebook share message 
@@ -375,8 +375,6 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 					xfbml: true 
 				});
 				UsersAuth.watchAuthenticationStatusChange();
-				
-				$rootScope.loading = false;
 			};
 
 			// Are you familiar to IIFE ( http://bit.ly/iifewdb ) ?
