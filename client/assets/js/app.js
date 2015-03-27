@@ -254,7 +254,8 @@
 			/* HISTORY METHODS */
 			$rootScope.$on('$routeChangeSuccess', function() {
 				$rootScope.history.push($location.$$path);
-				$rootScope.loading = false;
+				if($location.$$path != "/")
+					$rootScope.loading = false;
 			});
 			
 			/* FB METHODS SDK */

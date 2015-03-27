@@ -366,7 +366,8 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 			/* HISTORY METHODS */
 			$rootScope.$on('$routeChangeSuccess', function() {
 				$rootScope.history.push($location.$$path);
-				$rootScope.loading = false;
+				if($location.$$path != "/")
+					$rootScope.loading = false;
 			});
 			
 			/* FB METHODS SDK */
