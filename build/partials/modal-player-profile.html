@@ -8,13 +8,13 @@
 		<div class="card">
 			<div class="card-section">
 				<div class="player-profile-picture">
-					<img src="{{player.photo_url == NULL ? 'assets/img/profile-placeholder.png': player.photo_url}}" alt="">
+					<img src="{{selectedUser.photo_url == NULL ? 'assets/img/profile-placeholder.png': selectedUser.photo_url}}" alt="">
 				</div>
 				<div class="player-profile-info">
-					<h4>{{player.name}} {{player.lastname}}</h4> 
-					<p ng-if="player.fanOf != ''" class="match-owner"><i class="fa fa-shield"></i> Hincha de <strong>{{player.fanOf}}</strong></p>
+					<h4>{{selectedUser.name}} {{selectedUser.lastname}}</h4> 
+					<p ng-if="selectedUser.fanOf != ''" class="match-owner"><i class="fa fa-shield"></i> Hincha de <strong>{{selectedUser.fanOf}}</strong></p>
 				</div>
-				<hr>
+				<!--<hr>
 				<div class="grid-block small-2-up align-center">
 					<div class="grid-block player-stats">
 						<span class="matches-played">{{matchesPlayed}} <i class="fa fa-thumbs-up"></i></span>
@@ -27,13 +27,13 @@
 						<p>Futzapps <br>armados</p>
 					</div>
 				</div>
-				
+				-->
 			</div>
 		</div>
 	</div>
 	
-	<div ng-show="adminMode">
-		<!--<a class="alert expand hollow button"><i class="fa fa-thumbs-down"></i>&nbsp; Dar de baja</a>-->
+	<div ng-show="adminMode && selectedUser.id != $root.user.id">
+		<a ng-click="deletePlayer(selectedUser.id)" class="alert expand hollow button"><i class="fa fa-thumbs-down"></i>&nbsp; Dar de baja</a>
 	</div>
 	
 
