@@ -6586,7 +6586,8 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     font-size: 1rem; }
   .match-actions .small-action {
     color: #607D8B;
-    margin-bottom: 1rem; }
+    margin-bottom: 1rem;
+    display: block; }
 
 .match-owner {
   margin-bottom: 0;
