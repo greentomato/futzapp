@@ -343,11 +343,11 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 		    });
 	    };
 	    
-		$scope.newPlayerName = "";
-	    $scope.selectedTeam = "";
+		$scope.selectedTeam = "";
 		$scope.changeSelectedTeam = function(team){
 	    	$scope.selectedTeam = team;
 	    };
+		$scope.newPlayer = { name: "" };
 	    $scope.addPlayer = function(playerName){
 	    	if(playerName == "" || playerName == undefined){
 	    		showAlert("Error", "Tenés que poner el nombre de tu amigo!");
@@ -438,7 +438,6 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 						if(parseInt($scope.teamA.missingPlayers) + parseInt($scope.teamB.missingPlayers) == 1)
 							Notifications.completo($scope.match, $scope.guests);
 						
-						$scope.newPlayerName = "";
 						$scope.selectedTeam = "";
 						$scope.match = $scope.renderMatch();
 						$scope.guests = $scope.renderGuests();
@@ -515,14 +514,15 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    };
 }]);
 
-fulboControllers.controller('ProfileController', ['$rootScope', '$scope', 'UsersAuth', 'Users', 
-  function($rootScope, $scope, UsersAuth, Users) {
+fulboControllers.controller('ProfileController', ['$rootScope', '$scope', '$location', 'UsersAuth', 'Users', 
+  function($rootScope, $scope, $location, UsersAuth, Users) {
 	//TODO: calculate games played
 	$scope.gamesPlayed = 0;
 	
 	$scope.saveUserData = function() {
 		Users.update($rootScope.user, function(){
 			console.log("user updated!");
+			$location.path( "/home" );
 		}, function(){
 			console.log("user update failed!");
 		});

@@ -6,6 +6,7 @@
 	<div ng-if="adminMode" ng-include="" src="'partials/modal-add-player.html'"></div>
 	<div ng-if="adminMode" ng-include="" src="'partials/modal-assign-team.html'"></div>
 	<div ng-if="adminMode" ng-include="" src="'partials/modal-team-colors.html'"></div>
+	<div ng-if="adminMode" ng-include="" src="'partials/modal-cancel-match.html'"></div>
 	<div ng-include="" src="'partials/modal-player-profile.html'"></div>
 	<modal-field field="match.field"></modal-field>
 	
@@ -47,8 +48,8 @@
 
 				<div ng-if="adminMode" class="match-actions">
 					<a class="warning expand button" zf-open="invitePlayers"><i class="fa fa-bullhorn"></i>&nbsp; Convocar jugadores</a>
-
-					<a class="small-action" zf-open="addPlayers"><i class="fa fa-plus"></i> Agregar jugador a mano</a>
+					<a class="small-action" ng-click="newPlayer.name = ''" zf-open="addPlayers"><i class="fa fa-plus"></i> Agregar jugador a mano</a>
+					<a class="small-action" zf-open="cancelMatch"><i class="fa fa-minus"></i> Cancelar partido</a>
 				</div>
 				<div ng-if="!adminMode" class="match-actions">
      				<div ng-include="" src="'partials/match-confirm-buttons.html'"></div>
