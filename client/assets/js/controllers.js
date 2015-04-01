@@ -170,6 +170,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    	Matches.update($scope.match, function(){
 	    		/* envio mail a todos los invitados */
 				Notifications.cancelado($scope.match, $scope.guests);
+				$location.path( "/home" );
 	    	});
 	    };
 		
@@ -346,6 +347,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 		$scope.selectedTeam = "";
 		$scope.changeSelectedTeam = function(team){
 	    	$scope.selectedTeam = team;
+			$scope.newPlayer.name = "";
 	    };
 		$scope.newPlayer = { name: "" };
 	    $scope.addPlayer = function(playerName){

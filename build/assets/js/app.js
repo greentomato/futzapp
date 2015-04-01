@@ -368,6 +368,13 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 				$rootScope.history.push($location.$$path);
 				if($location.$$path != "/")
 					$rootScope.loading = false;
+				else {
+					setTimeout(function(){ 
+						$rootScope.$apply(function(){
+							$rootScope.loading = false;
+						});
+					}, 3000);
+				}
 			});
 			
 			/* FB METHODS SDK */
@@ -588,6 +595,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    	Matches.update($scope.match, function(){
 	    		/* envio mail a todos los invitados */
 				Notifications.cancelado($scope.match, $scope.guests);
+				$location.path( "/home" );
 	    	});
 	    };
 		
@@ -764,6 +772,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 		$scope.selectedTeam = "";
 		$scope.changeSelectedTeam = function(team){
 	    	$scope.selectedTeam = team;
+			$scope.newPlayer.name = "";
 	    };
 		$scope.newPlayer = { name: "" };
 	    $scope.addPlayer = function(playerName){

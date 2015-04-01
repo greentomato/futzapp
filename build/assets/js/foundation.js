@@ -37745,170 +37745,106 @@ angular.module('markdown', [])
 (function() {
   'use strict';
 
-  angular.module('foundation.common', ['foundation.core'])
-    .directive('zfClose', zfClose)
-    .directive('zfOpen', zfOpen)
-    .directive('zfToggle', zfToggle)
-    .directive('zfEscClose', zfEscClose)
-    .directive('zfSwipeClose', zfSwipeClose)
-    .directive('zfHardToggle', zfHardToggle)
+  angular.module('foundation.accordion', [])
+    .controller('ZfAccordionController', zfAccordionController)
+    .directive('zfAccordion', zfAccordion)
+    .directive('zfAccordionItem', zfAccordionItem)
   ;
 
-  zfClose.$inject = ['FoundationApi'];
+  zfAccordionController.$inject = ['$scope'];
 
-  function zfClose(foundationApi) {
-    var directive = {
-      restrict: 'A',
-      link: link
-    };
+  function zfAccordionController($scope) {
+    var controller = this;
+    var sections = controller.sections = $scope.sections = [];
+    var multiOpen = controller.multiOpen = $scope.multiOpen = $scope.multiOpen || false;
+    var collapsible = controller.collapsible = $scope.collapsible = $scope.multiOpen || $scope.collapsible || true; //multi open infers a collapsible true
+    var autoOpen = controller.autoOpen = $scope.autoOpen = $scope.autoOpen || true; //auto open opens first tab on render
 
-    return directive;
-
-    function link(scope, element, attrs) {
-      var targetId = '';
-      if (attrs.zfClose) {
-        targetId = attrs.zfClose;
-      } else {
-        var parentElement= false;
-        var tempElement = element.parent();
-        //find parent modal
-        while(parentElement === false) {
-          if(tempElement[0].nodeName == 'BODY') {
-            parentElement = '';
+    controller.select = function(selectSection) {
+      sections.forEach(function(section) {
+        //if multi open is allowed, toggle a tab
+        if(controller.multiOpen) {
+          if(section.scope === selectSection) {
+            section.scope.active = !section.scope.active;
           }
-
-          if(typeof tempElement.attr('zf-closable') !== 'undefined' && tempElement.attr('zf-closable') !== false) {
-            parentElement = tempElement;
+        } else {
+          //non  multi open will close all tabs and open one
+          if(section.scope === selectSection) {
+            //if collapsible is allowed, a tab will toggle
+            section.scope.active = collapsible ? !section.scope.active : true;
+          } else {
+            section.scope.active = false;
           }
-
-          tempElement = tempElement.parent();
         }
-        targetId = parentElement.attr('id');
+
+      });
+    };
+
+    controller.addSection = function addsection(sectionScope) {
+      sections.push({ scope: sectionScope });
+
+      if(sections.length === 1 && autoOpen === true) {
+        sections[0].active = true;
+        sections[0].scope.active = true;
       }
+    };
 
-      element.on('click', function(e) {
-        foundationApi.publish(targetId, 'close');
-        e.preventDefault();
+    controller.closeAll = function() {
+      sections.forEach(function(section) {
+        section.scope.active = false;
       });
-    }
+    };
   }
 
-  zfOpen.$inject = ['FoundationApi'];
-
-  function zfOpen(foundationApi) {
+  function zfAccordion() {
     var directive = {
-      restrict: 'A',
+      restrict: 'EA',
+      transclude: 'true',
+      replace: true,
+      templateUrl: 'components/accordion/accordion.html',
+      controller: 'ZfAccordionController',
+      scope: {
+        multiOpen: '@?',
+        collapsible: '@?',
+        autoOpen: '@?'
+      },
       link: link
     };
 
     return directive;
 
-    function link(scope, element, attrs) {
-      element.on('click', function(e) {
-        foundationApi.publish(attrs.zfOpen, 'open');
-        e.preventDefault();
-      });
+    function link(scope, element, attrs, controller) {
+      scope.multiOpen = controller.multiOpen = scope.multiOpen === "true" ? true : false;
+      scope.collapsible = controller.collapsible = scope.collapsible === "true" ? true : false;
+      scope.autoOpen = controller.autoOpen = scope.autoOpen === "true" ? true : false;
     }
   }
 
-  zfToggle.$inject = ['FoundationApi'];
-
-  function zfToggle(foundationApi) {
+  //accordion item
+  function zfAccordionItem() {
     var directive = {
-      restrict: 'A',
-      link: link
-    }
-
-    return directive;
-
-    function link(scope, element, attrs) {
-      element.on('click', function(e) {
-        foundationApi.publish(attrs.zfToggle, 'toggle');
-        e.preventDefault();
-      });
-    }
-  }
-
-  zfEscClose.$inject = ['FoundationApi'];
-
-  function zfEscClose(foundationApi) {
-    var directive = {
-      restrict: 'A',
-      link: link
+        restrict: 'EA',
+        templateUrl: 'components/accordion/accordion-item.html',
+        transclude: true,
+        scope: {
+          title: '@'
+        },
+        require: '^zfAccordion',
+        replace: true,
+        controller: function() {},
+        link: link
     };
 
     return directive;
 
-    function link(scope, element, attrs) {
-      element.on('keyup', function(e) {
-        if (e.keyCode === 27) {
-          foundationApi.closeActiveElements();
-        }
-        e.preventDefault();
-      });
-    }
-  }
+    function link(scope, element, attrs, controller, transclude) {
+      scope.active = false;
+      controller.addSection(scope);
 
-  zfSwipeClose.$inject = ['FoundationApi'];
+      scope.activate = function() {
+        controller.select(scope);
+      };
 
-  function zfSwipeClose(foundationApi) {
-    var directive = {
-      restrict: 'A',
-      link: link
-    };
-    return directive;
-
-    function link($scope, element, attrs) {
-      var swipeDirection;
-      var hammerElem;
-      if (Hammer) {
-        hammerElem = new Hammer(element[0]);
-        // set the options for swipe (to make them a bit more forgiving in detection)
-        hammerElem.get('swipe').set({
-          direction: Hammer.DIRECTION_ALL,
-          threshold: 5, // this is how far the swipe has to travel
-          velocity: 0.5 // and this is how fast the swipe must travel
-        });
-      }
-      // detect what direction the directive is pointing
-      switch (attrs.zfSwipeClose) {
-        case 'right':
-          swipeDirection = 'swiperight';
-          break;
-        case 'left':
-          swipeDirection = 'swipeleft';
-          break;
-        case 'up':
-          swipeDirection = 'swipeup';
-          break;
-        case 'down':
-          swipeDirection = 'swipedown';
-          break;
-        default:
-          swipeDirection = 'swipe';
-      }
-      hammerElem.on(swipeDirection, function() {
-        foundationApi.publish(attrs.id, 'close');
-      });
-    }
-  }
-
-  zfHardToggle.$inject = ['FoundationApi'];
-
-  function zfHardToggle(foundationApi) {
-    var directive = {
-      restrict: 'A',
-      link: link
-    };
-
-    return directive;
-
-    function link(scope, element, attrs) {
-      element.on('click', function(e) {
-        foundationApi.closeActiveElements({exclude: attrs.zfHardToggle});
-        foundationApi.publish(attrs.zfHardToggle, 'toggle');
-        e.preventDefault();
-      });
     }
   }
 
@@ -39754,106 +39690,170 @@ angular.module('markdown', [])
 (function() {
   'use strict';
 
-  angular.module('foundation.accordion', [])
-    .controller('ZfAccordionController', zfAccordionController)
-    .directive('zfAccordion', zfAccordion)
-    .directive('zfAccordionItem', zfAccordionItem)
+  angular.module('foundation.common', ['foundation.core'])
+    .directive('zfClose', zfClose)
+    .directive('zfOpen', zfOpen)
+    .directive('zfToggle', zfToggle)
+    .directive('zfEscClose', zfEscClose)
+    .directive('zfSwipeClose', zfSwipeClose)
+    .directive('zfHardToggle', zfHardToggle)
   ;
 
-  zfAccordionController.$inject = ['$scope'];
+  zfClose.$inject = ['FoundationApi'];
 
-  function zfAccordionController($scope) {
-    var controller = this;
-    var sections = controller.sections = $scope.sections = [];
-    var multiOpen = controller.multiOpen = $scope.multiOpen = $scope.multiOpen || false;
-    var collapsible = controller.collapsible = $scope.collapsible = $scope.multiOpen || $scope.collapsible || true; //multi open infers a collapsible true
-    var autoOpen = controller.autoOpen = $scope.autoOpen = $scope.autoOpen || true; //auto open opens first tab on render
-
-    controller.select = function(selectSection) {
-      sections.forEach(function(section) {
-        //if multi open is allowed, toggle a tab
-        if(controller.multiOpen) {
-          if(section.scope === selectSection) {
-            section.scope.active = !section.scope.active;
-          }
-        } else {
-          //non  multi open will close all tabs and open one
-          if(section.scope === selectSection) {
-            //if collapsible is allowed, a tab will toggle
-            section.scope.active = collapsible ? !section.scope.active : true;
-          } else {
-            section.scope.active = false;
-          }
-        }
-
-      });
-    };
-
-    controller.addSection = function addsection(sectionScope) {
-      sections.push({ scope: sectionScope });
-
-      if(sections.length === 1 && autoOpen === true) {
-        sections[0].active = true;
-        sections[0].scope.active = true;
-      }
-    };
-
-    controller.closeAll = function() {
-      sections.forEach(function(section) {
-        section.scope.active = false;
-      });
-    };
-  }
-
-  function zfAccordion() {
+  function zfClose(foundationApi) {
     var directive = {
-      restrict: 'EA',
-      transclude: 'true',
-      replace: true,
-      templateUrl: 'components/accordion/accordion.html',
-      controller: 'ZfAccordionController',
-      scope: {
-        multiOpen: '@?',
-        collapsible: '@?',
-        autoOpen: '@?'
-      },
+      restrict: 'A',
       link: link
     };
 
     return directive;
 
-    function link(scope, element, attrs, controller) {
-      scope.multiOpen = controller.multiOpen = scope.multiOpen === "true" ? true : false;
-      scope.collapsible = controller.collapsible = scope.collapsible === "true" ? true : false;
-      scope.autoOpen = controller.autoOpen = scope.autoOpen === "true" ? true : false;
+    function link(scope, element, attrs) {
+      var targetId = '';
+      if (attrs.zfClose) {
+        targetId = attrs.zfClose;
+      } else {
+        var parentElement= false;
+        var tempElement = element.parent();
+        //find parent modal
+        while(parentElement === false) {
+          if(tempElement[0].nodeName == 'BODY') {
+            parentElement = '';
+          }
+
+          if(typeof tempElement.attr('zf-closable') !== 'undefined' && tempElement.attr('zf-closable') !== false) {
+            parentElement = tempElement;
+          }
+
+          tempElement = tempElement.parent();
+        }
+        targetId = parentElement.attr('id');
+      }
+
+      element.on('click', function(e) {
+        foundationApi.publish(targetId, 'close');
+        e.preventDefault();
+      });
     }
   }
 
-  //accordion item
-  function zfAccordionItem() {
+  zfOpen.$inject = ['FoundationApi'];
+
+  function zfOpen(foundationApi) {
     var directive = {
-        restrict: 'EA',
-        templateUrl: 'components/accordion/accordion-item.html',
-        transclude: true,
-        scope: {
-          title: '@'
-        },
-        require: '^zfAccordion',
-        replace: true,
-        controller: function() {},
-        link: link
+      restrict: 'A',
+      link: link
     };
 
     return directive;
 
-    function link(scope, element, attrs, controller, transclude) {
-      scope.active = false;
-      controller.addSection(scope);
+    function link(scope, element, attrs) {
+      element.on('click', function(e) {
+        foundationApi.publish(attrs.zfOpen, 'open');
+        e.preventDefault();
+      });
+    }
+  }
 
-      scope.activate = function() {
-        controller.select(scope);
-      };
+  zfToggle.$inject = ['FoundationApi'];
 
+  function zfToggle(foundationApi) {
+    var directive = {
+      restrict: 'A',
+      link: link
+    }
+
+    return directive;
+
+    function link(scope, element, attrs) {
+      element.on('click', function(e) {
+        foundationApi.publish(attrs.zfToggle, 'toggle');
+        e.preventDefault();
+      });
+    }
+  }
+
+  zfEscClose.$inject = ['FoundationApi'];
+
+  function zfEscClose(foundationApi) {
+    var directive = {
+      restrict: 'A',
+      link: link
+    };
+
+    return directive;
+
+    function link(scope, element, attrs) {
+      element.on('keyup', function(e) {
+        if (e.keyCode === 27) {
+          foundationApi.closeActiveElements();
+        }
+        e.preventDefault();
+      });
+    }
+  }
+
+  zfSwipeClose.$inject = ['FoundationApi'];
+
+  function zfSwipeClose(foundationApi) {
+    var directive = {
+      restrict: 'A',
+      link: link
+    };
+    return directive;
+
+    function link($scope, element, attrs) {
+      var swipeDirection;
+      var hammerElem;
+      if (Hammer) {
+        hammerElem = new Hammer(element[0]);
+        // set the options for swipe (to make them a bit more forgiving in detection)
+        hammerElem.get('swipe').set({
+          direction: Hammer.DIRECTION_ALL,
+          threshold: 5, // this is how far the swipe has to travel
+          velocity: 0.5 // and this is how fast the swipe must travel
+        });
+      }
+      // detect what direction the directive is pointing
+      switch (attrs.zfSwipeClose) {
+        case 'right':
+          swipeDirection = 'swiperight';
+          break;
+        case 'left':
+          swipeDirection = 'swipeleft';
+          break;
+        case 'up':
+          swipeDirection = 'swipeup';
+          break;
+        case 'down':
+          swipeDirection = 'swipedown';
+          break;
+        default:
+          swipeDirection = 'swipe';
+      }
+      hammerElem.on(swipeDirection, function() {
+        foundationApi.publish(attrs.id, 'close');
+      });
+    }
+  }
+
+  zfHardToggle.$inject = ['FoundationApi'];
+
+  function zfHardToggle(foundationApi) {
+    var directive = {
+      restrict: 'A',
+      link: link
+    };
+
+    return directive;
+
+    function link(scope, element, attrs) {
+      element.on('click', function(e) {
+        foundationApi.closeActiveElements({exclude: attrs.zfHardToggle});
+        foundationApi.publish(attrs.zfHardToggle, 'toggle');
+        e.preventDefault();
+      });
     }
   }
 

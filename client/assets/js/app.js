@@ -256,6 +256,13 @@
 				$rootScope.history.push($location.$$path);
 				if($location.$$path != "/")
 					$rootScope.loading = false;
+				else {
+					setTimeout(function(){ 
+						$rootScope.$apply(function(){
+							$rootScope.loading = false;
+						});
+					}, 3000);
+				}
 			});
 			
 			/* FB METHODS SDK */
