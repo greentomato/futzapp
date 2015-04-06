@@ -18,15 +18,19 @@
 					
 					<div class="small-6 grid-content">
 						<label>Provincia</label>
-						<select select-picker name="stateSelect" id="stateSelect" ng-model="$root.newMatch.stateId" data-live-search="true">
+						<div angucomplete-alt id="stateSelect" placeholder="Provincia..." pause="100" selected-object="$root.stateSelected"
+								local-data="$root.states" search-fields="name" title-field="name" minlength="1" match-class="highlight"></div>
+						<!--<select select-picker name="stateSelect" id="stateSelect" ng-model="$root.newMatch.stateId" data-live-search="true">
 							<option ng-repeat="state in $root.states" value="{{state.id}}">{{state.name}}</option>
-						</select>
+						</select>-->
 					</div>
 					<div class="small-6 grid-content">
 						<label>Localidad</label>
-						<select select-picker name="townSelect" id="townSelect" ng-model="$root.newMatch.townId" data-live-search="true">
-							<option ng-repeat="town in $root.towns | filter:{stateId:$root.newMatch.stateId}" value="{{town.id}}">{{town.name}}</option>
-						</select>
+						<div angucomplete-alt id="townSelect" placeholder="Localidad..." pause="100" selected-object="$root.townSelected"
+								local-data="$root.filteredTowns" search-fields="name" title-field="name" minlength="1" match-class="highlight"></div>
+						<!--<select select-picker name="townSelect" id="townSelect" ng-model="$root.newMatch.townId" data-live-search="true">
+							<option ng-repeat="town in $root.towns | filter:{stateId:$root.newMatch.state.id}" value="{{town.id}}">{{town.name}}</option>
+						</select>-->
 					</div>
 
 					<div class="small-12 medium-6 grid-content">

@@ -8956,6 +8956,117 @@ input[type="checkbox"] + label, input[type="radio"] + label {
   -webkit-filter: blur(1px);
   filter: blur(1px); }
 
+.angucomplete-holder {
+  position: relative; }
+  .angucomplete-holder input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    color: #000;
+    border-radius: 0;
+    border: 1px solid #ccc; }
+
+.angucomplete-dropdown {
+  border-color: #ececec;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 2px;
+  width: 250px;
+  padding: 6px;
+  cursor: pointer;
+  z-index: 9999;
+  position: absolute;
+  /*top: 32px;
+  left: 0px;
+  */
+  margin-top: -6px;
+  background-color: #ffffff; }
+
+.angucomplete-searching {
+  color: #acacac;
+  font-size: 14px; }
+
+.angucomplete-description {
+  font-size: 14px; }
+
+.angucomplete-row {
+  padding: 5px;
+  color: #000000;
+  margin-bottom: 4px;
+  clear: both; }
+
+.angucomplete-selected-row {
+  background-color: lightblue;
+  color: #ffffff; }
+
+.angucomplete-image-holder {
+  padding-top: 2px;
+  float: left;
+  margin-right: 10px;
+  margin-left: 5px; }
+
+.angucomplete-image {
+  height: 34px;
+  width: 34px;
+  border-radius: 50%;
+  border-color: #ececec;
+  border-style: solid;
+  border-width: 1px; }
+
+.angucomplete-image-default {
+  /* Add your own default image here
+   background-image: url('/assets/default.png');
+  */
+  background-position: center;
+  background-size: contain;
+  height: 34px;
+  width: 34px; }
+
+.user-profile {
+  border-top: 1px solid #303f46;
+  margin-top: 48px;
+  padding: 1rem;
+  overflow: hidden; }
+  .user-profile img {
+    margin-right: 0.9375rem;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #607D8B;
+    overflow: hidden;
+    float: left; }
+  .user-profile h6 {
+    float: left;
+    color: #fff;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    margin: 0;
+    line-height: 40px; }
+  .user-profile:hover {
+    background: #111619; }
+    .user-profile:hover h6 {
+      color: #f89406; }
+
+#panelMenu .close-button {
+  color: #607D8B;
+  background: #111619; }
+#panelMenu .block-list {
+  margin: 0; }
+  #panelMenu .block-list li {
+    border-color: #303f46; }
+    #panelMenu .block-list li a {
+      color: #CFD8DC;
+      font-weight: bold;
+      padding: 1rem; }
+      #panelMenu .block-list li a i {
+        margin-right: 10px; }
+      #panelMenu .block-list li a:hover {
+        color: #f89406;
+        background: #111619; }
+
 /* FONT PATH
  * -------------------------- */
 @font-face {
