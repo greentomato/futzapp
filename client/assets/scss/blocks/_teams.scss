@@ -41,9 +41,11 @@
 		}
 	}
 }
+.team-list-group {
+	margin-top: 20px;
+}
 .team-list {
-	border-right: 1px solid $lightPrimaryColor;
-	border-top: 1px solid $lightPrimaryColor;
+	border: 1px solid $lightPrimaryColor;
 
 
 	header{
@@ -57,7 +59,9 @@
 	}
 
 	
-
+	ul {
+		margin-bottom: 0;
+	}
 
 	.empty-player {
 		color: $dividerColor;
@@ -171,4 +175,18 @@
 .f5.team-b.player-5{
 	right: 30%;
 	bottom: 32%;
+}
+
+@media (min-width: 700px){
+
+	.team-column {
+		vertical-align: top;
+		width: 50%;
+		display: inline-block;
+	}
+
+	.team-list {
+		border-bottom: none;
+
+	}
 }

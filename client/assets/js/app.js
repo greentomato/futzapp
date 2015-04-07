@@ -12,7 +12,6 @@
 		'fulboServices',
 		'fulboDirectives',
 		'flow',
-		'angucomplete-alt',
 		
 		//foundation
 		'foundation',
@@ -115,26 +114,12 @@
 				cancelled: 0,
 				matchTypeId: "",
 				admin_userId: 0,
-				townId: 0,
-				stateId: 0,
 				id: 0
 			};
 			$rootScope.wpMsg = "";
 			$rootScope.matchShareURL = "";
-			$rootScope.filteredTowns = [];
 			
 			/* NEW/EDIT MATCH METHODS */
-			$rootScope.stateSelected = function(selected){
-				if(selected != undefined){
-					$rootScope.newMatch.stateId = selected.originalObject.id;
-					$rootScope.filteredTowns = $filter('filter')($rootScope.towns, {stateId: selected.originalObject.id});
-				}
-			};
-			$rootScope.townSelected = function(selected){
-				if(selected != undefined)
-					$rootScope.newMatch.townId = selected.originalObject.id;
-			};
-			
 			$rootScope.$watch('newMatch.partialDate', function() {
 			   tryCombineDateTime(); 
 			});

@@ -1,5 +1,5 @@
 		
-		<div class="grid-block">
+		<div class="soccer-field-container">
 			<div class="soccer-field">
 				<img src="assets/img/ftz-soccer-field.jpg" alt="La Cancha">
 
@@ -21,9 +21,8 @@
 				
 			</div>
 			
-		</div>
-		<div class="grid-block small-up-2 medium-up-1 large-up-2">
-			<div class="grid-content">
+		</div><div class="team-list-group">
+			<div class="grid-content team-column">
 				<section class="ftz-block-list team-list">
 					<header ng-if="adminMode"><a zf-open="teamColors"><i style="color: {{teamA.team.shirtColor}};" class="fa fa-square"></i>  Equipo A <i class="fa fa-pencil-square-o edit-icon"></i></a></header>
 					<header ng-if="!adminMode"><i style="color: {{teamA.team.shirtColor}};" class="fa fa-square"></i> Equipo A</header>
@@ -47,10 +46,10 @@
 						</li>
 					</ul>
 				</section>
-			</div>
+			</div><!-- 
 			
 
-			<div class="grid-content">
+			 --><div class="grid-content team-column">
 				<section class="ftz-block-list team-list">
 				<header ng-if="adminMode"><a  zf-open="teamColors"><i style="color: {{teamB.team.shirtColor}};" class="fa fa-square"></i> Equipo B <i class="fa fa-pencil-square-o edit-icon"></i></a></header>
 				<header ng-if="!adminMode"><i style="color: {{teamB.team.shirtColor}};" class="fa fa-square"></i> Equipo B</header>

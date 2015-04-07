@@ -6517,6 +6517,10 @@ input[type="checkbox"] + label, input[type="radio"] + label {
   .modal-content {
     height: auto;
     overflow-y: auto; } }
+.match-container {
+  margin: 48px auto 0;
+  max-width: 800px; }
+
 .match-header {
   background-color: #4CAF50;
   background: url(../img/f5-match-cover.jpg) no-repeat center center fixed;
@@ -6708,15 +6712,19 @@ input[type="checkbox"] + label, input[type="radio"] + label {
       .soccer-field .team-player a:hover {
         color: #4CAF50; }
 
+.team-list-group {
+  margin-top: 20px; }
+
 .team-list {
-  border-right: 1px solid #CFD8DC;
-  border-top: 1px solid #CFD8DC; }
+  border: 1px solid #CFD8DC; }
   .team-list header {
     padding: 1rem;
     margin: 0; }
   .team-list .team-color {
     height: 20px;
     width: 20px; }
+  .team-list ul {
+    margin-bottom: 0; }
   .team-list .empty-player {
     color: #B6B6B6; }
 
@@ -6805,6 +6813,14 @@ input[type="checkbox"] + label, input[type="radio"] + label {
   right: 30%;
   bottom: 32%; }
 
+@media (min-width: 700px) {
+  .team-column {
+    vertical-align: top;
+    width: 50%;
+    display: inline-block; }
+
+  .team-list {
+    border-bottom: none; } }
 .field-info {
   overflow: hidden;
   padding: 1rem; }
@@ -7383,6 +7399,12 @@ input[type="checkbox"] + label, input[type="radio"] + label {
   .ftz-title-bar .app-logo-title span {
     font-size: 0.625rem;
     color: #607D8B; }
+  .ftz-title-bar.fixed-title-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10; }
 @-webkit-keyframes spinner {
   0% {
     -webkit-transform: rotate(0deg);

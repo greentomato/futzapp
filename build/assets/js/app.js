@@ -1,12 +1,12 @@
 /*
  * Set PRD or DEV mode
  */
-var prd = true;
+var prd = false;
 
 /*
  * Set PRD or DEV mode
  */
-var fbAppIdDEV = "1517377388534738";
+var fbAppIdDEV = "1573351059604037";
 var fbAppIdPRD = "1450926871846457";
  
 /* 
@@ -124,7 +124,6 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 		'fulboServices',
 		'fulboDirectives',
 		'flow',
-		'angucomplete-alt',
 		
 		//foundation
 		'foundation',
@@ -227,26 +226,12 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 				cancelled: 0,
 				matchTypeId: "",
 				admin_userId: 0,
-				townId: 0,
-				stateId: 0,
 				id: 0
 			};
 			$rootScope.wpMsg = "";
 			$rootScope.matchShareURL = "";
-			$rootScope.filteredTowns = [];
 			
 			/* NEW/EDIT MATCH METHODS */
-			$rootScope.stateSelected = function(selected){
-				if(selected != undefined){
-					$rootScope.newMatch.stateId = selected.originalObject.id;
-					$rootScope.filteredTowns = $filter('filter')($rootScope.towns, {stateId: selected.originalObject.id});
-				}
-			};
-			$rootScope.townSelected = function(selected){
-				if(selected != undefined)
-					$rootScope.newMatch.townId = selected.originalObject.id;
-			};
-			
 			$rootScope.$watch('newMatch.partialDate', function() {
 			   tryCombineDateTime(); 
 			});
@@ -1032,7 +1017,7 @@ fulboFilters.filter('getById', function() {
 'use strict';
 
 /* Services */
-var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://futbolizados.dev/"; //DEV
+var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://local.gt/admin.futzapp.com/public/"; //DEV
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
