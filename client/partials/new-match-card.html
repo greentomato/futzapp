@@ -12,7 +12,7 @@
 			<div class="text">
 				<h4>{{match.type.name}}</h4>
 				<p>{{match.date | dateFormat:'dddd'}} a las <strong>{{match.date | dateFormat:'hh:mm A'}}</strong></p>
-				<p>{{($root.fields | getById:match.fieldId).name}}, {{($root.fields | getById:match.fieldId).town.name}}</p>
+				<p>{{($root.fields | getById:match.fieldId).name}}<span ng-show="($root.fields | getById:match.fieldId).town != undefined">, {{($root.fields | getById:match.fieldId).town.name}}</span></p>
 			</div>
 
 			

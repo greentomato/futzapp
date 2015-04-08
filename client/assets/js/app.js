@@ -136,11 +136,10 @@
 						Fields.save(field, function(newField){
 							console.log("Field saved, id:" + newField.id);
 							
-							$rootScope.fields.push(newField);
+							$rootScope.newMatch.fieldId = newField.id;
+							$rootScope.newMatch.fieldName = newField.name;
 							
-							$rootScope.newMatch.fieldId = selected.originalObject.id;
-							$rootScope.newMatch.fieldName = selected.originalObject.name;
-
+							$rootScope.fields = Fields.query();
 						}, function(){
 							console.log("Failed saving field!");
 						});
