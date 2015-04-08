@@ -1,12 +1,12 @@
 ﻿/*
  * Set PRD or DEV mode
  */
-var prd = false;
+var prd = true;
 
 /*
  * Set PRD or DEV mode
  */
-var fbAppIdDEV = "1573351059604037";
+var fbAppIdDEV = "1517377388534738";
 var fbAppIdPRD = "1450926871846457";
  
 /* 
@@ -93,8 +93,8 @@ var completoMessage = "Ya estamos todos para el partido del día %1$s de %2$s a 
  * %5$s: URL del partido
  *
  */
-var completoSubject = "Partido cancelado!";
-var completoMessage = "Se cancela el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
+var canceladoSubject = "Partido cancelado!";
+var canceladoMessage = "Se cancela el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y organiza uno nuevo!";
 
 /* 
  * 'Te dieron de baja' email template

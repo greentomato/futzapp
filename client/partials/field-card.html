@@ -2,8 +2,8 @@
 	<div class="card-section field-info">
 		<div class="text">
 			<h4>{{field.name}}</h4>
-			<p>{{field.address}}</p>
-			<p>{{field.town.name}}, {{field.state.name}}</p>
+			<p ng-show="field.address != ''">{{field.address}}</p>
+			<p ng-show="field.town != undefined">{{field.town.name}}, {{field.state.name}}</p>
 		</div>
 		<!--
 		TODO: Foto

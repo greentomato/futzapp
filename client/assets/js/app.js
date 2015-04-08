@@ -12,6 +12,7 @@
 		'fulboServices',
 		'fulboDirectives',
 		'flow',
+		'angucomplete-alt',
 		
 		//foundation
 		'foundation',
@@ -99,6 +100,7 @@
 			/* GLOBAL VARIABLES */
 			$rootScope.loading = true;
 			$rootScope.fields = Fields.query();
+			$rootScope.fieldsUploadedByGT = Fields.getUploadedByGT();
 			$rootScope.matchTypes = MatchTypes.query();
 			$rootScope.towns = Towns.query();
 			$rootScope.states = States.query();
@@ -110,16 +112,45 @@
 				partialDate: '',
 				partialTime: '',
 				fieldId: 0,
+				fieldName: 0,
 				comments: "",
 				cancelled: 0,
 				matchTypeId: "",
 				admin_userId: 0,
+				townId: 0,
+				stateId: 0,
 				id: 0
 			};
 			$rootScope.wpMsg = "";
 			$rootScope.matchShareURL = "";
 			
 			/* NEW/EDIT MATCH METHODS */
+			$rootScope.fieldSelected = function(selected){
+				if(selected != undefined){
+					if(selected.originalObject.custom){
+						//cargar cancha
+						var field = {
+							name: selected.originalObject.name
+						};
+							
+						Fields.save(field, function(newField){
+							console.log("Field saved, id:" + newField.id);
+							
+							$rootScope.fields.push(newField);
+							
+							$rootScope.newMatch.fieldId = selected.originalObject.id;
+							$rootScope.newMatch.fieldName = selected.originalObject.name;
+
+						}, function(){
+							console.log("Failed saving field!");
+						});
+					} else {
+						$rootScope.newMatch.fieldId = selected.originalObject.id;
+						$rootScope.newMatch.fieldName = selected.originalObject.name;
+					}
+				}
+			};
+
 			$rootScope.$watch('newMatch.partialDate', function() {
 			   tryCombineDateTime(); 
 			});
@@ -205,6 +236,7 @@
 						partialDate: '',
 						partialTime: '',
 						fieldId: 0,
+						fieldName: '',
 						comments: "",
 						cancelled: 0,
 						matchTypeId: "",
@@ -219,6 +251,7 @@
 						partialDate: new Date(match.date),
 						partialTime: new Date(match.date),
 						fieldId: match.fieldId,
+						fieldName: (($filter('filter')($rootScope.fields, {id: match.fieldId}))[0]).name,
 						comments: match.comments,
 						cancelled: match.cancelled,
 						matchTypeId: match.matchTypeId,
