@@ -42,7 +42,7 @@ var foundationJS = [
   'bower_components/angular-resource/angular-resource.js',
   'bower_components/angular-sanitize/angular-sanitize.min.js',
   'bower_components/ng-flow/dist/ng-flow-standalone.min.js',
-  'bower_components/ng-autocomplete/angucomplete.js',
+  'bower_components/angucomplete-alt/dist/angucomplete-alt.min.js',
   'bower_components/jquery/dist/jquery.min.js',
   'bower_components/bootstrap-select/dist/js/bootstrap-select.min.js',
   'bower_components/foundation-apps/js/vendor/**/*.js',
