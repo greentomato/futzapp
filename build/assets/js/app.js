@@ -1,12 +1,12 @@
 /*
  * Set PRD or DEV mode
  */
-var prd = false;
+var prd = true;
 
 /*
  * Set PRD or DEV mode
  */
-var fbAppIdDEV = "1573351059604037";
+var fbAppIdDEV = "1517377388534738";
 var fbAppIdPRD = "1450926871846457";
  
 /* 
@@ -93,8 +93,8 @@ var completoMessage = "Ya estamos todos para el partido del día %1$s de %2$s a 
  * %5$s: URL del partido
  *
  */
-var completoSubject = "Partido cancelado!";
-var completoMessage = "Se cancela el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
+var canceladoSubject = "Partido cancelado!";
+var canceladoMessage = "Se cancela el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y organiza uno nuevo!";
 
 /* 
  * 'Te dieron de baja' email template
@@ -124,6 +124,7 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 		'fulboServices',
 		'fulboDirectives',
 		'flow',
+		'angucomplete-alt',
 		
 		//foundation
 		'foundation',
@@ -211,6 +212,7 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 			/* GLOBAL VARIABLES */
 			$rootScope.loading = true;
 			$rootScope.fields = Fields.query();
+			$rootScope.fieldsUploadedByGT = Fields.getUploadedByGT();
 			$rootScope.matchTypes = MatchTypes.query();
 			$rootScope.towns = Towns.query();
 			$rootScope.states = States.query();
@@ -222,16 +224,45 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 				partialDate: '',
 				partialTime: '',
 				fieldId: 0,
+				fieldName: 0,
 				comments: "",
 				cancelled: 0,
 				matchTypeId: "",
 				admin_userId: 0,
+				townId: 0,
+				stateId: 0,
 				id: 0
 			};
 			$rootScope.wpMsg = "";
 			$rootScope.matchShareURL = "";
 			
 			/* NEW/EDIT MATCH METHODS */
+			$rootScope.fieldSelected = function(selected){
+				if(selected != undefined){
+					if(selected.originalObject.custom){
+						//cargar cancha
+						var field = {
+							name: selected.originalObject.name
+						};
+							
+						Fields.save(field, function(newField){
+							console.log("Field saved, id:" + newField.id);
+							
+							$rootScope.fields.push(newField);
+							
+							$rootScope.newMatch.fieldId = selected.originalObject.id;
+							$rootScope.newMatch.fieldName = selected.originalObject.name;
+
+						}, function(){
+							console.log("Failed saving field!");
+						});
+					} else {
+						$rootScope.newMatch.fieldId = selected.originalObject.id;
+						$rootScope.newMatch.fieldName = selected.originalObject.name;
+					}
+				}
+			};
+
 			$rootScope.$watch('newMatch.partialDate', function() {
 			   tryCombineDateTime(); 
 			});
@@ -317,6 +348,7 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 						partialDate: '',
 						partialTime: '',
 						fieldId: 0,
+						fieldName: '',
 						comments: "",
 						cancelled: 0,
 						matchTypeId: "",
@@ -331,6 +363,7 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 						partialDate: new Date(match.date),
 						partialTime: new Date(match.date),
 						fieldId: match.fieldId,
+						fieldName: (($filter('filter')($rootScope.fields, {id: match.fieldId}))[0]).name,
 						comments: match.comments,
 						cancelled: match.cancelled,
 						matchTypeId: match.matchTypeId,
@@ -1017,7 +1050,7 @@ fulboFilters.filter('getById', function() {
 'use strict';
 
 /* Services */
-var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://local.gt/admin.futzapp.com/public/"; //DEV
+var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://futbolizados.dev/"; //DEV
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
@@ -1151,8 +1184,8 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 			});
 		},
 		cancelado: function(match, guests){
-			var message = completoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
-			var subject = completoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			var message = canceladoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			var subject = canceladoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
 			
 			var mails = [];
 			for(var i = 0; i < guests.length; i++) {
@@ -1528,8 +1561,13 @@ fulboServices.factory('Matches', ['$resource',
 /* Field Model Services */
 fulboServices.factory('Fields', ['$resource',
   function($resource){
-    return $resource(serverURL+'fieldsAPI/:id', {}, {
-      query: {method:'GET', params:{id:''}, isArray:true}
+    return $resource(serverURL+'fieldsAPI/:dest/:id', {}, {
+      query: {method:'GET', params:{id:''}, isArray:true},
+	  getUploadedByGT: {
+		method: 'GET',
+		params: {dest: 'getUploadedByGT', id: '1'}, 
+		isArray:true
+	  }
     });
   }]);
 /* Field Model Services */
