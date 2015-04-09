@@ -24,8 +24,8 @@
 		</div><div class="team-list-group">
 			<div class="grid-content team-column">
 				<section class="ftz-block-list team-list">
-					<header ng-if="adminMode"><a zf-open="teamColors"><i style="color: {{teamA.team.shirtColor}};" class="fa fa-square"></i>  Equipo A <i class="fa fa-pencil-square-o edit-icon"></i></a></header>
-					<header ng-if="!adminMode"><i style="color: {{teamA.team.shirtColor}};" class="fa fa-square"></i> Equipo A</header>
+					<header ng-if="adminMode"><a zf-open="teamColors"><i style="color: {{teamA.team.shirtColor}};" class="fa fa-user"></i>  Equipo A <i class="fa fa-pencil-square-o edit-icon"></i></a></header>
+					<header ng-if="!adminMode"><i style="color: {{teamA.team.shirtColor}};" class="fa fa-user"></i> Equipo A</header>
 					<ul>
 						<li ng-repeat="player in teamA.team.users">
 							<a ng-click="changeSelectedUser(player)" zf-open="playerProfile">
@@ -51,8 +51,8 @@
 
 			 --><div class="grid-content team-column">
 				<section class="ftz-block-list team-list">
-				<header ng-if="adminMode"><a  zf-open="teamColors"><i style="color: {{teamB.team.shirtColor}};" class="fa fa-square"></i> Equipo B <i class="fa fa-pencil-square-o edit-icon"></i></a></header>
-				<header ng-if="!adminMode"><i style="color: {{teamB.team.shirtColor}};" class="fa fa-square"></i> Equipo B</header>
+				<header ng-if="adminMode"><a  zf-open="teamColors"><i style="color: {{teamB.team.shirtColor}};" class="fa fa-user"></i> Equipo B <i class="fa fa-pencil-square-o edit-icon"></i></a></header>
+				<header ng-if="!adminMode"><i style="color: {{teamB.team.shirtColor}};" class="fa fa-user"></i> Equipo B</header>
 					<ul>					
 						<li ng-repeat="player in teamB.team.users">
 							<a ng-click="changeSelectedUser(player)" zf-open="playerProfile">

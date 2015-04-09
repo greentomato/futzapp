@@ -9,15 +9,15 @@
 			<progress  class="new-match-steps-progress" value="60" max="90"></progress>
 		</div>
 
-		<div class="grid-content grid-container">
+		<div class="grid-content grid-container small-6">
 			<form>
 				<!-- <h4 class="form-header"><span>Paso 2/3</span></h4>
 				<hr> -->
-				<header>Elegí el tipo de Partido</header>
+				<header>Cuántos juegan</header>
 				
 				<div class="grid-block">
 
-					<div class="small-12 medium-6 grid-content">
+					<div class="small-12 grid-content">
 						<label><i class="fa fa-soccer-ball-o"></i> Cantidad de jugadores</label>
 						<select name="" id="" ng-model="$root.newMatch.matchTypeId">
 							<option ng-repeat="matchType in $root.matchTypes" value="{{matchType.id}}">{{matchType.name}} ({{matchType.totalPlayers}})</option>
@@ -30,14 +30,14 @@
 				
 				<div class="grid-block">
 
-					<div class="small-6 grid-content">
+					<div class="small-12 grid-content">
 						<label>
 							<i class="fa fa-calendar-o"></i> Fecha
 							<input ng-model="$root.newMatch.partialDate" type="date">
 
 						</label>
 					</div>
-					<div class="small-6 grid-content">
+					<div class="small-12 grid-content">
 						<label>
 							<i class="fa fa-clock-o"></i> Horario
 							<input ng-model="$root.newMatch.partialTime" type="time">

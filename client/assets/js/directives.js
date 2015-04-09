@@ -20,6 +20,7 @@ fulboDirectives.directive('dynFbCommentBox', function () {
     function createHTML(href, numposts, colorscheme) {
         return '<div class="fb-comments" ' +
                        'data-href="' + href + '" ' +
+                       'data-width="100%"' +
                        'data-numposts="' + numposts + '" ' +
                        'data-colorsheme="' + colorscheme + '">' +
                '</div>';

@@ -1,12 +1,12 @@
 /*
  * Set PRD or DEV mode
  */
-var prd = true;
+var prd = false;
 
 /*
  * Set PRD or DEV mode
  */
-var fbAppIdDEV = "1517377388534738";
+var fbAppIdDEV = "1573351059604037";
 var fbAppIdPRD = "1450926871846457";
  
 /* 
@@ -1072,7 +1072,7 @@ fulboFilters.filter('getById', function() {
 'use strict';
 
 /* Services */
-var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://futbolizados.dev/"; //DEV
+var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://local.gt/admin.futzapp.com/public/"; //DEV
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
@@ -1684,6 +1684,7 @@ fulboDirectives.directive('dynFbCommentBox', function () {
     function createHTML(href, numposts, colorscheme) {
         return '<div class="fb-comments" ' +
                        'data-href="' + href + '" ' +
+                       'data-width="100%"' +
                        'data-numposts="' + numposts + '" ' +
                        'data-colorsheme="' + colorscheme + '">' +
                '</div>';

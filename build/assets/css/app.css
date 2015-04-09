@@ -6310,7 +6310,7 @@ body {
   width: 100%;
   height: 100%;
   z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: #1b2428;
   display: table;
   text-align: center; }
   .loader .loader-wrapper {
@@ -6734,7 +6734,11 @@ input[type="checkbox"] + label, input[type="radio"] + label {
 .team-color {
   padding: 10px;
   display: inline-block;
-  line-height: 1; }
+  line-height: 1;
+  border: 2px solid transparent;
+  cursor: pointer; }
+  .team-color i {
+    text-shadow: 0px 0px 2px rgba(40, 40, 40, 0.8); }
   .team-color.selected {
     border: 2px solid #ccc;
     border-radius: 5px;
@@ -8998,16 +9002,17 @@ input[type="checkbox"] + label, input[type="radio"] + label {
   border-color: #ececec;
   border-width: 1px;
   border-style: solid;
-  border-radius: 2px;
+  border-radius: 0;
   width: 250px;
   padding: 6px;
   cursor: pointer;
   z-index: 9999;
-  position: absolute;
+  position: relative;
+  width: 100%;
   /*top: 32px;
   left: 0px;
   */
-  margin-top: -6px;
+  margin-top: -10px;
   background-color: #ffffff; }
 
 .angucomplete-searching {
