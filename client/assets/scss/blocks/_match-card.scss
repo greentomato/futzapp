@@ -67,6 +67,10 @@
 		p{
 			margin: 0;
 			font-size: 14px;
+			
+			.capitalize{
+				text-transform: capitalize;
+			}
 		}
 		.day{
 			display: block;
