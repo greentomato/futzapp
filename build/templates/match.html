@@ -22,15 +22,15 @@
 							<div class="text"><i class="fa fa-soccer-ball-o"></i></div>
 						</div>
 					</div> -->
-					<h2>{{ match.type.name }} <a ng-click="$root.goToStep1(match)" class="small-action"><i class="fa fa-pencil-square-o"></i>Editar</a></h2>
+					<h2>{{ match.type.name }} <a ng-click="$root.editMatch(match)" class="small-action"><i class="fa fa-pencil-square-o"></i>Editar</a></h2>
 				</div>
 				<div ng-if="!adminMode" class="match-header">
 					<h2>
-     					<div class="ribbon ribbon-green">
+     					<!-- <div class="ribbon ribbon-green">
      						<div class="banner">
      							<div class="text"><i class="fa fa-thumbs-up"></i></div>
      						</div>
-     					</div>
+     					</div> -->
      					{{ match.type.name }}
      				</h2>
 				</div>

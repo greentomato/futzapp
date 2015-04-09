@@ -35,6 +35,9 @@
 				templateUrl: 'templates/home.html',
 				controller: 'MatchesController'
 			  }).
+			  when('/edit', {
+				templateUrl: 'templates/edit-match.html',
+			  }).
 			  when('/step-1', {
 				templateUrl: 'templates/step-1.html'
 			  }).
@@ -176,32 +179,34 @@
 				}
 			}
 			
+			$rootScope.updateMatch = function(){
+				$rootScope.newMatch.admin_userId = $rootScope.user.id;
+				
+				Matches.update($rootScope.newMatch, function(updatedMatch){
+					$rootScope.newMatch = updatedMatch;
+					$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "?token=" + $rootScope.newMatch.token));
+					$rootScope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $rootScope.matchShareURL);
+					console.log("Match updated, id:" + updatedMatch.id);
+					$location.path( "/match/" + updatedMatch.id );
+				}, function(){
+					console.log("Failed updating match!");
+					showAlert("Error", "Hubo un error al actualizar el partido! Intente nuevamente.");
+				});
+			};
+			
 			$rootScope.createMatch = function(){
 				$rootScope.newMatch.admin_userId = $rootScope.user.id;
 				
-				if($rootScope.newMatch.id != 0) {
-					Matches.update($rootScope.newMatch, function(updatedMatch){
-						$rootScope.newMatch = updatedMatch;
-						$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "?token=" + $rootScope.newMatch.token));
-						$rootScope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $rootScope.matchShareURL);
-						console.log("Match updated, id:" + updatedMatch.id);
-						$location.path( "/step-3" );
-					}, function(){
-						console.log("Failed updating match!");
-						showAlert("Error", "Hubo un error al actualizar el partido! Intente nuevamente.");
-					});
-				} else {
-					Matches.save($rootScope.newMatch, function(newMatch){
-						$rootScope.newMatch = newMatch;
-						$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "?token=" + $rootScope.newMatch.token));
-						$rootScope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $rootScope.matchShareURL);
-						console.log("Match saved, id:" + newMatch.id);
-						$location.path( "/step-3" );
-					}, function(){
-						console.log("Failed saving match!");
-						showAlert("Error", "Hubo un error al crear el partido! Intente nuevamente.");
-					});
-				}
+				Matches.save($rootScope.newMatch, function(newMatch){
+					$rootScope.newMatch = newMatch;
+					$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "?token=" + $rootScope.newMatch.token));
+					$rootScope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $rootScope.matchShareURL);
+					console.log("Match saved, id:" + newMatch.id);
+					$location.path( "/step-3" );
+				}, function(){
+					console.log("Failed saving match!");
+					showAlert("Error", "Hubo un error al crear el partido! Intente nuevamente.");
+				});
 			};
 			
 			$rootScope.shareFB = function(match){
@@ -228,6 +233,24 @@
 			};
 			
 			/* GLOBAL METHODS */
+			$rootScope.editMatch = function(match) {
+				$rootScope.newMatch = {
+					date: match.date,
+					partialDate: new Date(match.date),
+					partialTime: new Date(match.date),
+					fieldId: match.fieldId,
+					fieldName: (($filter('filter')($rootScope.fields, {id: match.fieldId}))[0]).name,
+					comments: match.comments,
+					cancelled: match.cancelled,
+					matchTypeId: match.matchTypeId,
+					admin_userId: match.admin_userId,
+					townId: match.field.townId,
+					stateId: match.field.stateId,
+					id: match.id
+				};
+				$location.path( "/edit" );
+			}
+			
 			$rootScope.goToStep1 = function(match) {
 				if(match == null){
 					$rootScope.newMatch = {
@@ -293,7 +316,7 @@
 						$rootScope.$apply(function(){
 							$rootScope.loading = false;
 						});
-					}, 3000);
+					}, 5000);
 				}
 			});
 			

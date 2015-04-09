@@ -1,6 +1,6 @@
 <div class="grid-frame vertical">
 	<!-- TitleBar -->
-	<form-title-bar cancelUrl="$root.newMatch.id != 0 ? ('#/match/' + $root.newMatch.id) : '#/home'" title="$root.newMatch.id != 0 ? 'Editar Mi Futzapp':'Nuevo Futzapp'"></form-title-bar>
+	<form-title-bar cancel-url="('#/match/' + $root.newMatch.id)" title="$root.newMatch.id != 0 ? 'Editar Mi Futzapp':'Nuevo Futzapp'"></form-title-bar>
 	
 
 
@@ -140,7 +140,7 @@
 				<!-- SAVE 3-->	
 				<div>
 					<br>
-					<a class="success expand button"><i class="fa fa-floppy-o"></i>&nbsp; Guardar cambios</a>
+					<a ng-click="$root.updateMatch()" class="success expand button"><i class="fa fa-floppy-o"></i>&nbsp; Guardar cambios</a>
 				</div>
 		</form>
 		</div>

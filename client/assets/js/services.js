@@ -289,7 +289,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 				redirectToUrlAfterLogin.url = '/home';
 		},
 	    redirectToAttemptedUrl: function() {
-			if(redirectToUrlAfterLogin.url == "/step-1" || redirectToUrlAfterLogin.url == "/step-2" || redirectToUrlAfterLogin.url == "/step-3")
+			if(redirectToUrlAfterLogin.url == "/step-1" || redirectToUrlAfterLogin.url == "/step-2" || redirectToUrlAfterLogin.url == "/step-3" || redirectToUrlAfterLogin.url == "/edit")
 				redirectToUrlAfterLogin.url = '/home';
 	    	$location.path(redirectToUrlAfterLogin.url);
 	    },

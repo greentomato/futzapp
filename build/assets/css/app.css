@@ -6896,6 +6896,8 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     .match-card-info .text p {
       margin: 0;
       font-size: 14px; }
+      .match-card-info .text p .capitalize {
+        text-transform: capitalize; }
     .match-card-info .text .day {
       display: block;
       font-weight: bold; }
