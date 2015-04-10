@@ -391,9 +391,9 @@ $card-radius: 0;
 $meter-height: rem-calc(2);
 $meter-background: $lightPrimaryColor;
 $meter-fill: $accentColor;
-$meter-fill-high: $dangerColor;
+$meter-fill-high: $accentColor;
 $meter-fill-medium: $starRating;
-$meter-fill-low: $accentColor;
+$meter-fill-low: $accentColor$dangerColor;
 // $meter-radius: 0; 
 
 // 14. Iconic

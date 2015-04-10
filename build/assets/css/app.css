@@ -1907,36 +1907,36 @@ progress::-webkit-progress-value {
 progress::-moz-progress-bar {
   background: #4CAF50; }
 progress.high::-webkit-progress-value {
-  background: #e74c3c; }
+  background: #4CAF50; }
 progress.high::-moz-progress-bar {
-  background: #e74c3c; }
+  background: #4CAF50; }
 progress.medium::-webkit-progress-value {
   background: #f1c40f; }
 progress.medium::-moz-progress-bar {
   background: #f1c40f; }
 progress.low::-webkit-progress-value {
-  background: #4CAF50; }
+  background: #4CAF50 #e74c3c; }
 progress.low::-moz-progress-bar {
-  background: #4CAF50; }
+  background: #4CAF50 #e74c3c; }
 
 meter {
   background: #CFD8DC; }
   meter::-webkit-meter-bar {
     background: #CFD8DC; }
   meter::-webkit-meter-optimum-value {
-    background: #e74c3c; }
+    background: #4CAF50; }
   meter::-webkit-meter-suboptimum-value {
     background: #f1c40f; }
   meter::-webkit-meter-even-less-good-value {
-    background: #4CAF50; }
+    background: #4CAF50 #e74c3c; }
   meter::-moz-meter-bar {
     background: #00558b; }
   meter:-moz-meter-optimum::-moz-meter-bar {
-    background: #e74c3c; }
+    background: #4CAF50; }
   meter:-moz-meter-sub-optimum::-moz-meter-bar {
     background: #f1c40f; }
   meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
-    background: #4CAF50; }
+    background: #4CAF50 #e74c3c; }
 
 /*
   PANEL
@@ -6530,7 +6530,7 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     overflow-y: auto; } }
 .match-container {
   margin: 48px auto 0;
-  max-width: 800px; }
+  max-width: 580px; }
 
 .match-header {
   background-color: #4CAF50;
