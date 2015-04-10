@@ -113,3 +113,18 @@ footer{
 		}
 	}
 }
+
+// HELP ACCORDION
+.accordion-title {
+	font-weight: bold;
+	color: $primaryColor;
+	border-top: 1px solid #ddd;
+}
+
+.is-active > .accordion-title {
+	color: $darkPrimaryColor;
+}
+
+.accordion-content {
+	line-height: 27px;
+}

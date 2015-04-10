@@ -6381,6 +6381,17 @@ footer {
       .menu-footer footer p a:hover {
         color: #CFD8DC; }
 
+.accordion-title {
+  font-weight: bold;
+  color: #607D8B;
+  border-top: 1px solid #ddd; }
+
+.is-active > .accordion-title {
+  color: #303f46; }
+
+.accordion-content {
+  line-height: 27px; }
+
 .user-profile {
   border-top: 1px solid #303f46;
   margin-top: 48px;
@@ -6541,6 +6552,15 @@ input[type="checkbox"] + label, input[type="radio"] + label {
       margin-top: 12px; }
       .match-header h2 a:hover {
         color: #f89406; }
+  .match-header .small-action {
+    border: 1px solid #fff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px; }
+    .match-header .small-action:hover {
+      border-color: #f89406;
+      background-color: rgba(255, 255, 255, 0.2); }
 
 .match-info {
   padding: 1rem;
@@ -6691,7 +6711,8 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     -webkit-border-radius: 100%;
     -moz-border-radius: 100%;
     border: 2px solid;
-    background-color: rgba(255, 255, 255, 0.4); }
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 1px 0px 15px 0px rgba(48, 63, 70, 0.6); }
     .soccer-field .team-player.small {
       width: 40px;
       height: 40px; }
@@ -6729,21 +6750,28 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     color: #B6B6B6; }
 
 .team-color-list {
-  list-style: none; }
+  list-style: none;
+  margin-left: 0px; }
+
+.team-header i.fa-user {
+  text-shadow: 0px 0px 2px rgba(48, 63, 70, 0.8); }
 
 .team-color {
   padding: 10px;
   display: inline-block;
   line-height: 1;
   border: 2px solid transparent;
-  cursor: pointer; }
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  text-align: center; }
   .team-color i {
-    text-shadow: 0px 0px 2px rgba(40, 40, 40, 0.8); }
+    text-shadow: 0px 0px 2px rgba(48, 63, 70, 0.8); }
   .team-color.selected {
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px; }
+    border: 2px solid #CFD8DC;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%; }
 
 .team-a {
   color: #9b59b6; }

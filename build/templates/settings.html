@@ -1,10 +1,10 @@
-<div class="grid-frame vertical">
+<div class="vertical">
 	<!-- TitleBar -->
 	<div ng-include="" src="'partials/back-title-bar.html'"></div>
 	
-	<div class="grid-block vertical medium-horizontal grid-container">
+	<div class="grid-container small-4">
 
-		<div class="grid-content shrink medium-6">
+		<div class="grid-content">
 			<div class="profile-card">
 				<div class="card">
 					<div class="card-section">
@@ -34,23 +34,23 @@
 			</div>
 		</div>
 
-<div class="grid-content shrink medium-6">
+<div class="grid-content">
 			<form>
 		<!-- <h4 class="form-header"><span>Paso 2/3</span></h4>
 		<hr> -->
 		<header>Completá con tus datos</header>
 
-		<div class="grid-block">
-			<div class="small-12 large-6 grid-content">
+		<div class="">
+			<div class="small-12">
 				<label>
-					<i class="fa fa-smile-o"></i> Nombre
+					Nombre
 					<input type="text" ng-model="$root.user.name">
 				</label>
 			</div>
 			
-			<div class="small-12 large-6 grid-content">
+			<div class="small-12">
 				<label>
-					<i class="fa fa-smile-o"></i> Apellido
+					Apellido
 					<input type="text" ng-model="$root.user.lastname">
 				</label>
 			</div>
@@ -69,7 +69,7 @@
 				</label>
 			</div>-->
 
-			<div class="small-12 grid-content">
+			<div class="small-12">
 				<label>
 					<i class="fa fa-shield"></i> Hincha de
 					<input type="text" ng-model="$root.user.fanOf">
@@ -89,22 +89,24 @@
 		<hr>
 		<header>Donde vivís</header>
 
-		<div class="grid-block">	
+		<div class="row">	
 
-			<div class="small-6 grid-content">
+			<div class="small-12">
 				<label>Provincia</label>
 				<select name="stateSelect" id="stateSelect" ng-model="$root.user.stateId">
 					<option ng-repeat="state in $root.states" value="{{state.id}}">{{state.name}}</option>
 				</select>
-			</div>
+			</div><!-- 
 
-			<div class="small-6 grid-content">
+			 --><div class="small-12 ">
 				<label>Localidad</label>
 				<select name="townSelect" id="townSelect" ng-model="$root.user.townId">
 					<option ng-repeat="town in $root.towns | filter:{stateId:$root.user.stateId}" value="{{town.id}}">{{town.name}}</option>
 				</select>
 			</div>
 		</div>
+		<hr>
+		<a class="success expand button" ng-click="saveUserData()">Guardar Datos</a>
 
 		<!--
 		<hr>
@@ -123,13 +125,13 @@
 		</div>
 		-->
 		
-		<div class="grid-block shrink medium-12 grid-container">
+		<!-- <div class="grid-block grid-container">
 			<div class="grid-content">
 				<div class="sub-title-bar">
-					<a class="success expand button" ng-click="saveUserData()">Guardar Datos</a>
+					
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</form>
 </div>
 </div>
