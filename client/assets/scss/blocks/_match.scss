@@ -76,6 +76,7 @@
 
 		.month {
 			display: block;
+			text-transform: uppercase;
 		}
 
 		.day {
@@ -89,6 +90,10 @@
 		p{
 			margin: 0;
 			font-size: 16px;
+			
+			.capitalize {
+				text-transform: capitalize;
+			}
 		}
 		.day{
 			display: block;

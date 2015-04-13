@@ -49,7 +49,7 @@
 			</div><!-- 
 			
 
-			 --><div class="grid-content team-column">
+			 --><div ng-if="!modoVersus" class="grid-content team-column">
 				<section class="ftz-block-list team-list">
 				<header ng-if="adminMode"><a  class="team-header" zf-open="teamColors"><i style="color: {{teamB.team.shirtColor}};" class="fa fa-user"></i> Equipo B <i class="fa fa-pencil-square-o edit-icon"></i></a></header>
 				<header ng-if="!adminMode"><i style="color: {{teamB.team.shirtColor}};" class="fa fa-user"></i> Equipo B</header>

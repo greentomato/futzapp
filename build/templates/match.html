@@ -41,7 +41,7 @@
 						<div class="month">{{(match.date | dateFormat:'MMMM').substr(0,3)}}</div>
 					</div>
 					<div class="text">
-						<p>{{match.date | dateFormat:'dddd'}} a las <strong>{{match.date | dateFormat:'hh:mm a'}}</strong></p>
+						<p><span class="capitalize">{{match.date | dateFormat:'dddd'}}</span> a las <strong>{{match.date | dateFormat:'hh:mm a'}}</strong></p>
 						<p ng-if="($root.fields | getById:match.fieldId).town != undefined"><a ng-click="renderGoogleMap()" zf-open="fieldInfo"><i class="fa fa-map-marker"></i><strong>{{match.field.name}}</strong>, {{($root.fields | getById:match.fieldId).town.name}}</a></p>
 						<p ng-if="($root.fields | getById:match.fieldId).town == undefined"><i class="fa fa-map-marker"></i><strong>{{match.field.name}}</strong></p>
 					</div>

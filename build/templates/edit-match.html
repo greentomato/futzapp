@@ -1,0 +1,151 @@
+<div class="grid-frame vertical">
+	<!-- TitleBar -->
+	<form-title-bar cancel-url="('#/match/' + $root.newMatch.id)" title="$root.newMatch.id != 0 ? 'Editar Mi Futzapp':'Nuevo Futzapp'"></form-title-bar>
+	
+
+
+	<div class="grid-block">
+	<div ng-class="['ui-animation']" class="match-content">
+		<!-- <match-menu step2="$root.newMatch.fieldId != 0" step3="false"></match-menu>
+		<div class="grid-content collapse">
+			<progress  class="new-match-steps-progress" value="30" max="90"></progress>
+		</div> -->
+
+		<!-- STEP-1 -->
+		<div class="grid-content grid-container small-6">
+			<form>
+				<!-- <h4 class="form-header"><span>Paso 1/3</span></h4>
+				<hr> -->
+				<header>Dónde se juega</header>
+				<div class="grid-block">
+					
+					<!--<div class="small-6 grid-content">
+						<label>Provincia</label>
+						<div angucomplete-alt id="stateSelect" placeholder="Provincia..." pause="100" selected-object="$root.stateSelected"
+								local-data="$root.states" search-fields="name" title-field="name" minlength="1" match-class="highlight"></div>
+						<!--<select select-picker name="stateSelect" id="stateSelect" ng-model="$root.newMatch.stateId" data-live-search="true">
+							<option ng-repeat="state in $root.states" value="{{state.id}}">{{state.name}}</option>
+						</select>--
+					</div>
+					<div class="small-6 grid-content">
+						<label>Localidad</label>
+						<div angucomplete-alt id="townSelect" placeholder="Localidad..." pause="100" selected-object="$root.townSelected"
+								local-data="$root.filteredTowns" search-fields="name" title-field="name" minlength="1" match-class="highlight"></div>
+						<!--<select select-picker name="townSelect" id="townSelect" ng-model="$root.newMatch.townId" data-live-search="true">
+							<option ng-repeat="town in $root.towns | filter:{stateId:$root.newMatch.state.id}" value="{{town.id}}">{{town.name}}</option>
+						</select>--
+					</div>-->
+
+					<div class="small-12 grid-content">
+						<label><i class="fa fa-map-marker"></i> Cancha</label>
+						<script type="text/ng-template" id="/my-custom-template.html">
+							<div class="angucomplete-holder" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
+								<input ng-model="searchStr"
+									ng-disabled="disableInput"
+									type="text"
+									placeholder="{{placeholder}}"
+									ng-focus="onFocusHandler()"
+									class="{{inputClass}}"
+									ng-focus="resetHideResults()"
+									ng-blur="hideResults($event)"
+									autocapitalize="off"
+									autocorrect="off"
+									autocomplete="off"
+									ng-change="inputChangeHandler(searchStr)"/>
+								<div class="angucomplete-dropdown" ng-show="showDropdown">
+								<div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>
+								<div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>
+								<div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{'angucomplete-selected-row': $index == currentIndex}">
+									<div ng-if="imageField" class="angucomplete-image-holder">
+										<img ng-if="result.image && result.image != ''" ng-src="{{result.image}}" class="angucomplete-image"/>
+										<div ng-if="!result.image && result.image != ''" class="angucomplete-image-default"></div>
+									</div>
+									<div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>
+									<div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>
+									<div ng-if="matchClass && result.description && result.description != ''" class="angucomplete-description" ng-bind-html="result.description"></div>
+									<div ng-if="!matchClass && result.description && result.description != ''" class="angucomplete-description">{{result.description}}</div>
+								</div>
+								<div class="angucomplete-row" ng-click="selectResult({title: searchStr, originalObject: { name: searchStr, custom: true }})" ng-mouseenter="hoverRow(results.length)" ng-class="{'angucomplete-selected-row': results.length == currentIndex}">
+									<div class="angucomplete-title">Agrega tu cancha: '{{ searchStr }}'</div>
+								</div>
+							  </div>
+							</div>
+						</script>
+						<div angucomplete-alt id="fieldSelect" placeholder="Elegí tu cancha..." pause="100" selected-object="$root.fieldSelected"
+								local-data="$root.fieldsUploadedByGT" search-fields="name" title-field="name" text-searching="Buscando..." 
+								text-no-results="No hay resultados" initial-value="{{$root.newMatch.fieldName}}" template-url="/my-custom-template.html"
+								description-field="address" maxlength="255" minlength="1" match-class="highlight"></div>
+						<!--<select select-picker name="" id="" ng-model="$root.newMatch.fieldId" data-live-search="true">
+							<option ng-repeat="field in $root.fields | filter:{stateId:$root.newMatch.stateId} | filter:{townId:$root.newMatch.townId}" value="{{field.id}}">
+								{{field.name}}
+							</option>
+						</select>-->
+					</div>
+				</div>
+
+				<div ng-hide="$root.newMatch.fieldId != 0">
+					<br>
+					<!-- <p>¿No encontrás la sede?</p>
+					<a class="hollow expand button add-player" href="#">Agregar Cancha</a> -->
+
+				</div>
+
+				<div ng-show="$root.newMatch.fieldId != 0">
+						<field-card ng-show="($root.fields | getById:$root.newMatch.fieldId) == undefined" data="{name: $root.newMatch.fieldName, town: undefined, address: ''}"></field-card>
+						<field-card ng-show="($root.fields | getById:$root.newMatch.fieldId) != undefined" data="$root.fields | getById:$root.newMatch.fieldId"></field-card>
+						<header>Reservá tu cancha:</header>
+						<a ng-show="($root.fields | getById:$root.newMatch.fieldId) == undefined || ($root.fields | getById:$root.newMatch.fieldId).contact == ''" class="warning hollow expand button" ng-href=""><i class="fa fa-phone"></i>&nbsp;No te olvides de llamar y reservar!</a>
+						<a ng-show="($root.fields | getById:$root.newMatch.fieldId) != undefined && ($root.fields | getById:$root.newMatch.fieldId).contact != ''" class="warning hollow expand button" href="tel:{{($root.fields | getById:$root.newMatch.fieldId).contact}}"><i class="fa fa-phone"></i>&nbsp;{{($root.fields | getById:$root.newMatch.fieldId).contact}}</a>
+				</div>
+				<hr>
+
+		<!-- STEP 2 -->
+
+		
+				<!-- <h4 class="form-header"><span>Paso 2/3</span></h4>
+				<hr> -->
+				<header>Cuántos juegan</header>
+				
+				<div class="grid-block">
+
+					<div class="small-12 grid-content">
+						<label><i class="fa fa-soccer-ball-o"></i> Cantidad de jugadores</label>
+						<select name="" id="" ng-model="$root.newMatch.matchTypeId">
+							<option ng-repeat="matchType in $root.matchTypes" value="{{matchType.id}}">{{matchType.name}} ({{matchType.totalPlayers}})</option>
+						</select>
+					</div>
+				</div>
+				
+				<hr>
+				<header>Cuándo se juega</header>
+				
+				<div class="grid-block">
+
+					<div class="small-12 grid-content">
+						<label>
+							<i class="fa fa-calendar-o"></i> Fecha
+							<input ng-model="$root.newMatch.partialDate" type="date">
+
+						</label>
+					</div>
+					<div class="small-12 grid-content">
+						<label>
+							<i class="fa fa-clock-o"></i> Horario
+							<input ng-model="$root.newMatch.partialTime" type="time">
+						</label>
+					</div>
+				</div>	
+
+
+				<!-- SAVE 3-->	
+				<div>
+					<br>
+					<a ng-click="$root.updateMatch()" class="success expand button"><i class="fa fa-check"></i>&nbsp; Guardar cambios</a>
+				</div>
+		</form>
+		</div>
+
+	</div>
+	</div>
+</div>
+

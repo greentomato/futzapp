@@ -6583,7 +6583,8 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     text-align: center;
     color: #303f46; }
     .match-info .date-block .month {
-      display: block; }
+      display: block;
+      text-transform: uppercase; }
     .match-info .date-block .day {
       display: block;
       font-size: 1.625em; }
@@ -6592,6 +6593,8 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     .match-info .text p {
       margin: 0;
       font-size: 16px; }
+      .match-info .text p .capitalize {
+        text-transform: capitalize; }
     .match-info .text .day {
       display: block;
       font-weight: bold; }
