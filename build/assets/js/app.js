@@ -1,7 +1,7 @@
 /*
  * Set PRD or DEV mode
  */
-var prd = true;
+var prd = false;
 
 /*
  * Set PRD or DEV mode

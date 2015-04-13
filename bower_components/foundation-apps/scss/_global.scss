@@ -113,7 +113,8 @@ $foundation-colors: (
     vertical-align: middle;
   }
 
-  a, [ui-sref] {
+  // Give all anchors and interactive directives the hover cusor
+  a, [ui-sref], [zf-open], [zf-close], [zf-toggle] {
     cursor: pointer;
   }
 

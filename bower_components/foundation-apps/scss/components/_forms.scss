@@ -26,9 +26,11 @@ $input-color-focus: $input-color !default;
 $input-background: #fff !default;
 $input-background-hover: $input-background !default;
 $input-background-focus: $input-background !default;
+$input-background-disabled: smartscale($input-background) !default;
 $input-border: 1px solid #ccc !default;
 $input-border-hover: 1px solid #bbb !default;
 $input-border-focus: 1px solid #999 !default;
+$input-cursor-disabled: not-allowed !default;
 
 // Select menus
 $select-color: #000 !default;
@@ -74,9 +76,14 @@ $meter-radius: 0 !default;
 // Text fields
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 #{$text-input-selectors} {
+  $top-padding: get-side($form-padding, top);
+  $bottom-padding: get-side($form-padding, bottom);
+  $height: ($form-fontsize * 1.4) + $top-padding + $bottom-padding;
+
   @include no-appearance;
   display: block;
   width: 100%;
+  height: $height;
   padding: $form-padding;
   margin: 0 0 $global-padding 0;
   border: $input-border;
@@ -84,8 +91,8 @@ $meter-radius: 0 !default;
   background: $input-background;
   color: $input-color;
   font-size: $form-fontsize;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
 
   &:hover {
     border: $input-border-hover;
@@ -101,6 +108,25 @@ $meter-radius: 0 !default;
 
   label > & {
     margin-top: $form-label-margin;
+  }
+}
+
+// Override the content-box declaration set by Normalize
+input[type="search"] {
+  box-sizing: border-box;
+}
+
+// Disabled state
+input {
+  &.disabled,
+  &[disabled],
+  &[readonly],
+  fieldset[disabled] & {
+    cursor: $input-cursor-disabled;
+
+    &, &:hover {
+      background-color: $input-background-disabled;
+    }
   }
 }
 
@@ -197,11 +223,15 @@ textarea {
 // Select menus
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 select {
+  $top-padding: get-side($form-padding, top);
+  $bottom-padding: get-side($form-padding, bottom);
+  $height: ($form-fontsize * 1.4) + $top-padding + $bottom-padding;
   $color: isitlight($select-background);
 
   @include no-appearance;
   display: block;
   width: 100%;
+  height: $height;
   padding: $form-padding;
   margin: 0 0 $global-padding 0;
   font-size: $form-fontsize;
@@ -225,6 +255,11 @@ select {
   &:focus {
     outline: 0;
   }
+
+  // Remove the dropdown arrow added in IE10/11
+  &::-ms-expand {
+    display: none;
+  }
 }
 
 // Range slider
@@ -235,12 +270,12 @@ input[type="range"] {
   @include no-appearance;
   display: block;
   width: 100%;
-  height: $slider-height;
-  background: $slider-background;
+  height: auto;
   cursor: pointer;
-  overflow: visible;
   margin-top: $margin;
   margin-bottom: $margin;
+  border: 0;
+  line-height: 1;
 
   @if hasvalue($slider-radius) {
     border-radius: $slider-radius;
@@ -251,11 +286,16 @@ input[type="range"] {
   }
 
   // Chrome/Safari
+  &::-webkit-slider-runnable-track {
+    height: $slider-height;
+    background: $slider-background;
+  }
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     background: $slider-thumb-color;
     width: $slider-thumb-height;
     height: $slider-thumb-height;
+    margin-top: -$margin;
     @if hasvalue($slider-thumb-radius) {
       border-radius: $slider-thumb-radius;
     }
@@ -263,34 +303,40 @@ input[type="range"] {
   // Firefox
   &::-moz-range-track {
     -moz-appearance: none;
-    max-width: 300px;
-    height: 4px;
+    height: $slider-height;
     background: #ccc;
-    cursor: pointer;
   }
   &::-moz-range-thumb {
     -moz-appearance: none;
     background: $slider-thumb-color;
     width: $slider-thumb-height;
     height: $slider-thumb-height;
+    margin-top: -$margin;
     @if hasvalue($slider-thumb-radius) {
       border-radius: $slider-thumb-radius;
     }
   }
   // Internet Explorer
   &::-ms-track {
-    max-width: 300px;
-    height: 4px;
-    background: #ccc;
-    cursor: pointer;
+    height: $slider-height;
+    background: $slider-background;
+    color: transparent;
+    border: 0;
+    overflow: visible;
+    border-top: $margin solid $body-background;
+    border-bottom: $margin solid $body-background;
   }
   &::-ms-thumb {
     background: $slider-thumb-color;
     width: $slider-thumb-height;
     height: $slider-thumb-height;
+    border: 0;
     @if hasvalue($slider-thumb-radius) {
       border-radius: $slider-thumb-radius;
     }
+  }
+  &::-ms-fill-lower, &::-ms-fill-upper {
+    background: $slider-background;
   }
 }
 output {

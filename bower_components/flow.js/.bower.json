@@ -23,5 +23,6 @@
     "commit": "0467da5c2820e87623c7f720c7d21493c2655511"
   },
   "_source": "git://github.com/flowjs/flow.js.git",
-  "_target": "~2"
+  "_target": "~2",
+  "_originalSource": "flow.js"
 }

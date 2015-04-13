@@ -69,6 +69,7 @@
 
         var animationIn = attrs.animationIn || 'fadeIn';
         var animationOut = attrs.animationOut || 'fadeOut';
+
         var overlayIn = 'fadeIn';
         var overlayOut = 'fadeOut';
 
@@ -110,7 +111,7 @@
             scope.toggle();
           }
 
-          if (!scope.$root.$$phase) {
+          if (scope.$root && !scope.$root.$$phase) {
             scope.$apply();
           }
 
@@ -136,9 +137,9 @@
     }
   }
 
-  ModalFactory.$inject = ['$http', '$templateCache', '$rootScope', '$compile', '$timeout', 'FoundationApi'];
+  ModalFactory.$inject = ['$http', '$templateCache', '$rootScope', '$compile', '$timeout', '$q', 'FoundationApi'];
 
-  function ModalFactory($http, $templateCache, $rootScope, $compile, $timeout, foundationApi) {
+  function ModalFactory($http, $templateCache, $rootScope, $compile, $timeout, $q, foundationApi) {
     return modalFactory;
 
     function modalFactory(config) {
@@ -149,7 +150,9 @@
           destroyed = false,
           html,
           element,
-          scope
+          fetched,
+          scope,
+          contentScope
       ;
 
       var props = [
@@ -161,7 +164,7 @@
 
       if(config.templateUrl) {
         //get template
-        $http.get(config.templateUrl, {
+        fetched = $http.get(config.templateUrl, {
           cache: $templateCache
         }).then(function (response) {
           html = response.data;
@@ -170,6 +173,7 @@
 
       } else if(config.template) {
         //use provided template
+        fetched = true;
         html = config.template;
         assembleDirective();
       }
@@ -218,25 +222,54 @@
       }
 
       function init(state) {
-        if(!attached && html.length > 0) {
-          var modalEl = container.append(element);
+        $q.when(fetched).then(function() {
+          if(!attached && html.length > 0) {
+            var modalEl = container.append(element);
 
-          scope.active = state;
-          $compile(element)(scope);
-          attached = true;
-        }
+            scope.active = state;
+            $compile(element)(scope);
+
+            attached = true;
+          }
+        });
       }
 
       function assembleDirective() {
+        // check for duplicate elements to prevent factory from cloning modals
+        if (document.getElementById(id)) {
+          return;
+        }
+
         html = '<zf-modal id="' + id + '">' + html + '</zf-modal>';
 
         element = angular.element(html);
 
         scope = $rootScope.$new();
 
-        for(var prop in props) {
+        // account for directive attributes
+        for(var i = 0; i < props.length; i++) {
+          var prop = props[i];
+
           if(config[prop]) {
-            element.attr(prop, config[prop]);
+            switch (prop) {
+              case 'animationIn':
+                element.attr('animation-in', config[prop]);
+                break;
+              case 'animationOut':
+                element.attr('animation-out', config[prop]);
+                break;
+              default:
+                element.attr(prop, config[prop]);
+            }
+          }
+        }
+        // access view scope variables
+        if (config.contentScope) {
+          contentScope = config.contentScope;
+          for (var prop in config.contentScope) {
+            if (config.contentScope.hasOwnProperty(prop)) {
+              scope[prop] = config.contentScope[prop];
+            }
           }
         }
       }
@@ -248,6 +281,7 @@
           element.remove();
           destroyed = true;
         }, 3000);
+        foundationApi.unsubscribe(id);
       }
 
     }

@@ -1,6 +1,6 @@
 {
   "name": "foundation-apps",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "main": [
     "dist/css/foundation-apps.css",
     "dist/js/foundation-apps.js"
@@ -45,13 +45,13 @@
     "jsdiff": "~1.0.8",
     "bootcamp": "~1.1.7"
   },
-  "_release": "1.0.3",
+  "_release": "1.1.0",
   "_resolution": {
     "type": "version",
-    "tag": "v1.0.3",
-    "commit": "c877035925f4bad389ba96127b96a793a47b2953"
+    "tag": "v1.1.0",
+    "commit": "7fc29d6a309a7018a452bdf996e27053a32023c1"
   },
   "_source": "git://github.com/zurb/foundation-apps.git",
-  "_target": "~1.0.3",
+  "_target": "1.1",
   "_originalSource": "foundation-apps"
 }
