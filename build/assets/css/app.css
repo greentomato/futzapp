@@ -6507,6 +6507,7 @@ input[type="checkbox"] + label, input[type="radio"] + label {
 .panel {
   background: rgba(27, 36, 40, 0.97);
   margin-top: 48px;
+  margin-bottom: -48px;
   width: 100%; }
 
 .modal {

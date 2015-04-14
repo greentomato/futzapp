@@ -6,7 +6,7 @@ var prd = false;
 /*
  * Set PRD or DEV mode
  */
-var fbAppIdDEV = "1573351059604037";
+var fbAppIdDEV = "1517377388534738";
 var fbAppIdPRD = "1450926871846457";
  
 /* 
@@ -1072,7 +1072,7 @@ fulboFilters.filter('getById', function() {
 'use strict';
 
 /* Services */
-var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://local.gt/admin.futzapp.com/public/"; //DEV
+var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://futbolizados.dev/"; //DEV
 
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
