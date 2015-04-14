@@ -126,7 +126,8 @@
 			};
 			$rootScope.wpMsg = "";
 			$rootScope.matchShareURL = "";
-			
+			$rootScope.cleanMatchShareURL = "";
+		
 			/* NEW/EDIT MATCH METHODS */
 			$rootScope.fieldSelected = function(selected){
 				if(selected != undefined){
@@ -185,6 +186,7 @@
 				Matches.update($rootScope.newMatch, function(updatedMatch){
 					$rootScope.newMatch = updatedMatch;
 					$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "/?token=" + $rootScope.newMatch.token));
+					$rootScope.cleanMatchShareURL = $sanitize("http://" + $location.host() + "/?token=" + $rootScope.newMatch.token);
 					$rootScope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $rootScope.matchShareURL);
 					console.log("Match updated, id:" + updatedMatch.id);
 					$location.path( "/match/" + updatedMatch.id );
@@ -200,6 +202,7 @@
 				Matches.save($rootScope.newMatch, function(newMatch){
 					$rootScope.newMatch = newMatch;
 					$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "/?token=" + $rootScope.newMatch.token));
+					$rootScope.cleanMatchShareURL = $sanitize("http://" + $location.host() + "/?token=" + $rootScope.newMatch.token);
 					$rootScope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $rootScope.matchShareURL);
 					console.log("Match saved, id:" + newMatch.id);
 					$location.path( "/step-3" );

@@ -78,9 +78,11 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 		
 		$scope.wpMsg = "";
 		$scope.matchShareURL = "";
+		$scope.cleanMatchShareURL = "";
 		$scope.currentURL = "";
 		$scope.renderMatch = function(){
 			return Matches.get({id: $routeParams.matchId}, function(){
+				$scope.cleanMatchShareURL = $sanitize("http://" + $location.host() + "/?token=" + $scope.match.token);
 				$scope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "/?token=" + $scope.match.token));
 				$scope.currentURL = $sanitize("http://" + $location.host() + "/#/match/" + $scope.match.id);
 				$scope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $scope.matchShareURL);
