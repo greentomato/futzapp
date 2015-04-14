@@ -6876,6 +6876,9 @@ input[type="checkbox"] + label, input[type="radio"] + label {
       margin: 0;
       display: block; }
 
+#map_canvas {
+  width: 100% !important; }
+
 .card {
   margin-bottom: 1rem;
   position: relative; }
