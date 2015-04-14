@@ -6,7 +6,7 @@ var prd = false;
 /*
  * Set PRD or DEV mode
  */
-var fbAppIdDEV = "1517377388534738";
+var fbAppIdDEV = "1573351059604037";
 var fbAppIdPRD = "1450926871846457";
  
 /* 
