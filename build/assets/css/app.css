@@ -7082,6 +7082,10 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     margin: 0;
     font-size: 14px; }
 
+.share-link button {
+  background: none;
+  border: 1px solid #4CAF50; }
+
 /* RIBBON BANNERS */
 .ribbon {
   position: absolute;
