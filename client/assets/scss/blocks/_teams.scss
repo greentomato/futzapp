@@ -205,10 +205,18 @@
 		vertical-align: top;
 		width: 50%;
 		display: inline-block;
+		&.versus {
+			width: 100%;
+		}
 	}
 
 	.team-list {
 		border-bottom: none;
 
 	}
+
+	.soccer-field .team-player {
+			margin-left: 8px;
+		}
+	
 }

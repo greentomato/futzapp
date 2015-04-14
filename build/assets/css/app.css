@@ -1912,9 +1912,9 @@ progress.medium::-webkit-progress-value {
 progress.medium::-moz-progress-bar {
   background: #f1c40f; }
 progress.low::-webkit-progress-value {
-  background: #4CAF50 #e74c3c; }
+  background: #e74c3c; }
 progress.low::-moz-progress-bar {
-  background: #4CAF50 #e74c3c; }
+  background: #e74c3c; }
 
 meter {
   background: #CFD8DC; }
@@ -1925,7 +1925,7 @@ meter {
   meter::-webkit-meter-suboptimum-value {
     background: #f1c40f; }
   meter::-webkit-meter-even-less-good-value {
-    background: #4CAF50 #e74c3c; }
+    background: #e74c3c; }
   meter::-moz-meter-bar {
     background: #00558b; }
   meter:-moz-meter-optimum::-moz-meter-bar {
@@ -1933,7 +1933,7 @@ meter {
   meter:-moz-meter-sub-optimum::-moz-meter-bar {
     background: #f1c40f; }
   meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
-    background: #4CAF50 #e74c3c; }
+    background: #e74c3c; }
 
 /*
   PANEL
@@ -6845,9 +6845,14 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     vertical-align: top;
     width: 50%;
     display: inline-block; }
+    .team-column.versus {
+      width: 100%; }
 
   .team-list {
-    border-bottom: none; } }
+    border-bottom: none; }
+
+  .soccer-field .team-player {
+    margin-left: 8px; } }
 .field-info {
   overflow: hidden;
   padding: 1rem; }
