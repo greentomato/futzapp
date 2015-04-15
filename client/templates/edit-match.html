@@ -110,8 +110,8 @@
 
 					<div class="small-12 grid-content">
 						<label><i class="fa fa-soccer-ball-o"></i> Cantidad de jugadores</label>
-						<select name="" id="" ng-model="$root.newMatch.matchTypeId">
-							<option ng-repeat="matchType in $root.matchTypes" value="{{matchType.id}}">{{matchType.name}} ({{matchType.totalPlayers}})</option>
+						<select name="" id="" ng-model="$root.newMatch.matchTypeId" ng-options="mt.id as mt.name for mt in $root.matchTypes">
+							<option></option>
 						</select>
 					</div>
 				</div>
