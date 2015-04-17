@@ -433,28 +433,15 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 					};
 					data.users.push(newUserItem);
 					
-					var message = "Copate a un fulbo el " + match.date + " en " + match.field.name;
-		    		var link = "http://www.futzapp.com?token=" + match.token; //TODO: link al partido
-		    		var actions = null;
-		    		var tags = $rootScope.user.fbId;
-		    		Facebook.getPlaceIdByLatLong(match.field.town, match.field.latitude, match.field.longitude, function(placeId){
-		    			if(placeId != -1){
-			    			Facebook.postNotification(message, link, tags, actions, placeId, function(){
-								console.log("Se envió una notificación a " + $rootScope.user.id);
-							}, function(){
-								console.log("No se pudo enviar una notificación a " + $rootScope.user.id);
-							});
-		    			} else {
-		    				console.log("No se pudo enviar una notificación a " + $rootScope.user.id);
-		    			}
-		    		});
-		    		
-		    		Matches.updateGuests(data, function(response){
+					Matches.updateGuests(data, function(response){
 						console.log("Player " + $rootScope.user.id + " invited!");
 					});
 				}
 				
 				$location.path( "match/" + match.id );
+			}, function(response){
+				alert(response.data);
+				$location.path( "home" );
 			});
 		}
 	};
