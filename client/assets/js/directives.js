@@ -42,6 +42,16 @@ fulboDirectives.directive('dynFbCommentBox', function () {
     };
 });
 
+fulboDirectives.directive('dateFuture', ['$rootScope', function ($rootScope) {
+	return {
+        restrict: 'A',
+        link: function (scope, elem, attrs) {
+            var today = new Date().toISOString().split('T')[0];
+			elem.attr("min", today);
+        }
+    };
+}]);
+
 fulboDirectives.directive('dateTimePicker', ['$rootScope', function ($rootScope) {
 	return {
         //require: '?ngModel',
