@@ -503,9 +503,10 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    //match Share
 	    $scope.shareFB = function(){
 	    	var url = decodeURIComponent($scope.matchShareURL);
-	    	FB.ui( {
-				//method: 'feed',
-				method: 'share',
+			window.open('http://www.facebook.com/sharer/sharer.php?u='+url,'sharer','toolbar=0,status=0');
+	    	/*
+			FB.ui( {
+				method: 'feed',
 				name: fbShareTitle,
 				link: url,
 				href: url,
@@ -515,6 +516,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 			}, function( response ) {
 				// do nothing
 			} );
+			*/
 	    };
 }]);
 

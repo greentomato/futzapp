@@ -221,9 +221,11 @@
 						break;
 					}
 				}
+				
+				window.open('http://www.facebook.com/sharer/sharer.php?u='+url,'sharer','toolbar=0,status=0');
+				/*
 				FB.ui( {
-					//method: 'feed',
-					method: 'share',
+					method: 'feed',
 					name: fbShareTitle,
 					link: url,
 					href: url,
@@ -233,6 +235,7 @@
 				}, function( response ) {
 					// do nothing
 				} );
+				*/
 			};
 			
 			/* GLOBAL METHODS */
