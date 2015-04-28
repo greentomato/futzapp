@@ -73,7 +73,7 @@
 
 									<div class="text">
 										<h4>{{match.type.name}}</h4>
-										<p><span class="capitalize">{{match.date | dateFormat:'dddd'}}</span> a las <strong>{{match.date | dateFormat:'hh:mm a'}}</strong></p>
+										<p><span class="capitalize">{{match.date | dateFormat:'dddd'}}</span> a las <strong>{{match.date | dateFormat:'HH:mm'}}</strong></p>
 										<p>{{match.field.name}}<span ng-show="($root.fields | getById:match.fieldId).town != undefined">, {{($root.fields | getById:match.fieldId).town.name}}</span></p>
 									</div>
 								</a>
