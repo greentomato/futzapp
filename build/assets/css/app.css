@@ -6748,7 +6748,7 @@ input[type="checkbox"] + label, input[type="radio"] + label {
   list-style: none;
   margin-left: 0px; }
 
-.team-header i.fa-user {
+.team-list i.fa-user {
   text-shadow: 0px 0px 2px rgba(48, 63, 70, 0.8); }
 
 .team-color {
@@ -6943,6 +6943,15 @@ input[type="checkbox"] + label, input[type="radio"] + label {
 .match-card meter, .my-match-card meter {
   margin-bottom: 0px; }
 
+.my-match-card-placeholder {
+  border: 1px dashed #CFD8DC; }
+  .my-match-card-placeholder:hover {
+    border-color: #4CAF50; }
+  .my-match-card-placeholder .match-card-info .text h4 {
+    font-size: 16px; }
+  .my-match-card-placeholder .match-card-info .date-block .day {
+    font-size: 2.625em; }
+
 .dismiss-match-card {
   position: absolute;
   right: 0.5rem;
@@ -7029,22 +7038,40 @@ input[type="checkbox"] + label, input[type="radio"] + label {
   background-size: cover;
   height: 100vh;
   width: 100%;
-  text-align: center;
   -moz-background-attachment: inherit;
   -webkit-background-attachment: inherit;
-  background-attachment: inherit; }
+  background-attachment: inherit;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: left; }
+  .splash-bg .landing-container {
+    padding: 20px;
+    overflow-y: auto; }
   .splash-bg h1 {
     color: #fff;
     font-weight: bold;
     font-size: 3rem;
     text-shadow: 1px 1px 5px rgba(40, 40, 40, 0.7);
-    margin-bottom: 0.625rem; }
+    margin-bottom: 0.625rem;
+    display: none; }
+    .splash-bg h1 .thin {
+      font-weight: 300; }
   .splash-bg h3 {
     color: #fff;
+    font-size: 16px;
     text-shadow: 1px 2px 5px rgba(40, 40, 40, 0.9);
-    margin: 0 auto;
-    max-width: 620px;
-    font-weight: bold; }
+    max-width: 500px;
+    font-weight: 300;
+    margin: 20px 0; }
+  .splash-bg p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    margin: 20px 0;
+    font-weight: normal;
+    max-width: 300px; }
   .splash-bg .button {
     margin: 1.25rem 0 0;
     font-size: 1.125rem;
@@ -7052,17 +7079,48 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     min-width: 300px; }
 
 .app-logo {
-  padding: 0.625rem 0;
-  max-width: 40%;
-  margin: 0 auto; }
+  padding: 1.25rem 0;
+  max-width: 200px;
+  width: 100%;
+  margin: 0;
+  margin-left: -5px; }
 
-.iphone-mockup {
-  position: absolute;
-  height: auto;
-  max-width: 800px;
-  right: -300px;
-  bottom: -30px; }
+.landing-cta {
+  display: inline-block;
+  float: left; }
 
+.smartphone-mockup {
+  float: right;
+  height: 80vh;
+  display: none;
+  overflow: hidden; }
+  .smartphone-mockup img {
+    height: 100%;
+    width: auto; }
+
+@media (min-width: 700px) {
+  .splash-bg .landing-container {
+    padding: 60px 20px; }
+  .splash-bg h1 {
+    font-size: 3rem;
+    margin-bottom: 0.625rem; }
+    .splash-bg h1 .thin {
+      font-weight: 300; }
+  .splash-bg h3 {
+    font-size: 22px; }
+  .splash-bg p {
+    font-size: 12px; }
+  .splash-bg .button {
+    font-size: 1.125rem; }
+  .splash-bg .app-logo {
+    padding: 1.25rem 0;
+    max-width: 300px;
+    width: 100%; }
+  .splash-bg .smartphone-mockup {
+    display: inline-block; }
+  .splash-bg .landing-cta {
+    float: left;
+    width: 60%; } }
 .invite-card .card.wa {
   background: #4CAF50;
   border-color: #6ec071;
@@ -7434,7 +7492,10 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     margin: -1.2rem 0 -1rem;
     height: 30px;
     width: auto; }
-  .ftz-title-bar .app-logo-title span {
+  .ftz-title-bar .app-logo-title .thin {
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7); }
+  .ftz-title-bar .app-logo-title .beta {
     font-size: 0.625rem;
     color: #607D8B; }
   .ftz-title-bar.fixed-title-bar {

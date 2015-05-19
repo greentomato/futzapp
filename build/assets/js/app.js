@@ -333,9 +333,11 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 						break;
 					}
 				}
+				
+				window.open('http://www.facebook.com/sharer/sharer.php?u='+url,'sharer','toolbar=0,status=0');
+				/*
 				FB.ui( {
-					//method: 'feed',
-					method: 'share',
+					method: 'feed',
 					name: fbShareTitle,
 					link: url,
 					href: url,
@@ -345,6 +347,7 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 				}, function( response ) {
 					// do nothing
 				} );
+				*/
 			};
 			
 			/* GLOBAL METHODS */
@@ -986,9 +989,10 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    //match Share
 	    $scope.shareFB = function(){
 	    	var url = decodeURIComponent($scope.matchShareURL);
-	    	FB.ui( {
-				//method: 'feed',
-				method: 'share',
+			window.open('http://www.facebook.com/sharer/sharer.php?u='+url,'sharer','toolbar=0,status=0');
+	    	/*
+			FB.ui( {
+				method: 'feed',
 				name: fbShareTitle,
 				link: url,
 				href: url,
@@ -998,6 +1002,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 			}, function( response ) {
 				// do nothing
 			} );
+			*/
 	    };
 }]);
 
@@ -1078,7 +1083,6 @@ fulboFilters.filter('getById', function() {
 
 /* Services */
 var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://local.gt/admin.futzapp.com/public/"; //DEV
-
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
 /* Notifications Services */
@@ -1148,8 +1152,8 @@ fulboServices.factory('MandrillHelper', ['MandrillAPI', function(Mandrill) {
 fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$location', 'MandrillHelper', function($rootScope, $filter, $sanitize, $location, MandrillHelper) {
 	var sdo = {
 		juego: function(match, userName){
-			var message = juegoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
-			var subject = juegoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
+			var message = juegoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
+			var subject = juegoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
 			MandrillHelper.checkSetup(function(){	
 				MandrillHelper.sendMessage(subject, message, [{email: match.admin.email}], function(data){
 					console.log("Mail enviado!" + data);
@@ -1161,8 +1165,8 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 			});
 		},
 		meBajo: function(match, userName){
-			var message = meBajoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
-			var subject = meBajoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
+			var message = meBajoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
+			var subject = meBajoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
 			MandrillHelper.checkSetup(function(){	
 				MandrillHelper.sendMessage(subject, message, [{email: match.admin.email}], function(data){
 					console.log("Mail enviado!" + data);
@@ -1174,8 +1178,8 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 			});
 		},
 		completo: function(match, guests){
-			var message = completoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
-			var subject = completoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			var message = completoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			var subject = completoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
 			var mails = [];
 			for(var i = 0; i < guests.length; i++) {
 				if(guests[i].pivot.confirmed == "1" && guests[i].email != null) {
@@ -1197,8 +1201,8 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 			});
 		},
 		teBajaron: function(match, userMail){
-			var message = teBajaronMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
-			var subject = teBajaronSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			var message = teBajaronMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			var subject = teBajaronSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
 			
 			MandrillHelper.checkSetup(function(){	
 				MandrillHelper.sendMessage(subject, message, [{email: userMail}], function(data){
@@ -1211,8 +1215,8 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 			});
 		},
 		cancelado: function(match, guests){
-			var message = canceladoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
-			var subject = canceladoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'hh:mm a')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			var message = canceladoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
+			var subject = canceladoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
 			
 			var mails = [];
 			for(var i = 0; i < guests.length; i++) {
@@ -1509,28 +1513,15 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 					};
 					data.users.push(newUserItem);
 					
-					var message = "Copate a un fulbo el " + match.date + " en " + match.field.name;
-		    		var link = "http://www.futzapp.com?token=" + match.token; //TODO: link al partido
-		    		var actions = null;
-		    		var tags = $rootScope.user.fbId;
-		    		Facebook.getPlaceIdByLatLong(match.field.town, match.field.latitude, match.field.longitude, function(placeId){
-		    			if(placeId != -1){
-			    			Facebook.postNotification(message, link, tags, actions, placeId, function(){
-								console.log("Se envió una notificación a " + $rootScope.user.id);
-							}, function(){
-								console.log("No se pudo enviar una notificación a " + $rootScope.user.id);
-							});
-		    			} else {
-		    				console.log("No se pudo enviar una notificación a " + $rootScope.user.id);
-		    			}
-		    		});
-		    		
-		    		Matches.updateGuests(data, function(response){
+					Matches.updateGuests(data, function(response){
 						console.log("Player " + $rootScope.user.id + " invited!");
 					});
 				}
 				
 				$location.path( "match/" + match.id );
+			}, function(response){
+				alert(response.data);
+				$location.path( "home" );
 			});
 		}
 	};
@@ -1710,6 +1701,16 @@ fulboDirectives.directive('dynFbCommentBox', function () {
         }
     };
 });
+
+fulboDirectives.directive('dateFuture', ['$rootScope', function ($rootScope) {
+	return {
+        restrict: 'A',
+        link: function (scope, elem, attrs) {
+            var today = new Date().toISOString().split('T')[0];
+			elem.attr("min", today);
+        }
+    };
+}]);
 
 fulboDirectives.directive('dateTimePicker', ['$rootScope', function ($rootScope) {
 	return {

@@ -6,11 +6,21 @@
 	background-size: cover;
 	height: 100vh;
 	width: 100%;
-	text-align: center;
 	-moz-background-attachment: inherit;
 	-webkit-background-attachment: inherit;
 	background-attachment: inherit;
 
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom:0;
+	text-align: left;
+
+.landing-container{
+		padding: 20px;
+		overflow-y:auto;
+}
 
 	h1{
 		color: #fff;
@@ -18,15 +28,31 @@
 		font-size: 3rem;
 		text-shadow: 1px 1px 5px rgba(40, 40, 40, 0.7);
 		margin-bottom: rem-calc(10);
+		display: none;
+
+		.thin {
+			font-weight: 300;
+		}
 
 	}
 
+	
+
 	h3{
 		color: #fff;
+		font-size: 16px;
 		text-shadow: 1px 2px 5px rgba(40, 40, 40, 0.9);
-		margin: 0 auto;
-		max-width: 620px;
-		font-weight: bold;
+		max-width: 500px;
+		font-weight: 300;
+		margin: 20px 0;
+	}
+
+	p{
+		color: rgba(255,255,255,0.8);
+		font-size: 12px;
+		margin: 20px 0;
+		font-weight: normal;
+		max-width: 300px;
 	}
 
 	.subheader{
@@ -41,15 +67,76 @@
 }
 
 .app-logo {
-	padding: rem-calc(10) 0;
-	max-width: 40%;
-	margin: 0 auto;
+	padding: rem-calc(20) 0;
+	max-width: 200px;
+	width: 100%;
+	margin: 0;
+	margin-left: -5px;
+	
 }
 
-.iphone-mockup{
-	position: absolute;
-	height: auto;
-	max-width: 800px;
-	right: -300px;
-	bottom: -30px;
+
+.landing-cta {
+	display: inline-block;
+	float: left;
+}
+
+.smartphone-mockup {
+	float: right;
+	height: 80vh;
+	display: none;
+	overflow: hidden;
+	img{
+		height: 100%;
+		width: auto;
+	}
+}
+
+
+@media (min-width: 700px){
+	.splash-bg{
+		.landing-container{
+			padding: 60px 20px;
+		}
+	h1{
+		font-size: 3rem;
+		margin-bottom: rem-calc(10);
+		.thin {
+			font-weight: 300;
+		}
+
+	}
+
+	
+
+	h3{
+		font-size: 22px;
+	}
+
+	p{
+		font-size: 12px;
+	}
+
+
+	.button{
+		font-size: rem-calc(18);
+	}
+
+	.app-logo {
+		padding: rem-calc(20) 0;
+		max-width: 300px;
+		width: 100%;
+		
+	}
+
+	.smartphone-mockup {
+		display: inline-block;
+	}
+
+	.landing-cta {
+		float: left;
+		width: 60%;
+	}
+}
+
 }
