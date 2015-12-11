@@ -1,7 +1,8 @@
 'use strict';
 
 /* Services */
-var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://local.gt/admin.futzapp.com/public/"; //DEV
+var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://futbolizados.dev/"; //DEV
+//var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://local.gt/admin.futzapp.com/public/"; //DEV
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
 /* Notifications Services */

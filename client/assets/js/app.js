@@ -127,7 +127,7 @@
 			$rootScope.wpMsg = "";
 			$rootScope.matchShareURL = "";
 			$rootScope.cleanMatchShareURL = "";
-		
+			
 			/* NEW/EDIT MATCH METHODS */
 			$rootScope.fieldSelected = function(selected){
 				if(selected != undefined){
@@ -179,6 +179,12 @@
 					$rootScope.newMatch.date = fullDate;
 				}
 			}
+			
+			$rootScope.filteredMatchTypes = $rootScope.matchTypes;
+			$rootScope.$watch('newMatch.fieldId', function() {
+				$rootScope.filteredMatchTypes = $filter('filter')($rootScope.fields, {id: $rootScope.newMatch.fieldId})[0].types;
+			});
+			
 			
 			$rootScope.updateMatch = function(){
 				$rootScope.newMatch.admin_userId = $rootScope.user.id;

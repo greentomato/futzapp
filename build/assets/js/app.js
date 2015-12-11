@@ -1,14 +1,19 @@
 /*
  * Set PRD or DEV mode
  */
-var prd = true;
+var prd = false;
 
 /*
  * Set PRD or DEV mode
  */
-var fbAppIdDEV = "1573351059604037";
+var fbAppIdDEV = "1517377388534738";
 var fbAppIdPRD = "1450926871846457";
- 
+/*
+var fbAppIdDEV = "1517377388534738";
+//var fbAppIdDEV = "1573351059604037";
+var fbAppIdPRD = "1450926871846457";
+ */
+
 /* 
  * Facebook share message 
  *
@@ -239,7 +244,7 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 			$rootScope.wpMsg = "";
 			$rootScope.matchShareURL = "";
 			$rootScope.cleanMatchShareURL = "";
-		
+			
 			/* NEW/EDIT MATCH METHODS */
 			$rootScope.fieldSelected = function(selected){
 				if(selected != undefined){
@@ -291,6 +296,12 @@ var teBajaronMessage = "Te dieron de baja del partido del día %1$s de %2$s a la
 					$rootScope.newMatch.date = fullDate;
 				}
 			}
+			
+			$rootScope.filteredMatchTypes = $rootScope.matchTypes;
+			$rootScope.$watch('newMatch.fieldId', function() {
+				$rootScope.filteredMatchTypes = $filter('filter')($rootScope.fields, {id: $rootScope.newMatch.fieldId})[0].types;
+			});
+			
 			
 			$rootScope.updateMatch = function(){
 				$rootScope.newMatch.admin_userId = $rootScope.user.id;
@@ -1082,7 +1093,9 @@ fulboFilters.filter('getById', function() {
 'use strict';
 
 /* Services */
-var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://local.gt/admin.futzapp.com/public/"; //DEV
+var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://futbolizados.dev/"; //DEV
+/*var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://futbolizados.dev/"; //DEV
+//var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://local.gt/admin.futzapp.com/public/"; //DEV*/
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
 /* Notifications Services */
