@@ -16,12 +16,12 @@
 }
 
 .angucomplete-dropdown {
-    border-color: #ececec;
+    border-color: lighten($accentColor,10);
     border-width: 1px;
     border-style: solid;
     border-radius: 0;
     width: 250px;
-    padding: 6px;
+    padding: 0px;
     cursor: pointer;
     z-index: 9999;
     position: relative;
@@ -36,21 +36,25 @@
 .angucomplete-searching {
     color: #acacac;
     font-size: 14px;
+    margin: 10px;
 }
 
 .angucomplete-description {
-    font-size: 14px;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: normal;
 }
 
 .angucomplete-row {
-    padding: 5px;
-    color: #000000;
-    margin-bottom: 4px;
+    padding: 10px;
+    color: #000;
+    font-size: 14px;
+    font-weight: bold;
     clear: both;
 }
 
 .angucomplete-selected-row {
-    background-color: lightblue;
+    background-color: $accentColor;
     color: #ffffff;
 }
 

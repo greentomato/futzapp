@@ -1,4 +1,4 @@
-<div class="grid-frame vertical">
+<div class="vertical">
 	<!-- TitleBar -->
 	<form-title-bar cancel-url="('#/match/' + $root.newMatch.id)" title="$root.newMatch.id != 0 ? 'Editar Mi Futzapp':'Nuevo Futzapp'"></form-title-bar>
 	
@@ -12,7 +12,7 @@
 		</div> -->
 
 		<!-- STEP-1 -->
-		<div class="grid-content grid-container small-6">
+		<div class="grid-content grid-container small-4">
 			<form>
 				<!-- <h4 class="form-header"><span>Paso 1/3</span></h4>
 				<hr> -->
@@ -110,8 +110,8 @@
 
 					<div class="small-12 grid-content">
 						<label><i class="fa fa-soccer-ball-o"></i> Cantidad de jugadores</label>
-						<select name="" id="" ng-model="$root.newMatch.matchTypeId">
-							<option ng-repeat="matchType in $root.matchTypes" value="{{matchType.id}}">{{matchType.name}} ({{matchType.totalPlayers}})</option>
+						<select name="" id="" ng-model="$root.newMatch.matchTypeId" ng-options="mt.id as mt.name for mt in $root.matchTypes">
+							<option></option>
 						</select>
 					</div>
 				</div>
@@ -124,7 +124,7 @@
 					<div class="small-12 grid-content">
 						<label>
 							<i class="fa fa-calendar-o"></i> Fecha
-							<input ng-model="$root.newMatch.partialDate" type="date">
+							<input ng-model="$root.newMatch.partialDate" date-future type="date">
 
 						</label>
 					</div>

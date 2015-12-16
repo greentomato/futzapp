@@ -157,9 +157,11 @@
         };
 
         // close if autoclose
-        if (scope.autoclose && scope.active) {
+        if (scope.autoclose) {
           setTimeout(function() {
-            scope.hide();
+            if (scope.active) {
+              scope.hide();
+            }
           }, parseInt(scope.autoclose));
         };
 
@@ -228,7 +230,9 @@
             // close if autoclose
             if (scope.autoclose) {
               setTimeout(function() {
-                scope.hide();
+                if (scope.active) {
+                  scope.hide();
+                }
               }, parseInt(scope.autoclose));
             };
           } else if (msg == 'close' || msg == 'hide') {
@@ -238,7 +242,9 @@
             // close if autoclose
             if (scope.autoclose) {
               setTimeout(function() {
-                scope.toggle();
+                if (scope.active) {
+                  scope.toggle();
+                }
               }, parseInt(scope.autoclose));
             };
           }
@@ -315,7 +321,8 @@
           destroyed = false,
           html,
           element,
-          scope
+          scope,
+          contentScope
       ;
 
       var props = [
@@ -343,7 +350,6 @@
       function addNotification(notification) {
         checkStatus();
         $timeout(function() {
-          init(true, notification);
           foundationApi.publish(id, notification);
         }, 0, false);
       }
@@ -355,28 +361,44 @@
         }, 0, false);
       }
 
-      function init(state, notification) {
+      function init(state) {
         if(!attached && html.length > 0) {
           var modalEl = container.append(element);
 
-          scope.notifications = [ notification ];
+          scope.active = state;
           $compile(element)(scope);
+
           attached = true;
         }
       }
 
       function assembleDirective() {
+        // check for duplicate element to prevent factory from cloning notification sets
+        if (document.getElementById(id)) {
+          return;
+        }
         html = '<zf-notification-set id="' + id + '"></zf-notification-set>';
 
         element = angular.element(html);
 
         scope = $rootScope.$new();
-
-        for(var prop in props) {
-          if(config[prop]) {
-            element.attr(prop, config[prop]);
+        
+        for(var i = 0; i < props.length; i++) {
+          if(config[props[i]]) {
+            element.attr(props[i], config[props[i]]);
           }
         }
+
+        // access view scope variables
+        if (config.contentScope) {
+          contentScope = config.contentScope;
+          for (var prop in contentScope) {
+            if (contentScope.hasOwnProperty(prop)) {
+              scope[prop] = contentScope[prop];
+            }
+          }
+        }
+        init(true);
       }
 
       function destroy() {
@@ -386,6 +408,7 @@
           element.remove();
           destroyed = true;
         }, 3000);
+        foundationApi.unsubscribe(id);
       }
 
     }

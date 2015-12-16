@@ -79,6 +79,9 @@
 	}
 }
 
+
+
+
 .match-card, .my-match-card{
 	.match-owner{
 		margin: 0;
@@ -87,6 +90,26 @@
 		margin-bottom: 0px;
 	}
 	
+}
+
+.my-match-card-placeholder {
+	border: 1px dashed $lightPrimaryColor;
+	&:hover {
+		border-color: $accentColor;
+	}
+	.match-card-info {
+		.text {
+			h4 {
+				font-size: 16px;
+			}
+		}
+		.date-block {
+			.day {
+				font-size: 2.625em;
+			}
+		}
+	}
+
 }
 
 .dismiss-match-card{

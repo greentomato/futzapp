@@ -32,12 +32,18 @@
 	}
 	.text-link {font-size: rem-calc(14);}
 	.app-logo-title {
+		
 		img {
 			margin: -1.2rem 0 -1rem;
 			height: 30px;
 			width: auto;
 		}
-		span {
+		.thin {
+			font-weight: 400;
+			color: rgba(255,255,255,0.7);
+		}
+
+		.beta {
 			font-size: rem-calc(10);
 			color: $primaryColor;
 		}

@@ -170,6 +170,27 @@
 		font-weight: bold;
 		text-shadow: 0px 0px 5px rgba(40, 40, 40, 0.3);
 	}
+
+	// // METER EXTRA EDIT
+
+	// meter {  
+	// 	-webkit-appearance: none; /* Reset appearance */  
+	// }  
+	
+	// meter::-webkit-meter-optimum-value {  
+		
+	// 	background: $starRating;
+	// }  
+
+	// meter::-webkit-meter-suboptimum-value {  
+	// 	background: $accentColor;
+	// }  
+
+	// meter::-webkit-meter-even-less-good-value  {  
+	// 	background: $dangerColor;
+	// }  
+
+
 }
 
 

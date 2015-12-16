@@ -126,6 +126,7 @@
 			};
 			$rootScope.wpMsg = "";
 			$rootScope.matchShareURL = "";
+			$rootScope.cleanMatchShareURL = "";
 			
 			/* NEW/EDIT MATCH METHODS */
 			$rootScope.fieldSelected = function(selected){
@@ -179,12 +180,19 @@
 				}
 			}
 			
+			$rootScope.filteredMatchTypes = $rootScope.matchTypes;
+			$rootScope.$watch('newMatch.fieldId', function() {
+				$rootScope.filteredMatchTypes = $filter('filter')($rootScope.fields, {id: $rootScope.newMatch.fieldId})[0].types;
+			});
+			
+			
 			$rootScope.updateMatch = function(){
 				$rootScope.newMatch.admin_userId = $rootScope.user.id;
 				
 				Matches.update($rootScope.newMatch, function(updatedMatch){
 					$rootScope.newMatch = updatedMatch;
 					$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "/?token=" + $rootScope.newMatch.token));
+					$rootScope.cleanMatchShareURL = $sanitize("http://" + $location.host() + "/?token=" + $rootScope.newMatch.token);
 					$rootScope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $rootScope.matchShareURL);
 					console.log("Match updated, id:" + updatedMatch.id);
 					$location.path( "/match/" + updatedMatch.id );
@@ -200,6 +208,7 @@
 				Matches.save($rootScope.newMatch, function(newMatch){
 					$rootScope.newMatch = newMatch;
 					$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "/?token=" + $rootScope.newMatch.token));
+					$rootScope.cleanMatchShareURL = $sanitize("http://" + $location.host() + "/?token=" + $rootScope.newMatch.token);
 					$rootScope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $rootScope.matchShareURL);
 					console.log("Match saved, id:" + newMatch.id);
 					$location.path( "/step-3" );
@@ -218,9 +227,11 @@
 						break;
 					}
 				}
+				
+				window.open('http://www.facebook.com/sharer/sharer.php?u='+url,'sharer','toolbar=0,status=0');
+				/*
 				FB.ui( {
-					//method: 'feed',
-					method: 'share',
+					method: 'feed',
 					name: fbShareTitle,
 					link: url,
 					href: url,
@@ -230,6 +241,7 @@
 				}, function( response ) {
 					// do nothing
 				} );
+				*/
 			};
 			
 			/* GLOBAL METHODS */

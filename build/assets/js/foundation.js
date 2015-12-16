@@ -28823,13 +28823,15 @@ var minlengthDirective = function() {
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
-// ---- Angular Hammer ----
-// Copyright (c) 2014 Ryan S Mullins <ryan@ryanmullins.org>
-// Licensed under the MIT Software License
-!function(a,b,c){"use strict";function d(a,b){if(!a||!b||!b.type)return null;var d;return d=b.type.indexOf("pan")>-1?new c.Pan(b):b.type.indexOf("pinch")>-1?new c.Pinch(b):b.type.indexOf("press")>-1?new c.Press(b):b.type.indexOf("rotate")>-1?new c.Rotate(b):b.type.indexOf("swipe")>-1?new c.Swipe(b):new c.Tap(b),a.add(d),d}function e(a,b){return a&&(b.preventGhosts=a.preventGhosts),b}function f(a){return a.indexOf("pan")>-1?"pan":a.indexOf("pinch")>-1?"pinch":a.indexOf("press")>-1?"press":a.indexOf("rotate")>-1?"rotate":a.indexOf("swipe")>-1?"swipe":"tap"}function g(a,b,c){if(a&&b){var e=a.get(b.type);e||(e=d(a,b)),b.directions||(b.directions="pan"===b.type||"swipe"===b.type?"DIRECTION_ALL":b.type.indexOf("left")>-1?"DIRECTION_LEFT":b.type.indexOf("right")>-1?"DIRECTION_RIGHT":b.type.indexOf("up")>-1?"DIRECTION_UP":b.type.indexOf("down")>-1?"DIRECTION_DOWN":""),b.direction=h(b.directions),e.set(b),b.recognizeWith&&(a.get(b.recognizeWith)||d(a,{type:b.recognizeWith}),e.recognizeWith(a.get(b.recognizeWith))),b.dropRecognizeWith&&a.get(b.dropRecognizeWith)&&e.dropRecognizeWith(a.get(b.dropRecognizeWith)),b.requireFailure&&(a.get(b.requireFailure)||d(a,{type:b.requireFailure}),e.requireFailure(a.get(b.requireFailure))),b.dropRequireFailure&&a.get(b.dropRequireFailure)&&e.dropRequireFailure(a.get(b.dropRequireFailure)),b.preventGhosts&&c&&i(c)}}function h(a){var d=0;return b.forEach(a.split("|"),function(a){c.hasOwnProperty(a)&&(d|=c[a])}),d}function i(b){function c(a){for(var b=0;b<g.length;b++){var c=g[b][0],d=g[b][1];if(Math.abs(a.clientX-c)<h&&Math.abs(a.clientY-d)<h){a.stopPropagation(),a.preventDefault();break}}}function d(){g=[]}function e(){g.splice(0,1)}function f(a){if(a.touches.length-a.changedTouches.length<=0){var b=a.changedTouches[0];g.push([b.clientX,b.clientY]),setTimeout(e,i)}}if(b){var g=[],h=25,i=2500;"ontouchstart"in a&&(b[0].addEventListener("touchstart",d,!0),b[0].addEventListener("touchend",f,!0),b[0].addEventListener("click",c,!0),b[0].addEventListener("mouseup",c,!0))}}if("undefined"==typeof b)if("undefined"!=typeof require&&require)try{b=require("angular")}catch(j){return console.log("ERROR: Angular Hammer could not require() a reference to angular")}else{if("undefined"==typeof a.angular)return console.log("ERROR: Angular Hammer could not find or require() a reference to angular");b=a.angular}if("undefined"==typeof c)if("undefined"!=typeof require&&require)try{c=require("hammerjs")}catch(j){return console.log("ERROR: Angular Hammer could not require() a reference to Hammer")}else{if("undefined"==typeof a.Hammer)return console.log("ERROR: Angular Hammer could not find or require() a reference to Hammer");c=a.Hammer}var k=["hmCustom:custom","hmSwipe:swipe","hmSwipeleft:swipeleft","hmSwiperight:swiperight","hmSwipeup:swipeup","hmSwipedown:swipedown","hmPan:pan","hmPanstart:panstart","hmPanmove:panmove","hmPanend:panend","hmPancancel:pancancel","hmPanleft:panleft","hmPanright:panright","hmPanup:panup","hmPandown:pandown","hmPress:press","hmPressup:pressup","hmRotate:rotate","hmRotatestart:rotatestart","hmRotatemove:rotatemove","hmRotateend:rotateend","hmRotatecancel:rotatecancel","hmPinch:pinch","hmPinchstart:pinchstart","hmPinchmove:pinchmove","hmPinchend:pinchend","hmPinchcancel:pinchcancel","hmPinchin:pinchin","hmPinchout:pinchout","hmTap:tap","hmDoubletap:doubletap"];b.module("hmTouchEvents",[]),b.forEach(k,function(a){var d=a.split(":"),h=d[0],i=d[1];b.module("hmTouchEvents").directive(h,["$parse","$window",function(a,d){return{restrict:"A",link:function(j,k,l){if(!c||!d.addEventListener)return"hmTap"===h&&k.bind("click",r),void("hmDoubletap"===h&&k.bind("dblclick",r));var m=k.data("hammer"),n=b.fromJson(l.hmManagerOptions),o=b.fromJson(l.hmRecognizerOptions);m||(m=new c.Manager(k[0],n),k.data("hammer",m),j.$on("$destroy",function(){m.destroy()}));var p=l[h],q=a(p),r=function(a){function b(){var b=q(j,{$event:a});b&&b.call(j,a)}var c=j.$root.$$phase,d=m.get(a.type);a.element=k,d&&(d.options.preventDefault&&a.preventDefault(),d.options.stopPropagation&&a.srcEvent.stopPropagation()),"$apply"===c||"$digest"===c?b():j.$apply(b)};b.isArray(o)?b.forEach(o,function(a){"hmCustom"===h?i=a.event:(a.type||(a.type=f(i)),a.event&&delete a.event),("hmCustom"===h||i.indexOf(a.type)>-1)&&g(m,e(n,a),k)}):b.isObject(o)?("hmCustom"===h?i=o.event:(o.type||(o.type=f(i)),o.event&&delete o.event),("hmCustom"===h||i.indexOf(o.type)>-1)&&g(m,e(n,o),k)):"hmCustom"!==h?(o={type:f(i)},"hmDoubletap"===h&&(o.event=i,o.taps=2,m.get("tap")&&(o.recognizeWith="tap")),o.type.indexOf("pan")>-1&&m.get("swipe")&&(o.recognizeWith="swipe"),o.type.indexOf("pinch")>-1&&m.get("rotate")&&(o.recognizeWith="rotate"),g(m,e(n,o),k)):i=null,i&&m.on(i,r)}}}])})}(window,window.angular,window.Hammer);
-//# sourceMappingURL=angular.hammer.min.js.map
+/*! Hammer.JS - v2.0.4 - 2014-09-28
+ * http://hammerjs.github.io/
+ *
+ * Copyright (c) 2014 Jorik Tangelder;
+ * Licensed under the MIT license */
+!function(a,b,c,d){"use strict";function e(a,b,c){return setTimeout(k(a,c),b)}function f(a,b,c){return Array.isArray(a)?(g(a,c[b],c),!0):!1}function g(a,b,c){var e;if(a)if(a.forEach)a.forEach(b,c);else if(a.length!==d)for(e=0;e<a.length;)b.call(c,a[e],e,a),e++;else for(e in a)a.hasOwnProperty(e)&&b.call(c,a[e],e,a)}function h(a,b,c){for(var e=Object.keys(b),f=0;f<e.length;)(!c||c&&a[e[f]]===d)&&(a[e[f]]=b[e[f]]),f++;return a}function i(a,b){return h(a,b,!0)}function j(a,b,c){var d,e=b.prototype;d=a.prototype=Object.create(e),d.constructor=a,d._super=e,c&&h(d,c)}function k(a,b){return function(){return a.apply(b,arguments)}}function l(a,b){return typeof a==kb?a.apply(b?b[0]||d:d,b):a}function m(a,b){return a===d?b:a}function n(a,b,c){g(r(b),function(b){a.addEventListener(b,c,!1)})}function o(a,b,c){g(r(b),function(b){a.removeEventListener(b,c,!1)})}function p(a,b){for(;a;){if(a==b)return!0;a=a.parentNode}return!1}function q(a,b){return a.indexOf(b)>-1}function r(a){return a.trim().split(/\s+/g)}function s(a,b,c){if(a.indexOf&&!c)return a.indexOf(b);for(var d=0;d<a.length;){if(c&&a[d][c]==b||!c&&a[d]===b)return d;d++}return-1}function t(a){return Array.prototype.slice.call(a,0)}function u(a,b,c){for(var d=[],e=[],f=0;f<a.length;){var g=b?a[f][b]:a[f];s(e,g)<0&&d.push(a[f]),e[f]=g,f++}return c&&(d=b?d.sort(function(a,c){return a[b]>c[b]}):d.sort()),d}function v(a,b){for(var c,e,f=b[0].toUpperCase()+b.slice(1),g=0;g<ib.length;){if(c=ib[g],e=c?c+f:b,e in a)return e;g++}return d}function w(){return ob++}function x(a){var b=a.ownerDocument;return b.defaultView||b.parentWindow}function y(a,b){var c=this;this.manager=a,this.callback=b,this.element=a.element,this.target=a.options.inputTarget,this.domHandler=function(b){l(a.options.enable,[a])&&c.handler(b)},this.init()}function z(a){var b,c=a.options.inputClass;return new(b=c?c:rb?N:sb?Q:qb?S:M)(a,A)}function A(a,b,c){var d=c.pointers.length,e=c.changedPointers.length,f=b&yb&&d-e===0,g=b&(Ab|Bb)&&d-e===0;c.isFirst=!!f,c.isFinal=!!g,f&&(a.session={}),c.eventType=b,B(a,c),a.emit("hammer.input",c),a.recognize(c),a.session.prevInput=c}function B(a,b){var c=a.session,d=b.pointers,e=d.length;c.firstInput||(c.firstInput=E(b)),e>1&&!c.firstMultiple?c.firstMultiple=E(b):1===e&&(c.firstMultiple=!1);var f=c.firstInput,g=c.firstMultiple,h=g?g.center:f.center,i=b.center=F(d);b.timeStamp=nb(),b.deltaTime=b.timeStamp-f.timeStamp,b.angle=J(h,i),b.distance=I(h,i),C(c,b),b.offsetDirection=H(b.deltaX,b.deltaY),b.scale=g?L(g.pointers,d):1,b.rotation=g?K(g.pointers,d):0,D(c,b);var j=a.element;p(b.srcEvent.target,j)&&(j=b.srcEvent.target),b.target=j}function C(a,b){var c=b.center,d=a.offsetDelta||{},e=a.prevDelta||{},f=a.prevInput||{};(b.eventType===yb||f.eventType===Ab)&&(e=a.prevDelta={x:f.deltaX||0,y:f.deltaY||0},d=a.offsetDelta={x:c.x,y:c.y}),b.deltaX=e.x+(c.x-d.x),b.deltaY=e.y+(c.y-d.y)}function D(a,b){var c,e,f,g,h=a.lastInterval||b,i=b.timeStamp-h.timeStamp;if(b.eventType!=Bb&&(i>xb||h.velocity===d)){var j=h.deltaX-b.deltaX,k=h.deltaY-b.deltaY,l=G(i,j,k);e=l.x,f=l.y,c=mb(l.x)>mb(l.y)?l.x:l.y,g=H(j,k),a.lastInterval=b}else c=h.velocity,e=h.velocityX,f=h.velocityY,g=h.direction;b.velocity=c,b.velocityX=e,b.velocityY=f,b.direction=g}function E(a){for(var b=[],c=0;c<a.pointers.length;)b[c]={clientX:lb(a.pointers[c].clientX),clientY:lb(a.pointers[c].clientY)},c++;return{timeStamp:nb(),pointers:b,center:F(b),deltaX:a.deltaX,deltaY:a.deltaY}}function F(a){var b=a.length;if(1===b)return{x:lb(a[0].clientX),y:lb(a[0].clientY)};for(var c=0,d=0,e=0;b>e;)c+=a[e].clientX,d+=a[e].clientY,e++;return{x:lb(c/b),y:lb(d/b)}}function G(a,b,c){return{x:b/a||0,y:c/a||0}}function H(a,b){return a===b?Cb:mb(a)>=mb(b)?a>0?Db:Eb:b>0?Fb:Gb}function I(a,b,c){c||(c=Kb);var d=b[c[0]]-a[c[0]],e=b[c[1]]-a[c[1]];return Math.sqrt(d*d+e*e)}function J(a,b,c){c||(c=Kb);var d=b[c[0]]-a[c[0]],e=b[c[1]]-a[c[1]];return 180*Math.atan2(e,d)/Math.PI}function K(a,b){return J(b[1],b[0],Lb)-J(a[1],a[0],Lb)}function L(a,b){return I(b[0],b[1],Lb)/I(a[0],a[1],Lb)}function M(){this.evEl=Nb,this.evWin=Ob,this.allow=!0,this.pressed=!1,y.apply(this,arguments)}function N(){this.evEl=Rb,this.evWin=Sb,y.apply(this,arguments),this.store=this.manager.session.pointerEvents=[]}function O(){this.evTarget=Ub,this.evWin=Vb,this.started=!1,y.apply(this,arguments)}function P(a,b){var c=t(a.touches),d=t(a.changedTouches);return b&(Ab|Bb)&&(c=u(c.concat(d),"identifier",!0)),[c,d]}function Q(){this.evTarget=Xb,this.targetIds={},y.apply(this,arguments)}function R(a,b){var c=t(a.touches),d=this.targetIds;if(b&(yb|zb)&&1===c.length)return d[c[0].identifier]=!0,[c,c];var e,f,g=t(a.changedTouches),h=[],i=this.target;if(f=c.filter(function(a){return p(a.target,i)}),b===yb)for(e=0;e<f.length;)d[f[e].identifier]=!0,e++;for(e=0;e<g.length;)d[g[e].identifier]&&h.push(g[e]),b&(Ab|Bb)&&delete d[g[e].identifier],e++;return h.length?[u(f.concat(h),"identifier",!0),h]:void 0}function S(){y.apply(this,arguments);var a=k(this.handler,this);this.touch=new Q(this.manager,a),this.mouse=new M(this.manager,a)}function T(a,b){this.manager=a,this.set(b)}function U(a){if(q(a,bc))return bc;var b=q(a,cc),c=q(a,dc);return b&&c?cc+" "+dc:b||c?b?cc:dc:q(a,ac)?ac:_b}function V(a){this.id=w(),this.manager=null,this.options=i(a||{},this.defaults),this.options.enable=m(this.options.enable,!0),this.state=ec,this.simultaneous={},this.requireFail=[]}function W(a){return a&jc?"cancel":a&hc?"end":a&gc?"move":a&fc?"start":""}function X(a){return a==Gb?"down":a==Fb?"up":a==Db?"left":a==Eb?"right":""}function Y(a,b){var c=b.manager;return c?c.get(a):a}function Z(){V.apply(this,arguments)}function $(){Z.apply(this,arguments),this.pX=null,this.pY=null}function _(){Z.apply(this,arguments)}function ab(){V.apply(this,arguments),this._timer=null,this._input=null}function bb(){Z.apply(this,arguments)}function cb(){Z.apply(this,arguments)}function db(){V.apply(this,arguments),this.pTime=!1,this.pCenter=!1,this._timer=null,this._input=null,this.count=0}function eb(a,b){return b=b||{},b.recognizers=m(b.recognizers,eb.defaults.preset),new fb(a,b)}function fb(a,b){b=b||{},this.options=i(b,eb.defaults),this.options.inputTarget=this.options.inputTarget||a,this.handlers={},this.session={},this.recognizers=[],this.element=a,this.input=z(this),this.touchAction=new T(this,this.options.touchAction),gb(this,!0),g(b.recognizers,function(a){var b=this.add(new a[0](a[1]));a[2]&&b.recognizeWith(a[2]),a[3]&&b.requireFailure(a[3])},this)}function gb(a,b){var c=a.element;g(a.options.cssProps,function(a,d){c.style[v(c.style,d)]=b?a:""})}function hb(a,c){var d=b.createEvent("Event");d.initEvent(a,!0,!0),d.gesture=c,c.target.dispatchEvent(d)}var ib=["","webkit","moz","MS","ms","o"],jb=b.createElement("div"),kb="function",lb=Math.round,mb=Math.abs,nb=Date.now,ob=1,pb=/mobile|tablet|ip(ad|hone|od)|android/i,qb="ontouchstart"in a,rb=v(a,"PointerEvent")!==d,sb=qb&&pb.test(navigator.userAgent),tb="touch",ub="pen",vb="mouse",wb="kinect",xb=25,yb=1,zb=2,Ab=4,Bb=8,Cb=1,Db=2,Eb=4,Fb=8,Gb=16,Hb=Db|Eb,Ib=Fb|Gb,Jb=Hb|Ib,Kb=["x","y"],Lb=["clientX","clientY"];y.prototype={handler:function(){},init:function(){this.evEl&&n(this.element,this.evEl,this.domHandler),this.evTarget&&n(this.target,this.evTarget,this.domHandler),this.evWin&&n(x(this.element),this.evWin,this.domHandler)},destroy:function(){this.evEl&&o(this.element,this.evEl,this.domHandler),this.evTarget&&o(this.target,this.evTarget,this.domHandler),this.evWin&&o(x(this.element),this.evWin,this.domHandler)}};var Mb={mousedown:yb,mousemove:zb,mouseup:Ab},Nb="mousedown",Ob="mousemove mouseup";j(M,y,{handler:function(a){var b=Mb[a.type];b&yb&&0===a.button&&(this.pressed=!0),b&zb&&1!==a.which&&(b=Ab),this.pressed&&this.allow&&(b&Ab&&(this.pressed=!1),this.callback(this.manager,b,{pointers:[a],changedPointers:[a],pointerType:vb,srcEvent:a}))}});var Pb={pointerdown:yb,pointermove:zb,pointerup:Ab,pointercancel:Bb,pointerout:Bb},Qb={2:tb,3:ub,4:vb,5:wb},Rb="pointerdown",Sb="pointermove pointerup pointercancel";a.MSPointerEvent&&(Rb="MSPointerDown",Sb="MSPointerMove MSPointerUp MSPointerCancel"),j(N,y,{handler:function(a){var b=this.store,c=!1,d=a.type.toLowerCase().replace("ms",""),e=Pb[d],f=Qb[a.pointerType]||a.pointerType,g=f==tb,h=s(b,a.pointerId,"pointerId");e&yb&&(0===a.button||g)?0>h&&(b.push(a),h=b.length-1):e&(Ab|Bb)&&(c=!0),0>h||(b[h]=a,this.callback(this.manager,e,{pointers:b,changedPointers:[a],pointerType:f,srcEvent:a}),c&&b.splice(h,1))}});var Tb={touchstart:yb,touchmove:zb,touchend:Ab,touchcancel:Bb},Ub="touchstart",Vb="touchstart touchmove touchend touchcancel";j(O,y,{handler:function(a){var b=Tb[a.type];if(b===yb&&(this.started=!0),this.started){var c=P.call(this,a,b);b&(Ab|Bb)&&c[0].length-c[1].length===0&&(this.started=!1),this.callback(this.manager,b,{pointers:c[0],changedPointers:c[1],pointerType:tb,srcEvent:a})}}});var Wb={touchstart:yb,touchmove:zb,touchend:Ab,touchcancel:Bb},Xb="touchstart touchmove touchend touchcancel";j(Q,y,{handler:function(a){var b=Wb[a.type],c=R.call(this,a,b);c&&this.callback(this.manager,b,{pointers:c[0],changedPointers:c[1],pointerType:tb,srcEvent:a})}}),j(S,y,{handler:function(a,b,c){var d=c.pointerType==tb,e=c.pointerType==vb;if(d)this.mouse.allow=!1;else if(e&&!this.mouse.allow)return;b&(Ab|Bb)&&(this.mouse.allow=!0),this.callback(a,b,c)},destroy:function(){this.touch.destroy(),this.mouse.destroy()}});var Yb=v(jb.style,"touchAction"),Zb=Yb!==d,$b="compute",_b="auto",ac="manipulation",bc="none",cc="pan-x",dc="pan-y";T.prototype={set:function(a){a==$b&&(a=this.compute()),Zb&&(this.manager.element.style[Yb]=a),this.actions=a.toLowerCase().trim()},update:function(){this.set(this.manager.options.touchAction)},compute:function(){var a=[];return g(this.manager.recognizers,function(b){l(b.options.enable,[b])&&(a=a.concat(b.getTouchAction()))}),U(a.join(" "))},preventDefaults:function(a){if(!Zb){var b=a.srcEvent,c=a.offsetDirection;if(this.manager.session.prevented)return void b.preventDefault();var d=this.actions,e=q(d,bc),f=q(d,dc),g=q(d,cc);return e||f&&c&Hb||g&&c&Ib?this.preventSrc(b):void 0}},preventSrc:function(a){this.manager.session.prevented=!0,a.preventDefault()}};var ec=1,fc=2,gc=4,hc=8,ic=hc,jc=16,kc=32;V.prototype={defaults:{},set:function(a){return h(this.options,a),this.manager&&this.manager.touchAction.update(),this},recognizeWith:function(a){if(f(a,"recognizeWith",this))return this;var b=this.simultaneous;return a=Y(a,this),b[a.id]||(b[a.id]=a,a.recognizeWith(this)),this},dropRecognizeWith:function(a){return f(a,"dropRecognizeWith",this)?this:(a=Y(a,this),delete this.simultaneous[a.id],this)},requireFailure:function(a){if(f(a,"requireFailure",this))return this;var b=this.requireFail;return a=Y(a,this),-1===s(b,a)&&(b.push(a),a.requireFailure(this)),this},dropRequireFailure:function(a){if(f(a,"dropRequireFailure",this))return this;a=Y(a,this);var b=s(this.requireFail,a);return b>-1&&this.requireFail.splice(b,1),this},hasRequireFailures:function(){return this.requireFail.length>0},canRecognizeWith:function(a){return!!this.simultaneous[a.id]},emit:function(a){function b(b){c.manager.emit(c.options.event+(b?W(d):""),a)}var c=this,d=this.state;hc>d&&b(!0),b(),d>=hc&&b(!0)},tryEmit:function(a){return this.canEmit()?this.emit(a):void(this.state=kc)},canEmit:function(){for(var a=0;a<this.requireFail.length;){if(!(this.requireFail[a].state&(kc|ec)))return!1;a++}return!0},recognize:function(a){var b=h({},a);return l(this.options.enable,[this,b])?(this.state&(ic|jc|kc)&&(this.state=ec),this.state=this.process(b),void(this.state&(fc|gc|hc|jc)&&this.tryEmit(b))):(this.reset(),void(this.state=kc))},process:function(){},getTouchAction:function(){},reset:function(){}},j(Z,V,{defaults:{pointers:1},attrTest:function(a){var b=this.options.pointers;return 0===b||a.pointers.length===b},process:function(a){var b=this.state,c=a.eventType,d=b&(fc|gc),e=this.attrTest(a);return d&&(c&Bb||!e)?b|jc:d||e?c&Ab?b|hc:b&fc?b|gc:fc:kc}}),j($,Z,{defaults:{event:"pan",threshold:10,pointers:1,direction:Jb},getTouchAction:function(){var a=this.options.direction,b=[];return a&Hb&&b.push(dc),a&Ib&&b.push(cc),b},directionTest:function(a){var b=this.options,c=!0,d=a.distance,e=a.direction,f=a.deltaX,g=a.deltaY;return e&b.direction||(b.direction&Hb?(e=0===f?Cb:0>f?Db:Eb,c=f!=this.pX,d=Math.abs(a.deltaX)):(e=0===g?Cb:0>g?Fb:Gb,c=g!=this.pY,d=Math.abs(a.deltaY))),a.direction=e,c&&d>b.threshold&&e&b.direction},attrTest:function(a){return Z.prototype.attrTest.call(this,a)&&(this.state&fc||!(this.state&fc)&&this.directionTest(a))},emit:function(a){this.pX=a.deltaX,this.pY=a.deltaY;var b=X(a.direction);b&&this.manager.emit(this.options.event+b,a),this._super.emit.call(this,a)}}),j(_,Z,{defaults:{event:"pinch",threshold:0,pointers:2},getTouchAction:function(){return[bc]},attrTest:function(a){return this._super.attrTest.call(this,a)&&(Math.abs(a.scale-1)>this.options.threshold||this.state&fc)},emit:function(a){if(this._super.emit.call(this,a),1!==a.scale){var b=a.scale<1?"in":"out";this.manager.emit(this.options.event+b,a)}}}),j(ab,V,{defaults:{event:"press",pointers:1,time:500,threshold:5},getTouchAction:function(){return[_b]},process:function(a){var b=this.options,c=a.pointers.length===b.pointers,d=a.distance<b.threshold,f=a.deltaTime>b.time;if(this._input=a,!d||!c||a.eventType&(Ab|Bb)&&!f)this.reset();else if(a.eventType&yb)this.reset(),this._timer=e(function(){this.state=ic,this.tryEmit()},b.time,this);else if(a.eventType&Ab)return ic;return kc},reset:function(){clearTimeout(this._timer)},emit:function(a){this.state===ic&&(a&&a.eventType&Ab?this.manager.emit(this.options.event+"up",a):(this._input.timeStamp=nb(),this.manager.emit(this.options.event,this._input)))}}),j(bb,Z,{defaults:{event:"rotate",threshold:0,pointers:2},getTouchAction:function(){return[bc]},attrTest:function(a){return this._super.attrTest.call(this,a)&&(Math.abs(a.rotation)>this.options.threshold||this.state&fc)}}),j(cb,Z,{defaults:{event:"swipe",threshold:10,velocity:.65,direction:Hb|Ib,pointers:1},getTouchAction:function(){return $.prototype.getTouchAction.call(this)},attrTest:function(a){var b,c=this.options.direction;return c&(Hb|Ib)?b=a.velocity:c&Hb?b=a.velocityX:c&Ib&&(b=a.velocityY),this._super.attrTest.call(this,a)&&c&a.direction&&a.distance>this.options.threshold&&mb(b)>this.options.velocity&&a.eventType&Ab},emit:function(a){var b=X(a.direction);b&&this.manager.emit(this.options.event+b,a),this.manager.emit(this.options.event,a)}}),j(db,V,{defaults:{event:"tap",pointers:1,taps:1,interval:300,time:250,threshold:2,posThreshold:10},getTouchAction:function(){return[ac]},process:function(a){var b=this.options,c=a.pointers.length===b.pointers,d=a.distance<b.threshold,f=a.deltaTime<b.time;if(this.reset(),a.eventType&yb&&0===this.count)return this.failTimeout();if(d&&f&&c){if(a.eventType!=Ab)return this.failTimeout();var g=this.pTime?a.timeStamp-this.pTime<b.interval:!0,h=!this.pCenter||I(this.pCenter,a.center)<b.posThreshold;this.pTime=a.timeStamp,this.pCenter=a.center,h&&g?this.count+=1:this.count=1,this._input=a;var i=this.count%b.taps;if(0===i)return this.hasRequireFailures()?(this._timer=e(function(){this.state=ic,this.tryEmit()},b.interval,this),fc):ic}return kc},failTimeout:function(){return this._timer=e(function(){this.state=kc},this.options.interval,this),kc},reset:function(){clearTimeout(this._timer)},emit:function(){this.state==ic&&(this._input.tapCount=this.count,this.manager.emit(this.options.event,this._input))}}),eb.VERSION="2.0.4",eb.defaults={domEvents:!1,touchAction:$b,enable:!0,inputTarget:null,inputClass:null,preset:[[bb,{enable:!1}],[_,{enable:!1},["rotate"]],[cb,{direction:Hb}],[$,{direction:Hb},["swipe"]],[db],[db,{event:"doubletap",taps:2},["tap"]],[ab]],cssProps:{userSelect:"none",touchSelect:"none",touchCallout:"none",contentZooming:"none",userDrag:"none",tapHighlightColor:"rgba(0,0,0,0)"}};var lc=1,mc=2;fb.prototype={set:function(a){return h(this.options,a),a.touchAction&&this.touchAction.update(),a.inputTarget&&(this.input.destroy(),this.input.target=a.inputTarget,this.input.init()),this},stop:function(a){this.session.stopped=a?mc:lc},recognize:function(a){var b=this.session;if(!b.stopped){this.touchAction.preventDefaults(a);var c,d=this.recognizers,e=b.curRecognizer;(!e||e&&e.state&ic)&&(e=b.curRecognizer=null);for(var f=0;f<d.length;)c=d[f],b.stopped===mc||e&&c!=e&&!c.canRecognizeWith(e)?c.reset():c.recognize(a),!e&&c.state&(fc|gc|hc)&&(e=b.curRecognizer=c),f++}},get:function(a){if(a instanceof V)return a;for(var b=this.recognizers,c=0;c<b.length;c++)if(b[c].options.event==a)return b[c];return null},add:function(a){if(f(a,"add",this))return this;var b=this.get(a.options.event);return b&&this.remove(b),this.recognizers.push(a),a.manager=this,this.touchAction.update(),a},remove:function(a){if(f(a,"remove",this))return this;var b=this.recognizers;return a=this.get(a),b.splice(s(b,a),1),this.touchAction.update(),this},on:function(a,b){var c=this.handlers;return g(r(a),function(a){c[a]=c[a]||[],c[a].push(b)}),this},off:function(a,b){var c=this.handlers;return g(r(a),function(a){b?c[a].splice(s(c[a],b),1):delete c[a]}),this},emit:function(a,b){this.options.domEvents&&hb(a,b);var c=this.handlers[a]&&this.handlers[a].slice();if(c&&c.length){b.type=a,b.preventDefault=function(){b.srcEvent.preventDefault()};for(var d=0;d<c.length;)c[d](b),d++}},destroy:function(){this.element&&gb(this,!1),this.handlers={},this.session={},this.input.destroy(),this.element=null}},h(eb,{INPUT_START:yb,INPUT_MOVE:zb,INPUT_END:Ab,INPUT_CANCEL:Bb,STATE_POSSIBLE:ec,STATE_BEGAN:fc,STATE_CHANGED:gc,STATE_ENDED:hc,STATE_RECOGNIZED:ic,STATE_CANCELLED:jc,STATE_FAILED:kc,DIRECTION_NONE:Cb,DIRECTION_LEFT:Db,DIRECTION_RIGHT:Eb,DIRECTION_UP:Fb,DIRECTION_DOWN:Gb,DIRECTION_HORIZONTAL:Hb,DIRECTION_VERTICAL:Ib,DIRECTION_ALL:Jb,Manager:fb,Input:y,TouchAction:T,TouchInput:Q,MouseInput:M,PointerEventInput:N,TouchMouseInput:S,SingleTouchInput:O,Recognizer:V,AttrRecognizer:Z,Tap:db,Pan:$,Swipe:cb,Pinch:_,Rotate:bb,Press:ab,on:n,off:o,each:g,merge:i,extend:h,inherit:j,bindFn:k,prefixed:v}),typeof define==kb&&define.amd?define(function(){return eb}):"undefined"!=typeof module&&module.exports?module.exports=eb:a[c]=eb}(window,document,"Hammer");
+//# sourceMappingURL=hammer.min.map
 /**
- * @license AngularJS v1.3.14
+ * @license AngularJS v1.3.15
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -35199,7 +35201,7 @@ angular.module('ui.router.state')
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
 /**
- * @license AngularJS v1.3.14
+ * @license AngularJS v1.3.15
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -36189,7 +36191,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 })(window, window.angular);
 
 /**
- * @license AngularJS v1.3.14
+ * @license AngularJS v1.3.15
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -36874,8 +36876,8 @@ var O=h.extend({},D,p,n),A=document.createElement("pre");h.module("ngSanitize",[
 h.isDefined(b)&&g.push('target="',b,'" ');g.push('href="',a.replace(/"/g,"&quot;"),'">');k(c);g.push("</a>")}if(!c)return c;for(var m,l=c,g=[],n,p;m=l.match(e);)n=m[0],m[2]||m[4]||(n=(m[3]?"http://":"mailto:")+n),p=m.index,k(l.substr(0,p)),f(n,m[0].replace(d,"")),l=l.substring(p+m[0].length);k(l);return a(g.join(""))}}])})(window,window.angular);
 //# sourceMappingURL=angular-sanitize.min.js.map
 
-/*! ng-flow 2.6.0 */
-!function(a,b,c){"use strict";function d(b){if(this.support=!("undefined"==typeof File||"undefined"==typeof Blob||"undefined"==typeof FileList||!Blob.prototype.slice&&!Blob.prototype.webkitSlice&&!Blob.prototype.mozSlice),this.support){this.supportDirectory=/WebKit/.test(a.navigator.userAgent),this.files=[],this.defaults={chunkSize:1048576,forceChunkSize:!1,simultaneousUploads:3,singleFile:!1,fileParameterName:"file",progressCallbacksInterval:500,speedSmoothingFactor:.1,query:{},headers:{},withCredentials:!1,preprocess:null,method:"multipart",testMethod:"GET",uploadMethod:"POST",prioritizeFirstAndLastChunk:!1,target:"/",testChunks:!0,generateUniqueIdentifier:null,maxChunkRetries:0,chunkRetryInterval:null,permanentErrors:[404,415,500,501],successStatuses:[200,201,202],onDropStopPropagation:!1},this.opts={},this.events={};var c=this;this.onDrop=function(a){c.opts.onDropStopPropagation&&a.stopPropagation(),a.preventDefault();var b=a.dataTransfer;b.items&&b.items[0]&&b.items[0].webkitGetAsEntry?c.webkitReadDataTransfer(a):c.addFiles(b.files,a)},this.preventEvent=function(a){a.preventDefault()},this.opts=d.extend({},this.defaults,b||{})}}function e(a,b){this.flowObj=a,this.file=b,this.name=b.fileName||b.name,this.size=b.size,this.relativePath=b.relativePath||b.webkitRelativePath||this.name,this.uniqueIdentifier=a.generateUniqueIdentifier(b),this.chunks=[],this.paused=!1,this.error=!1,this.averageSpeed=0,this.currentSpeed=0,this._lastProgressCallback=Date.now(),this._prevUploadedSize=0,this._prevProgress=0,this.bootstrap()}function f(a,b,c){this.flowObj=a,this.fileObj=b,this.fileObjSize=b.size,this.offset=c,this.tested=!1,this.retries=0,this.pendingRetry=!1,this.preprocessState=0,this.loaded=0,this.total=0;var d=this.flowObj.opts.chunkSize;this.startByte=this.offset*d,this.endByte=Math.min(this.fileObjSize,(this.offset+1)*d),this.xhr=null,this.fileObjSize-this.endByte<d&&!this.flowObj.opts.forceChunkSize&&(this.endByte=this.fileObjSize);var e=this;this.event=function(a,b){b=Array.prototype.slice.call(arguments),b.unshift(e),e.fileObj.chunkEvent.apply(e.fileObj,b)},this.progressHandler=function(a){a.lengthComputable&&(e.loaded=a.loaded,e.total=a.total),e.event("progress",a)},this.testHandler=function(){var a=e.status(!0);"error"===a?(e.event(a,e.message()),e.flowObj.uploadNextChunk()):"success"===a?(e.tested=!0,e.event(a,e.message()),e.flowObj.uploadNextChunk()):e.fileObj.paused||(e.tested=!0,e.send())},this.doneHandler=function(){var a=e.status();if("success"===a||"error"===a)e.event(a,e.message()),e.flowObj.uploadNextChunk();else{e.event("retry",e.message()),e.pendingRetry=!0,e.abort(),e.retries++;var b=e.flowObj.opts.chunkRetryInterval;null!==b?setTimeout(function(){e.send()},b):e.send()}}}function g(a,b){var c=a.indexOf(b);c>-1&&a.splice(c,1)}function h(a,b){return"function"==typeof a&&(b=Array.prototype.slice.call(arguments),a=a.apply(null,b.slice(1))),a}function i(a,b){setTimeout(a.bind(b),0)}function j(a){return k(arguments,function(b){b!==a&&k(b,function(b,c){a[c]=b})}),a}function k(a,b,c){if(a){var d;if("undefined"!=typeof a.length){for(d=0;d<a.length;d++)if(b.call(c,a[d],d)===!1)return}else for(d in a)if(a.hasOwnProperty(d)&&b.call(c,a[d],d)===!1)return}}var l=a.navigator.msPointerEnabled;d.prototype={on:function(a,b){a=a.toLowerCase(),this.events.hasOwnProperty(a)||(this.events[a]=[]),this.events[a].push(b)},off:function(a,b){a!==c?(a=a.toLowerCase(),b!==c?this.events.hasOwnProperty(a)&&g(this.events[a],b):delete this.events[a]):this.events={}},fire:function(a,b){b=Array.prototype.slice.call(arguments),a=a.toLowerCase();var c=!1;return this.events.hasOwnProperty(a)&&k(this.events[a],function(a){c=a.apply(this,b.slice(1))===!1||c},this),"catchall"!=a&&(b.unshift("catchAll"),c=this.fire.apply(this,b)===!1||c),!c},webkitReadDataTransfer:function(a){function b(a){g+=a.length,k(a,function(a){if(a.isFile){var e=a.fullPath;a.file(function(a){c(a,e)},d)}else a.isDirectory&&a.createReader().readEntries(b,d)}),e()}function c(a,b){a.relativePath=b.substring(1),h.push(a),e()}function d(a){throw a}function e(){0==--g&&f.addFiles(h,a)}var f=this,g=a.dataTransfer.items.length,h=[];k(a.dataTransfer.items,function(a){var f=a.webkitGetAsEntry();return f?void(f.isFile?c(a.getAsFile(),f.fullPath):f.createReader().readEntries(b,d)):void e()})},generateUniqueIdentifier:function(a){var b=this.opts.generateUniqueIdentifier;if("function"==typeof b)return b(a);var c=a.relativePath||a.webkitRelativePath||a.fileName||a.name;return a.size+"-"+c.replace(/[^0-9a-zA-Z_-]/gim,"")},uploadNextChunk:function(a){var b=!1;if(this.opts.prioritizeFirstAndLastChunk&&(k(this.files,function(a){return!a.paused&&a.chunks.length&&"pending"===a.chunks[0].status()&&0===a.chunks[0].preprocessState?(a.chunks[0].send(),b=!0,!1):!a.paused&&a.chunks.length>1&&"pending"===a.chunks[a.chunks.length-1].status()&&0===a.chunks[0].preprocessState?(a.chunks[a.chunks.length-1].send(),b=!0,!1):void 0}),b))return b;if(k(this.files,function(a){return a.paused||k(a.chunks,function(a){return"pending"===a.status()&&0===a.preprocessState?(a.send(),b=!0,!1):void 0}),b?!1:void 0}),b)return!0;var c=!1;return k(this.files,function(a){return a.isComplete()?void 0:(c=!0,!1)}),c||a||i(function(){this.fire("complete")},this),!1},assignBrowse:function(a,c,d,e){"undefined"==typeof a.length&&(a=[a]),k(a,function(a){var f;"INPUT"===a.tagName&&"file"===a.type?f=a:(f=b.createElement("input"),f.setAttribute("type","file"),j(f.style,{visibility:"hidden",position:"absolute"}),a.appendChild(f),a.addEventListener("click",function(){f.click()},!1)),this.opts.singleFile||d||f.setAttribute("multiple","multiple"),c&&f.setAttribute("webkitdirectory","webkitdirectory"),k(e,function(a,b){f.setAttribute(b,a)});var g=this;f.addEventListener("change",function(a){g.addFiles(a.target.files,a),a.target.value=""},!1)},this)},assignDrop:function(a){"undefined"==typeof a.length&&(a=[a]),k(a,function(a){a.addEventListener("dragover",this.preventEvent,!1),a.addEventListener("dragenter",this.preventEvent,!1),a.addEventListener("drop",this.onDrop,!1)},this)},unAssignDrop:function(a){"undefined"==typeof a.length&&(a=[a]),k(a,function(a){a.removeEventListener("dragover",this.preventEvent),a.removeEventListener("dragenter",this.preventEvent),a.removeEventListener("drop",this.onDrop)},this)},isUploading:function(){var a=!1;return k(this.files,function(b){return b.isUploading()?(a=!0,!1):void 0}),a},_shouldUploadNext:function(){var a=0,b=!0,c=this.opts.simultaneousUploads;return k(this.files,function(d){k(d.chunks,function(d){return"uploading"===d.status()&&(a++,a>=c)?(b=!1,!1):void 0})}),b&&a},upload:function(){var a=this._shouldUploadNext();if(a!==!1){this.fire("uploadStart");for(var b=!1,c=1;c<=this.opts.simultaneousUploads-a;c++)b=this.uploadNextChunk(!0)||b;b||i(function(){this.fire("complete")},this)}},resume:function(){k(this.files,function(a){a.resume()})},pause:function(){k(this.files,function(a){a.pause()})},cancel:function(){for(var a=this.files.length-1;a>=0;a--)this.files[a].cancel()},progress:function(){var a=0,b=0;return k(this.files,function(c){a+=c.progress()*c.size,b+=c.size}),b>0?a/b:0},addFile:function(a,b){this.addFiles([a],b)},addFiles:function(a,b){var c=[];k(a,function(a){if((!l||l&&a.size>0)&&(a.size%4096!==0||"."!==a.name&&"."!==a.fileName)&&!this.getFromUniqueIdentifier(this.generateUniqueIdentifier(a))){var d=new e(this,a);this.fire("fileAdded",d,b)&&c.push(d)}},this),this.fire("filesAdded",c,b)&&k(c,function(a){this.opts.singleFile&&this.files.length>0&&this.removeFile(this.files[0]),this.files.push(a)},this),this.fire("filesSubmitted",c,b)},removeFile:function(a){for(var b=this.files.length-1;b>=0;b--)this.files[b]===a&&(this.files.splice(b,1),a.abort())},getFromUniqueIdentifier:function(a){var b=!1;return k(this.files,function(c){c.uniqueIdentifier===a&&(b=c)}),b},getSize:function(){var a=0;return k(this.files,function(b){a+=b.size}),a},sizeUploaded:function(){var a=0;return k(this.files,function(b){a+=b.sizeUploaded()}),a},timeRemaining:function(){var a=0,b=0;return k(this.files,function(c){c.paused||c.error||(a+=c.size-c.sizeUploaded(),b+=c.averageSpeed)}),a&&!b?Number.POSITIVE_INFINITY:a||b?Math.floor(a/b):0}},e.prototype={measureSpeed:function(){var a=Date.now()-this._lastProgressCallback;if(a){var b=this.flowObj.opts.speedSmoothingFactor,c=this.sizeUploaded();this.currentSpeed=Math.max((c-this._prevUploadedSize)/a*1e3,0),this.averageSpeed=b*this.currentSpeed+(1-b)*this.averageSpeed,this._prevUploadedSize=c}},chunkEvent:function(a,b,c){switch(b){case"progress":if(Date.now()-this._lastProgressCallback<this.flowObj.opts.progressCallbacksInterval)break;this.measureSpeed(),this.flowObj.fire("fileProgress",this,a),this.flowObj.fire("progress"),this._lastProgressCallback=Date.now();break;case"error":this.error=!0,this.abort(!0),this.flowObj.fire("fileError",this,c,a),this.flowObj.fire("error",c,this,a);break;case"success":if(this.error)return;this.measureSpeed(),this.flowObj.fire("fileProgress",this,a),this.flowObj.fire("progress"),this._lastProgressCallback=Date.now(),this.isComplete()&&(this.currentSpeed=0,this.averageSpeed=0,this.flowObj.fire("fileSuccess",this,c,a));break;case"retry":this.flowObj.fire("fileRetry",this,a)}},pause:function(){this.paused=!0,this.abort()},resume:function(){this.paused=!1,this.flowObj.upload()},abort:function(a){this.currentSpeed=0,this.averageSpeed=0;var b=this.chunks;a&&(this.chunks=[]),k(b,function(a){"uploading"===a.status()&&(a.abort(),this.flowObj.uploadNextChunk())},this)},cancel:function(){this.flowObj.removeFile(this)},retry:function(){this.bootstrap(),this.flowObj.upload()},bootstrap:function(){this.abort(!0),this.error=!1,this._prevProgress=0;for(var a=this.flowObj.opts.forceChunkSize?Math.ceil:Math.floor,b=Math.max(a(this.file.size/this.flowObj.opts.chunkSize),1),c=0;b>c;c++)this.chunks.push(new f(this.flowObj,this,c))},progress:function(){if(this.error)return 1;if(1===this.chunks.length)return this._prevProgress=Math.max(this._prevProgress,this.chunks[0].progress()),this._prevProgress;var a=0;k(this.chunks,function(b){a+=b.progress()*(b.endByte-b.startByte)});var b=a/this.size;return this._prevProgress=Math.max(this._prevProgress,b>.9999?1:b),this._prevProgress},isUploading:function(){var a=!1;return k(this.chunks,function(b){return"uploading"===b.status()?(a=!0,!1):void 0}),a},isComplete:function(){var a=!1;return k(this.chunks,function(b){var c=b.status();return"pending"===c||"uploading"===c||1===b.preprocessState?(a=!0,!1):void 0}),!a},sizeUploaded:function(){var a=0;return k(this.chunks,function(b){a+=b.sizeUploaded()}),a},timeRemaining:function(){if(this.paused||this.error)return 0;var a=this.size-this.sizeUploaded();return a&&!this.averageSpeed?Number.POSITIVE_INFINITY:a||this.averageSpeed?Math.floor(a/this.averageSpeed):0},getType:function(){return this.file.type&&this.file.type.split("/")[1]},getExtension:function(){return this.name.substr((~-this.name.lastIndexOf(".")>>>0)+2).toLowerCase()}},f.prototype={getParams:function(){return{flowChunkNumber:this.offset+1,flowChunkSize:this.flowObj.opts.chunkSize,flowCurrentChunkSize:this.endByte-this.startByte,flowTotalSize:this.fileObjSize,flowIdentifier:this.fileObj.uniqueIdentifier,flowFilename:this.fileObj.name,flowRelativePath:this.fileObj.relativePath,flowTotalChunks:this.fileObj.chunks.length}},getTarget:function(a,b){return a+=a.indexOf("?")<0?"?":"&",a+b.join("&")},test:function(){this.xhr=new XMLHttpRequest,this.xhr.addEventListener("load",this.testHandler,!1),this.xhr.addEventListener("error",this.testHandler,!1);var a=h(this.flowObj.opts.testMethod,this.fileObj,this),b=this.prepareXhrRequest(a,!0);this.xhr.send(b)},preprocessFinished:function(){this.preprocessState=2,this.send()},send:function(){var a=this.flowObj.opts.preprocess;if("function"==typeof a)switch(this.preprocessState){case 0:return this.preprocessState=1,void a(this);case 1:return}if(this.flowObj.opts.testChunks&&!this.tested)return void this.test();this.loaded=0,this.total=0,this.pendingRetry=!1;var b=this.fileObj.file.slice?"slice":this.fileObj.file.mozSlice?"mozSlice":this.fileObj.file.webkitSlice?"webkitSlice":"slice",c=this.fileObj.file[b](this.startByte,this.endByte,this.fileObj.file.type);this.xhr=new XMLHttpRequest,this.xhr.upload.addEventListener("progress",this.progressHandler,!1),this.xhr.addEventListener("load",this.doneHandler,!1),this.xhr.addEventListener("error",this.doneHandler,!1);var d=h(this.flowObj.opts.uploadMethod,this.fileObj,this),e=this.prepareXhrRequest(d,!1,this.flowObj.opts.method,c);this.xhr.send(e)},abort:function(){var a=this.xhr;this.xhr=null,a&&a.abort()},status:function(a){return this.pendingRetry||1===this.preprocessState?"uploading":this.xhr?this.xhr.readyState<4?"uploading":this.flowObj.opts.successStatuses.indexOf(this.xhr.status)>-1?"success":this.flowObj.opts.permanentErrors.indexOf(this.xhr.status)>-1||!a&&this.retries>=this.flowObj.opts.maxChunkRetries?"error":(this.abort(),"pending"):"pending"},message:function(){return this.xhr?this.xhr.responseText:""},progress:function(){if(this.pendingRetry)return 0;var a=this.status();return"success"===a||"error"===a?1:"pending"===a?0:this.total>0?this.loaded/this.total:0},sizeUploaded:function(){var a=this.endByte-this.startByte;return"success"!==this.status()&&(a=this.progress()*a),a},prepareXhrRequest:function(a,b,c,d){var e=h(this.flowObj.opts.query,this.fileObj,this,b);e=j(this.getParams(),e);var f=h(this.flowObj.opts.target,this.fileObj,this,b),g=null;if("GET"===a||"octet"===c){var i=[];k(e,function(a,b){i.push([encodeURIComponent(b),encodeURIComponent(a)].join("="))}),f=this.getTarget(f,i),g=d||null}else g=new FormData,k(e,function(a,b){g.append(b,a)}),g.append(this.flowObj.opts.fileParameterName,d,this.fileObj.file.name);return this.xhr.open(a,f,!0),this.xhr.withCredentials=this.flowObj.opts.withCredentials,k(h(this.flowObj.opts.headers,this.fileObj,this,b),function(a,b){this.xhr.setRequestHeader(b,a)},this),g}},d.evalOpts=h,d.extend=j,d.each=k,d.FlowFile=e,d.FlowChunk=f,d.version="2.9.0","object"==typeof module&&module&&"object"==typeof module.exports?module.exports=d:(a.Flow=d,"function"==typeof define&&define.amd&&define("flow",[],function(){return d}))}(window,document),angular.module("flow.provider",[]).provider("flowFactory",function(){"use strict";this.defaults={},this.factory=function(a){return new Flow(a)},this.events=[],this.on=function(a,b){this.events.push([a,b])},this.$get=function(){var a=this.factory,b=this.defaults,c=this.events;return{create:function(d){var e=a(angular.extend({},b,d));return angular.forEach(c,function(a){e.on(a[0],a[1])}),e}}}}),angular.module("flow.init",["flow.provider"]).controller("flowCtrl",["$scope","$attrs","$parse","flowFactory",function(a,b,c,d){var e=angular.extend({},a.$eval(b.flowInit)),f=a.$eval(b.flowObject)||d.create(e);f.on("catchAll",function(b){var c=Array.prototype.slice.call(arguments);c.shift();var d=a.$broadcast.apply(a,["flow::"+b,f].concat(c));return{progress:1,filesSubmitted:1,fileSuccess:1,fileError:1,complete:1}[b]&&a.$apply(),d.defaultPrevented?!1:void 0}),a.$flow=f,b.hasOwnProperty("flowName")&&(c(b.flowName).assign(a,f),a.$on("$destroy",function(){c(b.flowName).assign(a)}))}]).directive("flowInit",[function(){return{scope:!0,controller:"flowCtrl"}}]),angular.module("flow.btn",["flow.init"]).directive("flowBtn",[function(){return{restrict:"EA",scope:!1,require:"^flowInit",link:function(a,b,c){var d=c.hasOwnProperty("flowDirectory"),e=c.hasOwnProperty("flowSingleFile"),f=c.hasOwnProperty("flowAttrs")&&a.$eval(c.flowAttrs);a.$flow.assignBrowse(b,d,e,f)}}}]),angular.module("flow.dragEvents",["flow.init"]).directive("flowPreventDrop",function(){return{scope:!1,link:function(a,b){b.bind("drop dragover",function(a){a.preventDefault()})}}}).directive("flowDragEnter",["$timeout",function(a){return{scope:!1,link:function(b,c,d){function e(a){var b=!1,c=a.dataTransfer||a.originalEvent.dataTransfer;return angular.forEach(c&&c.types,function(a){"Files"===a&&(b=!0)}),b}var f,g=!1;c.bind("dragover",function(c){e(c)&&(g||(b.$apply(d.flowDragEnter),g=!0),a.cancel(f),c.preventDefault())}),c.bind("dragleave drop",function(){a.cancel(f),f=a(function(){b.$eval(d.flowDragLeave),f=null,g=!1},100)})}}}]),angular.module("flow.drop",["flow.init"]).directive("flowDrop",function(){return{scope:!1,require:"^flowInit",link:function(a,b,c){function d(){a.$flow.assignDrop(b)}function e(){a.$flow.unAssignDrop(b)}c.flowDropEnabled?a.$watch(c.flowDropEnabled,function(a){a?d():e()}):d()}}}),!function(a){"use strict";function b(a){return a.charAt(0).toUpperCase()+a.slice(1)}var c=a.module("flow.events",["flow.init"]),d={fileSuccess:["$file","$message"],fileProgress:["$file"],fileAdded:["$file","$event"],filesAdded:["$files","$event"],filesSubmitted:["$files","$event"],fileRetry:["$file"],fileError:["$file","$message"],uploadStart:[],complete:[],progress:[],error:["$message","$file"]};a.forEach(d,function(d,e){var f="flow"+b(e);"flowUploadStart"==f&&(f="flowUploadStarted"),c.directive(f,[function(){return{require:"^flowInit",controller:["$scope","$attrs",function(b,c){b.$on("flow::"+e,function(){var e=Array.prototype.slice.call(arguments),g=e.shift();if(b.$flow===e.shift()){var h={};a.forEach(d,function(a,b){h[a]=e[b]}),b.$eval(c[f],h)===!1&&g.preventDefault()}})}]}}])})}(angular),angular.module("flow.img",["flow.init"]).directive("flowImg",[function(){return{scope:!1,require:"^flowInit",link:function(a,b,c){var d=c.flowImg;a.$watch(d,function(b){if(b){var d=new FileReader;d.readAsDataURL(b.file),d.onload=function(b){a.$apply(function(){c.$set("src",b.target.result)})}}})}}}]),angular.module("flow.transfers",["flow.init"]).directive("flowTransfers",[function(){return{scope:!0,require:"^flowInit",link:function(a){a.transfers=a.$flow.files}}}]),angular.module("flow",["flow.provider","flow.init","flow.events","flow.btn","flow.drop","flow.transfers","flow.img","flow.dragEvents"]);
+/*! ng-flow 2.6.1 */
+!function(a,b,c){"use strict";function d(b){if(this.support=!("undefined"==typeof File||"undefined"==typeof Blob||"undefined"==typeof FileList||!Blob.prototype.slice&&!Blob.prototype.webkitSlice&&!Blob.prototype.mozSlice),this.support){this.supportDirectory=/WebKit/.test(a.navigator.userAgent),this.files=[],this.defaults={chunkSize:1048576,forceChunkSize:!1,simultaneousUploads:3,singleFile:!1,fileParameterName:"file",progressCallbacksInterval:500,speedSmoothingFactor:.1,query:{},headers:{},withCredentials:!1,preprocess:null,method:"multipart",testMethod:"GET",uploadMethod:"POST",prioritizeFirstAndLastChunk:!1,target:"/",testChunks:!0,generateUniqueIdentifier:null,maxChunkRetries:0,chunkRetryInterval:null,permanentErrors:[404,415,500,501],successStatuses:[200,201,202],onDropStopPropagation:!1},this.opts={},this.events={};var c=this;this.onDrop=function(a){c.opts.onDropStopPropagation&&a.stopPropagation(),a.preventDefault();var b=a.dataTransfer;b.items&&b.items[0]&&b.items[0].webkitGetAsEntry?c.webkitReadDataTransfer(a):c.addFiles(b.files,a)},this.preventEvent=function(a){a.preventDefault()},this.opts=d.extend({},this.defaults,b||{})}}function e(a,b){this.flowObj=a,this.file=b,this.name=b.fileName||b.name,this.size=b.size,this.relativePath=b.relativePath||b.webkitRelativePath||this.name,this.uniqueIdentifier=a.generateUniqueIdentifier(b),this.chunks=[],this.paused=!1,this.error=!1,this.averageSpeed=0,this.currentSpeed=0,this._lastProgressCallback=Date.now(),this._prevUploadedSize=0,this._prevProgress=0,this.bootstrap()}function f(a,b,c){this.flowObj=a,this.fileObj=b,this.fileObjSize=b.size,this.offset=c,this.tested=!1,this.retries=0,this.pendingRetry=!1,this.preprocessState=0,this.loaded=0,this.total=0;var d=this.flowObj.opts.chunkSize;this.startByte=this.offset*d,this.endByte=Math.min(this.fileObjSize,(this.offset+1)*d),this.xhr=null,this.fileObjSize-this.endByte<d&&!this.flowObj.opts.forceChunkSize&&(this.endByte=this.fileObjSize);var e=this;this.event=function(a,b){b=Array.prototype.slice.call(arguments),b.unshift(e),e.fileObj.chunkEvent.apply(e.fileObj,b)},this.progressHandler=function(a){a.lengthComputable&&(e.loaded=a.loaded,e.total=a.total),e.event("progress",a)},this.testHandler=function(){var a=e.status(!0);"error"===a?(e.event(a,e.message()),e.flowObj.uploadNextChunk()):"success"===a?(e.tested=!0,e.event(a,e.message()),e.flowObj.uploadNextChunk()):e.fileObj.paused||(e.tested=!0,e.send())},this.doneHandler=function(){var a=e.status();if("success"===a||"error"===a)e.event(a,e.message()),e.flowObj.uploadNextChunk();else{e.event("retry",e.message()),e.pendingRetry=!0,e.abort(),e.retries++;var b=e.flowObj.opts.chunkRetryInterval;null!==b?setTimeout(function(){e.send()},b):e.send()}}}function g(a,b){var c=a.indexOf(b);c>-1&&a.splice(c,1)}function h(a,b){return"function"==typeof a&&(b=Array.prototype.slice.call(arguments),a=a.apply(null,b.slice(1))),a}function i(a,b){setTimeout(a.bind(b),0)}function j(a){return k(arguments,function(b){b!==a&&k(b,function(b,c){a[c]=b})}),a}function k(a,b,c){if(a){var d;if("undefined"!=typeof a.length){for(d=0;d<a.length;d++)if(b.call(c,a[d],d)===!1)return}else for(d in a)if(a.hasOwnProperty(d)&&b.call(c,a[d],d)===!1)return}}var l=a.navigator.msPointerEnabled;d.prototype={on:function(a,b){a=a.toLowerCase(),this.events.hasOwnProperty(a)||(this.events[a]=[]),this.events[a].push(b)},off:function(a,b){a!==c?(a=a.toLowerCase(),b!==c?this.events.hasOwnProperty(a)&&g(this.events[a],b):delete this.events[a]):this.events={}},fire:function(a,b){b=Array.prototype.slice.call(arguments),a=a.toLowerCase();var c=!1;return this.events.hasOwnProperty(a)&&k(this.events[a],function(a){c=a.apply(this,b.slice(1))===!1||c},this),"catchall"!=a&&(b.unshift("catchAll"),c=this.fire.apply(this,b)===!1||c),!c},webkitReadDataTransfer:function(a){function b(a){g+=a.length,k(a,function(a){if(a.isFile){var e=a.fullPath;a.file(function(a){c(a,e)},d)}else a.isDirectory&&a.createReader().readEntries(b,d)}),e()}function c(a,b){a.relativePath=b.substring(1),h.push(a),e()}function d(a){throw a}function e(){0==--g&&f.addFiles(h,a)}var f=this,g=a.dataTransfer.items.length,h=[];k(a.dataTransfer.items,function(a){var f=a.webkitGetAsEntry();return f?void(f.isFile?c(a.getAsFile(),f.fullPath):f.createReader().readEntries(b,d)):void e()})},generateUniqueIdentifier:function(a){var b=this.opts.generateUniqueIdentifier;if("function"==typeof b)return b(a);var c=a.relativePath||a.webkitRelativePath||a.fileName||a.name;return a.size+"-"+c.replace(/[^0-9a-zA-Z_-]/gim,"")},uploadNextChunk:function(a){var b=!1;if(this.opts.prioritizeFirstAndLastChunk&&(k(this.files,function(a){return!a.paused&&a.chunks.length&&"pending"===a.chunks[0].status()&&0===a.chunks[0].preprocessState?(a.chunks[0].send(),b=!0,!1):!a.paused&&a.chunks.length>1&&"pending"===a.chunks[a.chunks.length-1].status()&&0===a.chunks[0].preprocessState?(a.chunks[a.chunks.length-1].send(),b=!0,!1):void 0}),b))return b;if(k(this.files,function(a){return a.paused||k(a.chunks,function(a){return"pending"===a.status()&&0===a.preprocessState?(a.send(),b=!0,!1):void 0}),b?!1:void 0}),b)return!0;var c=!1;return k(this.files,function(a){return a.isComplete()?void 0:(c=!0,!1)}),c||a||i(function(){this.fire("complete")},this),!1},assignBrowse:function(a,c,d,e){"undefined"==typeof a.length&&(a=[a]),k(a,function(a){var f;"INPUT"===a.tagName&&"file"===a.type?f=a:(f=b.createElement("input"),f.setAttribute("type","file"),j(f.style,{visibility:"hidden",position:"absolute"}),a.appendChild(f),a.addEventListener("click",function(){f.click()},!1)),this.opts.singleFile||d||f.setAttribute("multiple","multiple"),c&&f.setAttribute("webkitdirectory","webkitdirectory"),k(e,function(a,b){f.setAttribute(b,a)});var g=this;f.addEventListener("change",function(a){g.addFiles(a.target.files,a),a.target.value=""},!1)},this)},assignDrop:function(a){"undefined"==typeof a.length&&(a=[a]),k(a,function(a){a.addEventListener("dragover",this.preventEvent,!1),a.addEventListener("dragenter",this.preventEvent,!1),a.addEventListener("drop",this.onDrop,!1)},this)},unAssignDrop:function(a){"undefined"==typeof a.length&&(a=[a]),k(a,function(a){a.removeEventListener("dragover",this.preventEvent),a.removeEventListener("dragenter",this.preventEvent),a.removeEventListener("drop",this.onDrop)},this)},isUploading:function(){var a=!1;return k(this.files,function(b){return b.isUploading()?(a=!0,!1):void 0}),a},_shouldUploadNext:function(){var a=0,b=!0,c=this.opts.simultaneousUploads;return k(this.files,function(d){k(d.chunks,function(d){return"uploading"===d.status()&&(a++,a>=c)?(b=!1,!1):void 0})}),b&&a},upload:function(){var a=this._shouldUploadNext();if(a!==!1){this.fire("uploadStart");for(var b=!1,c=1;c<=this.opts.simultaneousUploads-a;c++)b=this.uploadNextChunk(!0)||b;b||i(function(){this.fire("complete")},this)}},resume:function(){k(this.files,function(a){a.resume()})},pause:function(){k(this.files,function(a){a.pause()})},cancel:function(){for(var a=this.files.length-1;a>=0;a--)this.files[a].cancel()},progress:function(){var a=0,b=0;return k(this.files,function(c){a+=c.progress()*c.size,b+=c.size}),b>0?a/b:0},addFile:function(a,b){this.addFiles([a],b)},addFiles:function(a,b){var c=[];k(a,function(a){if((!l||l&&a.size>0)&&(a.size%4096!==0||"."!==a.name&&"."!==a.fileName)&&!this.getFromUniqueIdentifier(this.generateUniqueIdentifier(a))){var d=new e(this,a);this.fire("fileAdded",d,b)&&c.push(d)}},this),this.fire("filesAdded",c,b)&&k(c,function(a){this.opts.singleFile&&this.files.length>0&&this.removeFile(this.files[0]),this.files.push(a)},this),this.fire("filesSubmitted",c,b)},removeFile:function(a){for(var b=this.files.length-1;b>=0;b--)this.files[b]===a&&(this.files.splice(b,1),a.abort())},getFromUniqueIdentifier:function(a){var b=!1;return k(this.files,function(c){c.uniqueIdentifier===a&&(b=c)}),b},getSize:function(){var a=0;return k(this.files,function(b){a+=b.size}),a},sizeUploaded:function(){var a=0;return k(this.files,function(b){a+=b.sizeUploaded()}),a},timeRemaining:function(){var a=0,b=0;return k(this.files,function(c){c.paused||c.error||(a+=c.size-c.sizeUploaded(),b+=c.averageSpeed)}),a&&!b?Number.POSITIVE_INFINITY:a||b?Math.floor(a/b):0}},e.prototype={measureSpeed:function(){var a=Date.now()-this._lastProgressCallback;if(a){var b=this.flowObj.opts.speedSmoothingFactor,c=this.sizeUploaded();this.currentSpeed=Math.max((c-this._prevUploadedSize)/a*1e3,0),this.averageSpeed=b*this.currentSpeed+(1-b)*this.averageSpeed,this._prevUploadedSize=c}},chunkEvent:function(a,b,c){switch(b){case"progress":if(Date.now()-this._lastProgressCallback<this.flowObj.opts.progressCallbacksInterval)break;this.measureSpeed(),this.flowObj.fire("fileProgress",this,a),this.flowObj.fire("progress"),this._lastProgressCallback=Date.now();break;case"error":this.error=!0,this.abort(!0),this.flowObj.fire("fileError",this,c,a),this.flowObj.fire("error",c,this,a);break;case"success":if(this.error)return;this.measureSpeed(),this.flowObj.fire("fileProgress",this,a),this.flowObj.fire("progress"),this._lastProgressCallback=Date.now(),this.isComplete()&&(this.currentSpeed=0,this.averageSpeed=0,this.flowObj.fire("fileSuccess",this,c,a));break;case"retry":this.flowObj.fire("fileRetry",this,a)}},pause:function(){this.paused=!0,this.abort()},resume:function(){this.paused=!1,this.flowObj.upload()},abort:function(a){this.currentSpeed=0,this.averageSpeed=0;var b=this.chunks;a&&(this.chunks=[]),k(b,function(a){"uploading"===a.status()&&(a.abort(),this.flowObj.uploadNextChunk())},this)},cancel:function(){this.flowObj.removeFile(this)},retry:function(){this.bootstrap(),this.flowObj.upload()},bootstrap:function(){this.abort(!0),this.error=!1,this._prevProgress=0;for(var a=this.flowObj.opts.forceChunkSize?Math.ceil:Math.floor,b=Math.max(a(this.file.size/this.flowObj.opts.chunkSize),1),c=0;b>c;c++)this.chunks.push(new f(this.flowObj,this,c))},progress:function(){if(this.error)return 1;if(1===this.chunks.length)return this._prevProgress=Math.max(this._prevProgress,this.chunks[0].progress()),this._prevProgress;var a=0;k(this.chunks,function(b){a+=b.progress()*(b.endByte-b.startByte)});var b=a/this.size;return this._prevProgress=Math.max(this._prevProgress,b>.9999?1:b),this._prevProgress},isUploading:function(){var a=!1;return k(this.chunks,function(b){return"uploading"===b.status()?(a=!0,!1):void 0}),a},isComplete:function(){var a=!1;return k(this.chunks,function(b){var c=b.status();return"pending"===c||"uploading"===c||1===b.preprocessState?(a=!0,!1):void 0}),!a},sizeUploaded:function(){var a=0;return k(this.chunks,function(b){a+=b.sizeUploaded()}),a},timeRemaining:function(){if(this.paused||this.error)return 0;var a=this.size-this.sizeUploaded();return a&&!this.averageSpeed?Number.POSITIVE_INFINITY:a||this.averageSpeed?Math.floor(a/this.averageSpeed):0},getType:function(){return this.file.type&&this.file.type.split("/")[1]},getExtension:function(){return this.name.substr((~-this.name.lastIndexOf(".")>>>0)+2).toLowerCase()}},f.prototype={getParams:function(){return{flowChunkNumber:this.offset+1,flowChunkSize:this.flowObj.opts.chunkSize,flowCurrentChunkSize:this.endByte-this.startByte,flowTotalSize:this.fileObjSize,flowIdentifier:this.fileObj.uniqueIdentifier,flowFilename:this.fileObj.name,flowRelativePath:this.fileObj.relativePath,flowTotalChunks:this.fileObj.chunks.length}},getTarget:function(a,b){return a+=a.indexOf("?")<0?"?":"&",a+b.join("&")},test:function(){this.xhr=new XMLHttpRequest,this.xhr.addEventListener("load",this.testHandler,!1),this.xhr.addEventListener("error",this.testHandler,!1);var a=h(this.flowObj.opts.testMethod,this.fileObj,this),b=this.prepareXhrRequest(a,!0);this.xhr.send(b)},preprocessFinished:function(){this.preprocessState=2,this.send()},send:function(){var a=this.flowObj.opts.preprocess;if("function"==typeof a)switch(this.preprocessState){case 0:return this.preprocessState=1,void a(this);case 1:return}if(this.flowObj.opts.testChunks&&!this.tested)return void this.test();this.loaded=0,this.total=0,this.pendingRetry=!1;var b=this.fileObj.file.slice?"slice":this.fileObj.file.mozSlice?"mozSlice":this.fileObj.file.webkitSlice?"webkitSlice":"slice",c=this.fileObj.file[b](this.startByte,this.endByte,this.fileObj.file.type);this.xhr=new XMLHttpRequest,this.xhr.upload.addEventListener("progress",this.progressHandler,!1),this.xhr.addEventListener("load",this.doneHandler,!1),this.xhr.addEventListener("error",this.doneHandler,!1);var d=h(this.flowObj.opts.uploadMethod,this.fileObj,this),e=this.prepareXhrRequest(d,!1,this.flowObj.opts.method,c);this.xhr.send(e)},abort:function(){var a=this.xhr;this.xhr=null,a&&a.abort()},status:function(a){return this.pendingRetry||1===this.preprocessState?"uploading":this.xhr?this.xhr.readyState<4?"uploading":this.flowObj.opts.successStatuses.indexOf(this.xhr.status)>-1?"success":this.flowObj.opts.permanentErrors.indexOf(this.xhr.status)>-1||!a&&this.retries>=this.flowObj.opts.maxChunkRetries?"error":(this.abort(),"pending"):"pending"},message:function(){return this.xhr?this.xhr.responseText:""},progress:function(){if(this.pendingRetry)return 0;var a=this.status();return"success"===a||"error"===a?1:"pending"===a?0:this.total>0?this.loaded/this.total:0},sizeUploaded:function(){var a=this.endByte-this.startByte;return"success"!==this.status()&&(a=this.progress()*a),a},prepareXhrRequest:function(a,b,c,d){var e=h(this.flowObj.opts.query,this.fileObj,this,b);e=j(this.getParams(),e);var f=h(this.flowObj.opts.target,this.fileObj,this,b),g=null;if("GET"===a||"octet"===c){var i=[];k(e,function(a,b){i.push([encodeURIComponent(b),encodeURIComponent(a)].join("="))}),f=this.getTarget(f,i),g=d||null}else g=new FormData,k(e,function(a,b){g.append(b,a)}),g.append(this.flowObj.opts.fileParameterName,d,this.fileObj.file.name);return this.xhr.open(a,f,!0),this.xhr.withCredentials=this.flowObj.opts.withCredentials,k(h(this.flowObj.opts.headers,this.fileObj,this,b),function(a,b){this.xhr.setRequestHeader(b,a)},this),g}},d.evalOpts=h,d.extend=j,d.each=k,d.FlowFile=e,d.FlowChunk=f,d.version="2.9.0","object"==typeof module&&module&&"object"==typeof module.exports?module.exports=d:(a.Flow=d,"function"==typeof define&&define.amd&&define("flow",[],function(){return d}))}(window,document),angular.module("flow.provider",[]).provider("flowFactory",function(){"use strict";this.defaults={},this.factory=function(a){return new Flow(a)},this.events=[],this.on=function(a,b){this.events.push([a,b])},this.$get=function(){var a=this.factory,b=this.defaults,c=this.events;return{create:function(d){var e=a(angular.extend({},b,d));return angular.forEach(c,function(a){e.on(a[0],a[1])}),e}}}}),angular.module("flow.init",["flow.provider"]).controller("flowCtrl",["$scope","$attrs","$parse","flowFactory",function(a,b,c,d){var e=angular.extend({},a.$eval(b.flowInit)),f=a.$eval(b.flowObject)||d.create(e),g=function(b){var c=Array.prototype.slice.call(arguments);c.shift();var d=a.$broadcast.apply(a,["flow::"+b,f].concat(c));return{progress:1,filesSubmitted:1,fileSuccess:1,fileError:1,complete:1}[b]&&a.$apply(),d.defaultPrevented?!1:void 0};f.on("catchAll",g),a.$on("$destroy",function(){f.off("catchAll",g)}),a.$flow=f,b.hasOwnProperty("flowName")&&(c(b.flowName).assign(a,f),a.$on("$destroy",function(){c(b.flowName).assign(a)}))}]).directive("flowInit",[function(){return{scope:!0,controller:"flowCtrl"}}]),angular.module("flow.btn",["flow.init"]).directive("flowBtn",[function(){return{restrict:"EA",scope:!1,require:"^flowInit",link:function(a,b,c){var d=c.hasOwnProperty("flowDirectory"),e=c.hasOwnProperty("flowSingleFile"),f=c.hasOwnProperty("flowAttrs")&&a.$eval(c.flowAttrs);a.$flow.assignBrowse(b,d,e,f)}}}]),angular.module("flow.dragEvents",["flow.init"]).directive("flowPreventDrop",function(){return{scope:!1,link:function(a,b){b.bind("drop dragover",function(a){a.preventDefault()})}}}).directive("flowDragEnter",["$timeout",function(a){return{scope:!1,link:function(b,c,d){function e(a){var b=!1,c=a.dataTransfer||a.originalEvent.dataTransfer;return angular.forEach(c&&c.types,function(a){"Files"===a&&(b=!0)}),b}var f,g=!1;c.bind("dragover",function(c){e(c)&&(g||(b.$apply(d.flowDragEnter),g=!0),a.cancel(f),c.preventDefault())}),c.bind("dragleave drop",function(){a.cancel(f),f=a(function(){b.$eval(d.flowDragLeave),f=null,g=!1},100)})}}}]),angular.module("flow.drop",["flow.init"]).directive("flowDrop",function(){return{scope:!1,require:"^flowInit",link:function(a,b,c){function d(){a.$flow.assignDrop(b)}function e(){a.$flow.unAssignDrop(b)}c.flowDropEnabled?a.$watch(c.flowDropEnabled,function(a){a?d():e()}):d()}}}),!function(a){"use strict";function b(a){return a.charAt(0).toUpperCase()+a.slice(1)}var c=a.module("flow.events",["flow.init"]),d={fileSuccess:["$file","$message"],fileProgress:["$file"],fileAdded:["$file","$event"],filesAdded:["$files","$event"],filesSubmitted:["$files","$event"],fileRetry:["$file"],fileError:["$file","$message"],uploadStart:[],complete:[],progress:[],error:["$message","$file"]};a.forEach(d,function(d,e){var f="flow"+b(e);"flowUploadStart"==f&&(f="flowUploadStarted"),c.directive(f,[function(){return{require:"^flowInit",controller:["$scope","$attrs",function(b,c){b.$on("flow::"+e,function(){var e=Array.prototype.slice.call(arguments),g=e.shift();if(b.$flow===e.shift()){var h={};a.forEach(d,function(a,b){h[a]=e[b]}),b.$eval(c[f],h)===!1&&g.preventDefault()}})}]}}])})}(angular),angular.module("flow.img",["flow.init"]).directive("flowImg",[function(){return{scope:!1,require:"^flowInit",link:function(a,b,c){var d=c.flowImg;a.$watch(d,function(b){if(b){var d=new FileReader;d.readAsDataURL(b.file),d.onload=function(b){a.$apply(function(){c.$set("src",b.target.result)})}}})}}}]),angular.module("flow.transfers",["flow.init"]).directive("flowTransfers",[function(){return{scope:!0,require:"^flowInit",link:function(a){a.transfers=a.$flow.files}}}]),angular.module("flow",["flow.provider","flow.init","flow.events","flow.btn","flow.drop","flow.transfers","flow.img","flow.dragEvents"]);
 /*! Copyright (c) 2014 Hidenari Nozaki and contributors | Licensed under the MIT license */
 "use strict";!function(a,b){"undefined"!=typeof module&&module.exports?module.exports=b(require("angular")):"function"==typeof define&&define.amd?define(["angular"],b):b(a.angular)}(window,function(a){a.module("angucomplete-alt",[]).directive("angucompleteAlt",["$q","$parse","$http","$sce","$timeout","$templateCache",function(a,b,c,d,e,f){var g=40,h=39,i=38,j=37,k=27,l=13,m=9,n=3,o=524288,p=500,q=200,r="autocomplete-required",s="Searching...",t="No results found",u="/angucomplete-alt/index.html";return f.put(u,'<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">  <input id="{{id}}_value" ng-model="searchStr" ng-disabled="disableInput" type="{{type}}" placeholder="{{placeholder}}" maxlength="{{maxlength}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">      <div ng-if="imageField" class="angucomplete-image-holder">        <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>        <div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div>      </div>      <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>      <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>      <div ng-if="matchClass && result.description && result.description != \'\'" class="angucomplete-description" ng-bind-html="result.description"></div>      <div ng-if="!matchClass && result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div>    </div>  </div></div>'),{restrict:"EA",require:"^?form",scope:{selectedObject:"=",disableInput:"=",initialValue:"@",localData:"=",remoteUrlRequestFormatter:"=",remoteUrlRequestWithCredentials:"@",remoteUrlResponseFormatter:"=",remoteUrlErrorCallback:"=",id:"@",type:"@",placeholder:"@",remoteUrl:"@",remoteUrlDataField:"@",titleField:"@",descriptionField:"@",imageField:"@",inputClass:"@",pause:"@",searchFields:"@",minlength:"@",matchClass:"@",clearSelected:"@",overrideSuggestions:"@",fieldRequired:"@",fieldRequiredClass:"@",inputChanged:"=",autoMatch:"@",focusOut:"&",focusIn:"&"},templateUrl:function(a,b){return b.templateUrl||u},link:function(b,f,u,v){function w(a){return a.which?a.which:a.keyCode}function x(a){"function"==typeof b.selectedObject?b.selectedObject(a):b.selectedObject=a,D(a?!0:!1)}function y(a){return function(c){return b[a]?b[a](c):c}}function z(a){x({originalObject:a}),b.clearSelected&&(b.searchStr=null),R()}function A(a){return b.titleField.split(",").map(function(b){return B(a,b)}).join(" ")}function B(a,b){var c,d;return b?(c=b.split("."),d=a,c.forEach(function(a){d=d[a]})):d=a,d}function C(a,c){var e,f,g;return g=new RegExp(c.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i"),a?(f=a.match(g),e=f?a.replace(g,'<span class="'+b.matchClass+'">'+f[0]+"</span>"):a,d.trustAsHtml(e)):void 0}function D(a){db=b.searchStr,b.fieldRequired&&v&&v.$setValidity(cb,a)}function E(a){var c=w(a);c!==j&&c!==h&&(c===i||c===l?a.preventDefault():c===g?(a.preventDefault(),!b.showDropdown&&b.searchStr&&b.searchStr.length>=ab&&(S(),b.searching=!0,V(b.searchStr))):c===k?(R(),b.$apply(function(){_.val(b.searchStr)})):(b.searchStr&&""!==b.searchStr?b.searchStr.length>=ab&&(S(),bb&&e.cancel(bb),b.searching=!0,bb=e(function(){V(b.searchStr)},b.pause)):b.showDropdown=!1,db&&db!==b.searchStr&&!b.clearSelected&&x(void 0)))}function F(a){!b.overrideSuggestions||b.selectedObject&&b.selectedObject.originalObject===b.searchStr||(a&&a.preventDefault(),z(b.searchStr))}function G(a){var b=getComputedStyle(a);return a.offsetHeight+parseInt(b.marginTop,10)+parseInt(b.marginBottom,10)}function H(){return fb.getBoundingClientRect().top+parseInt(getComputedStyle(fb).maxHeight,10)}function I(){return f[0].querySelectorAll(".angucomplete-row")[b.currentIndex]}function J(){return I().getBoundingClientRect().top-(fb.getBoundingClientRect().top+parseInt(getComputedStyle(fb).paddingTop,10))}function K(a){fb.scrollTop=fb.scrollTop+a}function L(){var a=b.results[b.currentIndex];_.val(b.matchClass?A(a.originalObject):a.title)}function M(a){var c=w(a),d=null,e=null;c===l&&b.results?(b.currentIndex>=0&&b.currentIndex<b.results.length?(a.preventDefault(),b.selectResult(b.results[b.currentIndex])):(F(a),R()),b.$apply()):c===g&&b.results?(a.preventDefault(),b.currentIndex+1<b.results.length&&b.showDropdown&&(b.$apply(function(){b.currentIndex++,L()}),gb&&(d=I(),H()<d.getBoundingClientRect().bottom&&K(G(d))))):c===i&&b.results?(a.preventDefault(),b.currentIndex>=1?(b.$apply(function(){b.currentIndex--,L()}),gb&&(e=J(),0>e&&K(e-1))):0===b.currentIndex&&b.$apply(function(){b.currentIndex=-1,_.val(b.searchStr)})):c===m&&(b.results&&b.results.length>0&&b.showDropdown?-1===b.currentIndex&&b.overrideSuggestions?F():(-1===b.currentIndex&&(b.currentIndex=0),b.selectResult(b.results[b.currentIndex]),b.$digest()):b.searchStr&&b.searchStr.length>0&&F())}function N(a){return function(c){b.searching=!1,W(B(Z(c),b.remoteUrlDataField),a)}}function O(a,c,d,e){0!==c&&(b.remoteUrlErrorCallback?b.remoteUrlErrorCallback(a,c,d,e):console&&console.error&&console.error("http error"))}function P(){eb&&eb.resolve()}function Q(d){var e={},f=b.remoteUrl+encodeURIComponent(d);b.remoteUrlRequestFormatter&&(e={params:b.remoteUrlRequestFormatter(d)},f=b.remoteUrl),b.remoteUrlRequestWithCredentials&&(e.withCredentials=!0),P(),eb=a.defer(),e.timeout=eb.promise,c.get(f,e).success(N(d)).error(O)}function R(){b.showDropdown=!1,b.results=[],fb&&(fb.scrollTop=0)}function S(){b.showDropdown=!0,b.currentIndex=-1,b.results=[]}function T(a){var c,d,e,f,g=b.searchFields.split(","),h=[];for(c=0;c<b.localData.length;c++){for(d=!1,e=0;e<g.length;e++)f=B(b.localData[c],g[e])||"",d=d||f.toLowerCase().indexOf(a.toLowerCase())>=0;d&&(h[h.length]=b.localData[c])}b.searching=!1,W(h,a)}function U(a,c,d){for(var e in c)if(c[e].toLowerCase()===d.toLowerCase())return void b.selectResult(a)}function V(a){!a||a.length<ab||(b.localData?b.$apply(function(){T(a)}):Q(a))}function W(a,c){var d,e,f,g,h,i;if(a&&a.length>0)for(b.results=[],d=0;d<a.length;d++)b.titleField&&""!==b.titleField&&(g=h=A(a[d])),e="",b.descriptionField&&(e=i=B(a[d],b.descriptionField)),f="",b.imageField&&(f=B(a[d],b.imageField)),b.matchClass&&(h=C(g,c),i=C(e,c)),b.results[b.results.length]={title:h,description:i,image:f,originalObject:a[d]},b.autoMatch&&U(b.results[b.results.length-1],{title:g,desc:e||""},b.searchStr);else b.results=[]}function X(){b.localData?W(b.localData,""):Q("")}var Y,Z,$,_=f.find("input"),ab=n,bb=null,cb=r,db=null,eb=null,fb=f[0].querySelector(".angucomplete-dropdown"),gb=!1,hb=null;f.on("mousedown",function(a){hb=a.target.id}),b.currentIndex=null,b.searching=!1,b.searchStr=b.initialValue,$=b.$watch("initialValue",function(a){a&&a.length>0&&(b.searchStr=b.initialValue,D(!0),$())}),b.$on("angucomplete-alt:clearInput",function(a,c){c?b.id===c&&(b.searchStr=null,R()):(b.searchStr=null,R())}),b.onFocusHandler=function(){b.focusIn&&b.focusIn(),0!==ab||b.searchStr&&0!==b.searchStr.length||(b.showDropdown=!0,X())},b.hideResults=function(){hb===b.id+"_dropdown"?hb=null:(Y=e(function(){R(),b.$apply(function(){b.searchStr&&b.searchStr.length>0&&_.val(b.searchStr)})},q),P(),b.focusOut&&b.focusOut(),b.overrideSuggestions&&b.searchStr&&b.searchStr.length>0&&-1===b.currentIndex&&F())},b.resetHideResults=function(){Y&&e.cancel(Y)},b.hoverRow=function(a){b.currentIndex=a},b.selectResult=function(a){b.matchClass&&(a.title=A(a.originalObject),a.description=B(a.originalObject,b.descriptionField)),b.searchStr=b.clearSelected?null:a.title,x(a),R()},b.inputChangeHandler=function(a){return a.length<ab?R():0===a.length&&0===ab&&X(),b.inputChanged&&(a=b.inputChanged(a)),a},b.fieldRequiredClass&&""!==b.fieldRequiredClass&&(cb=b.fieldRequiredClass),b.minlength&&""!==b.minlength&&(ab=parseInt(b.minlength,10)),b.pause||(b.pause=p),b.clearSelected||(b.clearSelected=!1),b.overrideSuggestions||(b.overrideSuggestions=!1),b.fieldRequired&&v&&D(b.initialValue?!0:!1),b.textSearching=u.textSearching?u.textSearching:s,b.textNoResults=u.textNoResults?u.textNoResults:t,b.maxlength=u.maxlength?u.maxlength:o,_.on("keydown",M),_.on("keyup",E),Z=y("remoteUrlResponseFormatter"),b.$on("$destroy",function(){D(!0)}),e(function(){var a=getComputedStyle(fb);gb=a.maxHeight&&"auto"===a.overflowY})}}}])});
 /*! jQuery v2.1.3 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
@@ -36897,119 +36899,6 @@ h.isDefined(b)&&g.push('target="',b,'" ');g.push('href="',a.replace(/"/g,"&quot;
  */
 
 !function(a){"object"==typeof exports?module.exports=a():"function"==typeof define&&define.amd?define(a):"undefined"!=typeof window?window.IconicJS=a():"undefined"!=typeof global?global.IconicJS=a():"undefined"!=typeof self&&(self.IconicJS=a())}(function(){var a;return function b(a,c,d){function e(g,h){if(!c[g]){if(!a[g]){var i="function"==typeof require&&require;if(!h&&i)return i(g,!0);if(f)return f(g,!0);throw new Error("Cannot find module '"+g+"'")}var j=c[g]={exports:{}};a[g][0].call(j.exports,function(b){var c=a[g][1][b];return e(c?c:b)},j,j.exports,b,a,c,d)}return c[g].exports}for(var f="function"==typeof require&&require,g=0;g<d.length;g++)e(d[g]);return e}({1:[function(a,b){var c=(a("./modules/polyfills"),a("./modules/svg-injector")),d=a("./modules/extend"),e=a("./modules/responsive"),f=a("./modules/position"),g=a("./modules/container"),h=a("./modules/log"),i={},j=window.iconicSmartIconApis={},k=("file:"===window.location.protocol,0),l=function(a,b,e){b=d({},i,b||{});var f={evalScripts:b.evalScripts,pngFallback:b.pngFallback};f.each=function(a){if(a)if("string"==typeof a)h.debug(a);else if(a instanceof SVGSVGElement){var c=a.getAttribute("data-icon");if(c&&j[c]){var d=j[c](a);for(var e in d)a[e]=d[e]}/iconic-bg-/.test(a.getAttribute("class"))&&g.addBackground(a),m(a),k++,b&&b.each&&"function"==typeof b.each&&b.each(a)}},"string"==typeof a&&(a=document.querySelectorAll(a)),c(a,f,e)},m=function(a){var b=[];a?"string"==typeof a?b=document.querySelectorAll(a):void 0!==a.length?b=a:"object"==typeof a&&b.push(a):b=document.querySelectorAll("svg.iconic"),Array.prototype.forEach.call(b,function(a){a instanceof SVGSVGElement&&(a.update&&a.update(),e.refresh(a),f.refresh(a))})},n=function(){i.debug&&console.time&&console.time("autoInjectSelector - "+i.autoInjectSelector);var a=k;l(i.autoInjectSelector,{},function(){if(i.debug&&console.timeEnd&&console.timeEnd("autoInjectSelector - "+i.autoInjectSelector),h.debug("AutoInjected: "+(k-a)),e.refreshAll(),i.autoInjectDone&&"function"==typeof i.autoInjectDone){var b=k-a;i.autoInjectDone(b)}})},o=function(a){a&&""!==a&&"complete"!==document.readyState?document.addEventListener("DOMContentLoaded",n):document.removeEventListener("DOMContentLoaded",n)},p=function(a){return a=a||{},d(i,a),o(i.autoInjectSelector),h.enableDebug(i.debug),window._Iconic?window._Iconic:{inject:l,update:m,smartIconApis:j,svgInjectedCount:k}};b.exports=p,window._Iconic=new p({autoInjectSelector:"img.iconic",evalScripts:"once",pngFallback:!1,each:null,autoInjectDone:null,debug:!1})},{"./modules/container":2,"./modules/extend":3,"./modules/log":4,"./modules/polyfills":5,"./modules/position":6,"./modules/responsive":7,"./modules/svg-injector":8}],2:[function(a,b){var c=function(a){var b=a.getAttribute("class").split(" "),c=-1!==b.indexOf("iconic-fluid"),d=[],e=["iconic-bg"];Array.prototype.forEach.call(b,function(a){switch(a){case"iconic-sm":case"iconic-md":case"iconic-lg":d.push(a),c||e.push(a.replace(/-/,"-bg-"));break;case"iconic-fluid":d.push(a),e.push(a.replace(/-/,"-bg-"));break;case"iconic-bg-circle":case"iconic-bg-rounded-rect":case"iconic-bg-badge":e.push(a);break;default:d.push(a)}}),a.setAttribute("class",d.join(" "));var f=a.parentNode,g=Array.prototype.indexOf.call(f.childNodes,a),h=document.createElement("span");h.setAttribute("class",e.join(" ")),h.appendChild(a),f.insertBefore(h,f.childNodes[g])};b.exports={addBackground:c}},{}],3:[function(a,b){b.exports=function(a){return Array.prototype.forEach.call(Array.prototype.slice.call(arguments,1),function(b){if(b)for(var c in b)b.hasOwnProperty(c)&&(a[c]=b[c])}),a}},{}],4:[function(a,b){var c=!1,d=function(a){console&&console.log&&console.log(a)},e=function(a){d("Iconic INFO: "+a)},f=function(a){d("Iconic WARNING: "+a)},g=function(a){c&&d("Iconic DEBUG: "+a)},h=function(a){c=a};b.exports={info:e,warn:f,debug:g,enableDebug:h}},{}],5:[function(){Array.prototype.forEach||(Array.prototype.forEach=function(a,b){"use strict";if(void 0===this||null===this||"function"!=typeof a)throw new TypeError;var c,d=this.length>>>0;for(c=0;d>c;++c)c in this&&a.call(b,this[c],c,this)}),function(){if(Event.prototype.preventDefault||(Event.prototype.preventDefault=function(){this.returnValue=!1}),Event.prototype.stopPropagation||(Event.prototype.stopPropagation=function(){this.cancelBubble=!0}),!Element.prototype.addEventListener){var a=[],b=function(b,c){var d=this,e=function(a){a.target=a.srcElement,a.currentTarget=d,c.handleEvent?c.handleEvent(a):c.call(d,a)};if("DOMContentLoaded"==b){var f=function(a){"complete"==document.readyState&&e(a)};if(document.attachEvent("onreadystatechange",f),a.push({object:this,type:b,listener:c,wrapper:f}),"complete"==document.readyState){var g=new Event;g.srcElement=window,f(g)}}else this.attachEvent("on"+b,e),a.push({object:this,type:b,listener:c,wrapper:e})},c=function(b,c){for(var d=0;d<a.length;){var e=a[d];if(e.object==this&&e.type==b&&e.listener==c){"DOMContentLoaded"==b?this.detachEvent("onreadystatechange",e.wrapper):this.detachEvent("on"+b,e.wrapper);break}++d}};Element.prototype.addEventListener=b,Element.prototype.removeEventListener=c,HTMLDocument&&(HTMLDocument.prototype.addEventListener=b,HTMLDocument.prototype.removeEventListener=c),Window&&(Window.prototype.addEventListener=b,Window.prototype.removeEventListener=c)}}()},{}],6:[function(a,b){var c=function(a){var b=a.getAttribute("data-position");if(b&&""!==b){var c,d,e,f,g,h,i,j=a.getAttribute("width"),k=a.getAttribute("height"),l=b.split("-"),m=a.querySelectorAll("g.iconic-container");Array.prototype.forEach.call(m,function(a){if(c=a.getAttribute("data-width"),d=a.getAttribute("data-height"),c!==j||d!==k){if(e=a.getAttribute("transform"),f=1,e){var b=e.match(/scale\((\d)/);f=b&&b[1]?b[1]:1}g=Math.floor((j/f-c)/2),h=Math.floor((k/f-d)/2),Array.prototype.forEach.call(l,function(a){switch(a){case"top":h=0;break;case"bottom":h=k/f-d;break;case"left":g=0;break;case"right":g=j/f-c;break;case"center":break;default:console&&console.log&&console.log("Unknown position: "+a)}}),i=0===h?g:g+" "+h,i="translate("+i+")",e?/translate/.test(e)?e=e.replace(/translate\(.*?\)/,i):e+=" "+i:e=i,a.setAttribute("transform",e)}})}};b.exports={refresh:c}},{}],7:[function(a,b){var c=/(iconic-sm\b|iconic-md\b|iconic-lg\b)/,d=function(a,b){var c="undefined"!=typeof window.getComputedStyle&&window.getComputedStyle(a,null).getPropertyValue(b);return!c&&a.currentStyle&&(c=a.currentStyle[b.replace(/([a-z])\-([a-z])/,function(a,b,c){return b+c.toUpperCase()})]||a.currentStyle[b]),c},e=function(a){var b=a.style.display;a.style.display="block";var c=parseFloat(d(a,"width").slice(0,-2)),e=parseFloat(d(a,"height").slice(0,-2));return a.style.display=b,{width:c,height:e}},f=function(){var a="/* Iconic Responsive Support Styles */\n.iconic-property-fill, .iconic-property-text {stroke: none !important;}\n.iconic-property-stroke {fill: none !important;}\nsvg.iconic.iconic-fluid {height:100% !important;width:100% !important;}\nsvg.iconic.iconic-sm:not(.iconic-size-md):not(.iconic-size-lg), svg.iconic.iconic-size-sm{width:16px;height:16px;}\nsvg.iconic.iconic-md:not(.iconic-size-sm):not(.iconic-size-lg), svg.iconic.iconic-size-md{width:32px;height:32px;}\nsvg.iconic.iconic-lg:not(.iconic-size-sm):not(.iconic-size-md), svg.iconic.iconic-size-lg{width:128px;height:128px;}\nsvg.iconic-sm > g.iconic-md, svg.iconic-sm > g.iconic-lg, svg.iconic-md > g.iconic-sm, svg.iconic-md > g.iconic-lg, svg.iconic-lg > g.iconic-sm, svg.iconic-lg > g.iconic-md {display: none;}\nsvg.iconic.iconic-icon-sm > g.iconic-lg, svg.iconic.iconic-icon-md > g.iconic-lg {display:none;}\nsvg.iconic-sm:not(.iconic-icon-md):not(.iconic-icon-lg) > g.iconic-sm, svg.iconic-md.iconic-icon-sm > g.iconic-sm, svg.iconic-lg.iconic-icon-sm > g.iconic-sm {display:inline;}\nsvg.iconic-md:not(.iconic-icon-sm):not(.iconic-icon-lg) > g.iconic-md, svg.iconic-sm.iconic-icon-md > g.iconic-md, svg.iconic-lg.iconic-icon-md > g.iconic-md {display:inline;}\nsvg.iconic-lg:not(.iconic-icon-sm):not(.iconic-icon-md) > g.iconic-lg, svg.iconic-sm.iconic-icon-lg > g.iconic-lg, svg.iconic-md.iconic-icon-lg > g.iconic-lg {display:inline;}";navigator&&navigator.userAgent&&/MSIE 10\.0/.test(navigator.userAgent)&&(a+="svg.iconic{zoom:1.0001;}");var b=document.createElement("style");b.id="iconic-responsive-css",b.type="text/css",b.styleSheet?b.styleSheet.cssText=a:b.appendChild(document.createTextNode(a)),(document.head||document.getElementsByTagName("head")[0]).appendChild(b)},g=function(a){if(/iconic-fluid/.test(a.getAttribute("class"))){var b,d=e(a),f=a.viewBox.baseVal.width/a.viewBox.baseVal.height;b=1===f?Math.min(d.width,d.height):1>f?d.width:d.height;var g;g=32>b?"iconic-sm":b>=32&&128>b?"iconic-md":"iconic-lg";var h=a.getAttribute("class"),i=c.test(h)?h.replace(c,g):h+" "+g;a.setAttribute("class",i)}},h=function(){var a=document.querySelectorAll(".injected-svg.iconic-fluid");Array.prototype.forEach.call(a,function(a){g(a)})};document.addEventListener("DOMContentLoaded",function(){f()}),window.addEventListener("resize",function(){h()}),b.exports={refresh:g,refreshAll:h}},{}],8:[function(b,c,d){!function(b,e){"use strict";function f(a){a=a.split(" ");for(var b={},c=a.length,d=[];c--;)b.hasOwnProperty(a[c])||(b[a[c]]=1,d.unshift(a[c]));return d.join(" ")}var g="file:"===b.location.protocol,h=e.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure","1.1"),i=Array.prototype.forEach||function(a,b){if(void 0===this||null===this||"function"!=typeof a)throw new TypeError;var c,d=this.length>>>0;for(c=0;d>c;++c)c in this&&a.call(b,this[c],c,this)},j={},k=0,l=[],m=[],n={},o=function(a){return a.cloneNode(!0)},p=function(a,b){m[a]=m[a]||[],m[a].push(b)},q=function(a){for(var b=0,c=m[a].length;c>b;b++)!function(b){setTimeout(function(){m[a][b](o(j[a]))},0)}(b)},r=function(a,c){if(void 0!==j[a])j[a]instanceof SVGSVGElement?c(o(j[a])):p(a,c);else{if(!b.XMLHttpRequest)return c("Browser does not support XMLHttpRequest"),!1;j[a]={},p(a,c);var d=new XMLHttpRequest;d.onreadystatechange=function(){if(4===d.readyState){if(404===d.status||null===d.responseXML)return c("Unable to load SVG file: "+a),g&&c("Note: SVG injection ajax calls do not work locally without adjusting security setting in your browser. Or consider using a local webserver."),c(),!1;if(!(200===d.status||g&&0===d.status))return c("There was a problem injecting the SVG: "+d.status+" "+d.statusText),!1;if(d.responseXML instanceof Document)j[a]=d.responseXML.documentElement;else if(DOMParser&&DOMParser instanceof Function){var b;try{var e=new DOMParser;b=e.parseFromString(d.responseText,"text/xml")}catch(f){b=void 0}if(!b||b.getElementsByTagName("parsererror").length)return c("Unable to parse SVG file: "+a),!1;j[a]=b.documentElement}q(a)}},d.open("GET",a),d.overrideMimeType&&d.overrideMimeType("text/xml"),d.send()}},s=function(a,c,d,e){var g=a.getAttribute("data-src")||a.getAttribute("src");if(!/svg$/i.test(g))return e("Attempted to inject a file with a non-svg extension: "+g),void 0;if(!h){var j=a.getAttribute("data-fallback")||a.getAttribute("data-png");return j?(a.setAttribute("src",j),e(null)):d?(a.setAttribute("src",d+"/"+g.split("/").pop().replace(".svg",".png")),e(null)):e("This browser does not support SVG and no PNG fallback was defined."),void 0}-1===l.indexOf(a)&&(l.push(a),a.setAttribute("src",""),r(g,function(d){if("undefined"==typeof d||"string"==typeof d)return e(d),!1;var h=a.getAttribute("id");h&&d.setAttribute("id",h);var j=a.getAttribute("title");j&&d.setAttribute("title",j);var m=[].concat(d.getAttribute("class")||[],"injected-svg",a.getAttribute("class")||[]).join(" ");d.setAttribute("class",f(m));var o=a.getAttribute("style");o&&d.setAttribute("style",o);var p=[].filter.call(a.attributes,function(a){return/^data-\w[\w\-]*$/.test(a.name)});i.call(p,function(a){a.name&&a.value&&d.setAttribute(a.name,a.value)});for(var q,r=d.querySelectorAll("defs clipPath[id]"),s=0,t=r.length;t>s;s++){q=r[s].id+"-"+k;for(var u=d.querySelectorAll('[clip-path*="'+r[s].id+'"]'),v=0,w=u.length;w>v;v++)u[v].setAttribute("clip-path","url(#"+q+")");r[s].id=q}d.removeAttribute("xmlns:a");for(var x,y,z=d.querySelectorAll("script"),A=[],B=0,C=z.length;C>B;B++)y=z[B].getAttribute("type"),y&&"application/ecmascript"!==y&&"application/javascript"!==y||(x=z[B].innerText||z[B].textContent,A.push(x),d.removeChild(z[B]));if(A.length>0&&("always"===c||"once"===c&&!n[g])){for(var D=0,E=A.length;E>D;D++)new Function(A[D])(b);n[g]=!0}a.parentNode.replaceChild(d,a),delete l[l.indexOf(a)],a=null,k++,e(d)}))},t=function(a,b,c){b=b||{};var d=b.evalScripts||"always",e=b.pngFallback||!1,f=b.each;if(void 0!==a.length){var g=0;i.call(a,function(b){s(b,d,e,function(b){f&&"function"==typeof f&&f(b),c&&a.length===++g&&c(g)})})}else a?s(a,d,e,function(b){f&&"function"==typeof f&&f(b),c&&c(1),a=null}):c&&c(0)};"object"==typeof c&&"object"==typeof c.exports?c.exports=d=t:"function"==typeof a&&a.amd?a(function(){return t}):"object"==typeof b&&(b.SVGInjector=t)}(window,document)},{}]},{},[1])(1)});
-angular.module('markdown', [])
-  .directive('markdown', function() {
-    return {
-      restrict: 'A',
-      link: function(scope, element, attrs, controller) {
-        element.html(marked(element.html()));
-      }
-    };
-
-});
-
-'use strict';
-
-(function(){
-  var svgDirectives = {};
-
-  angular.forEach([
-      'clipPath',
-      'colorProfile',
-      'src',
-      'cursor',
-      'fill',
-      'filter',
-      'marker',
-      'markerStart',
-      'markerMid',
-      'markerEnd',
-      'mask',
-      'stroke'
-    ],
-    function(attr) {
-      svgDirectives[attr] = [
-          '$rootScope',
-          '$location',
-          '$interpolate',
-          '$sniffer',
-          'urlResolve',
-          'computeSVGAttrValue',
-          'svgAttrExpressions',
-          function(
-              $rootScope,
-              $location,
-              $interpolate,
-              $sniffer,
-              urlResolve,
-              computeSVGAttrValue,
-              svgAttrExpressions) {
-            return {
-              restrict: 'A',
-              link: function(scope, element, attrs) {
-                var initialUrl;
-
-                //Only apply to svg elements to avoid unnecessary observing
-                //Check that is in html5Mode and that history is supported
-                if ((!svgAttrExpressions.SVG_ELEMENT.test(element[0] &&
-                    element[0].toString())) ||
-                  !$location.$$html5 ||
-                  !$sniffer.history) return;
-
-                //Assumes no expressions, since svg is unforgiving of xml violations
-                initialUrl = attrs[attr];
-                attrs.$observe(attr, updateValue);
-                $rootScope.$on('$locationChangeSuccess', updateValue);
-
-                function updateValue () {
-                  var newVal = computeSVGAttrValue(initialUrl);
-                  //Prevent recursive updating
-                  if (newVal && attrs[attr] !== newVal) attrs.$set(attr, newVal);
-                }
-              }
-            };
-          }];
-  });
-
-  angular.module('ngSVGAttributes', []).
-    factory('urlResolve', [function() {
-      //Duplicate of urlResolve & urlParsingNode in angular core
-      var urlParsingNode = document.createElement('a');
-      return function urlResolve(url) {
-        urlParsingNode.setAttribute('href', url);
-        return urlParsingNode;
-      };
-    }]).
-    value('svgAttrExpressions', {
-      FUNC_URI: /^url\((.*)\)$/,
-      SVG_ELEMENT: /SVG[a-zA-Z]*Element/,
-      HASH_PART: /#.*/
-    }).
-    factory('computeSVGAttrValue', [
-                '$location', '$sniffer', 'svgAttrExpressions', 'urlResolve',
-        function($location,   $sniffer,   svgAttrExpressions,   urlResolve) {
-          return function computeSVGAttrValue(url) {
-            var match, fullUrl;
-            if (match = svgAttrExpressions.FUNC_URI.exec(url)) {
-              //hash in html5Mode, forces to be relative to current url instead of base
-              if (match[1].indexOf('#') === 0) {
-                fullUrl = $location.absUrl().
-                  replace(svgAttrExpressions.HASH_PART, '') +
-                  match[1];
-              }
-              //Presumably links to external SVG document
-              else {
-                fullUrl = urlResolve(match[1]);
-              }
-            }
-            return fullUrl ? 'url(' + fullUrl + ')' : null;
-          };
-        }
-      ]
-    ).
-    directive(svgDirectives);
-}());
-
 (function() {
   'use strict';
 
@@ -37154,17 +37043,18 @@ angular.module('markdown', [])
   FoundationApi.$inject = ['FoundationAnimation'];
 
   function FoundationApi(FoundationAnimation) {
-    var listeners  = [];
+    var listeners  = {};
     var settings   = {};
     var uniqueIds  = [];
     var service    = {};
 
     service.subscribe           = subscribe;
+    service.unsubscribe         = unsubscribe;
     service.publish             = publish;
     service.getSettings         = getSettings;
     service.modifySettings      = modifySettings;
     service.generateUuid        = generateUuid;
-    service.toggleAnimate     = toggleAnimate;
+    service.toggleAnimate       = toggleAnimate;
     service.closeActiveElements = closeActiveElements;
     service.animate             = animate;
 
@@ -37177,6 +37067,15 @@ angular.module('markdown', [])
 
       listeners[name].push(callback);
       return true;
+    }
+
+    function unsubscribe(name, callback) {
+      if (listeners[name] !== undefined) {
+        delete listeners[name];
+      }
+      if (typeof callback == 'function') {
+          callback.call(this);
+      }
     }
 
     function publish(name, msg) {
@@ -37223,12 +37122,23 @@ angular.module('markdown', [])
       var self = this;
       options = options || {};
       var activeElements = document.querySelectorAll('.is-active[zf-closable]');
+      // action sheets are nested zf-closable elements, so we have to target the parent
+      var nestedActiveElements = document.querySelectorAll('[zf-closable] > .is-active')
+      
       if (activeElements.length) {
         angular.forEach(activeElements, function(el) {
           if (options.exclude !== el.id) {
             self.publish(el.id, 'close');
           }
         });
+      }
+      if (nestedActiveElements.length) {
+        angular.forEach(nestedActiveElements, function(el) {
+          var parentId = el.parentNode.id;
+          if (options.exclude !== parentId) {
+            self.publish(parentId, 'close');
+          }
+        })
       }
     }
 
@@ -37286,126 +37196,128 @@ angular.module('markdown', [])
 (function() {
   'use strict';
 
-  angular.module('foundation.dynamicRouting.animations', ['ngAnimate', 'foundation.dynamicRouting'])
-    .animation('.ui-animation', uiAnimation)
+  angular.module('foundation.dynamicRouting.animations', ['foundation.dynamicRouting'])
+    .directive('uiView', uiView)
   ;
 
-  uiAnimation.$inject = ['$rootScope', '$state'];
+  uiView.$inject = ['$rootScope', '$state'];
 
-  function uiAnimation($rootScope, $state) {
-    var events = ['webkitAnimationEnd', 'mozAnimationEnd', 'MSAnimationEnd', 'oanimationend', 'animationend',
-                  'webkitTransitionEnd', 'otransitionend', 'transitionend'];
+  function uiView($rootScope, $state) {
+    var directive = {
+      restrict : 'ECA',
+      priority : -400,
+      link     : link
+    };
 
-    var parentStyle = 'position-absolute';
+    return directive;
 
-    var animation = {};
+    function link(scope, element) {
+      var animation = {};
+      var animationEnded = false;
+      var presetHeight;
 
-    animation.enter = enterAnimation;
-    animation.leave = leaveAnimation;
+      var cleanup = [
+        $rootScope.$on('$stateChangeStart', onStateChangeStart),
+        $rootScope.$on('$stateChangeError', onStateChangeError),
+        scope.$on('$stateChangeSuccess', onStateChangeSuccess),
+        scope.$on('$viewContentAnimationEnded', onViewContentAnimationEnded)
+      ];
 
-    return animation;
-
-    function enterAnimation(element, done) {
-      var scope = element.scope();
-
-      if(scope.vars && scope.vars.animationIn) {
-        var animationIn  = scope.vars.animationIn;
-        var animationOut = scope.vars.animationOut || '';
-        var initial  = 'ng-enter';
-        var activate = 'ng-enter-active';
-        var timedOut = true;
-
-        //reset possible failed animations and bugs
-        element.parent().addClass(parentStyle);
-        element.removeClass(activate + ' ' + initial + ' ' + animationIn + ' ' + animationOut);
-        element[0].style.transitionDuration = 0;
-
-        //start animation
-        element.addClass(animationIn);
-        element.addClass(initial);
-
-        $rootScope.$digest();
-
-        element[0].style.transitionDuration = '';
-        element.addClass(activate);
-
-        var finishAnimation = function() {
-          element.parent().removeClass(parentStyle);
-          element.removeClass(activate + ' ' + initial + ' ' + animationIn + ' ' + animationOut);
-          timedOut = false;
-          done();
-        }
-
-        element.one(events.join(' '), function() {
-          finishAnimation();
+      var destroyed = scope.$on('$destroy', function onDestroy() {
+        angular.forEach(cleanup, function (cb) {
+          if (angular.isFunction(cb)) {
+            cb();
+          }
         });
 
-        setTimeout(function() {
-          if (timedOut) {
-            finishAnimation();
-          }
-        }, 3000);
+        destroyed();
+      });
 
-      } else {
-        done();
+      function onStateChangeStart(event, toState, toParams, fromState, fromParams) {
+
+        if (fromState.animation) {
+          if (!fromState.animation.leave && !toState.animation.leave) {
+            return;
+          }
+          else {
+             animationRouter(event, toState, fromState);
+          }
+        }
       }
 
-      return function(isCancelled) {
+      function animationRouter(event, toState, fromState) {
+        if (!animationEnded) {
+          resetParent();
+          prepareParent();
 
-      };
-    }
+          element.removeClass(fromState.animation.leave);
+        }
+        else {
+          prepareParent();
 
-    function leaveAnimation(element, done) {
-      var scope = element.scope();
-
-      if(scope.vars && scope.vars.animationOut) {
-        var animationIn  = scope.vars.animationIn || '';
-        var animationOut = scope.vars.animationOut;
-        var initial  = 'ng-leave';
-        var activate = 'ng-leave-active';
-        var timedOut = true;
-
-        element.removeClass(activate + ' ' + initial + ' ' + animationIn + ' ' + animationOut);
-        element[0].style.transitionDuration = 0;
-
-        //start animation
-        element.addClass(animationOut);
-        element.addClass(initial);
-
-        $rootScope.$digest();
-
-        element[0].style.transitionDuration = '';
-        element.addClass(activate);
-
-        var finishAnimation = function() {
-          element.parent().removeClass(parentStyle);
-          element.removeClass(activate + ' ' + initial + ' ' + animationIn + ' ' + animationOut);
-          timedOut = false;
-          done();
+          element.addClass(fromState.animation.leave);
         }
 
-        element.one(events.join(' '), function() {
-          finishAnimation();
-        });
-
-        setTimeout(function() {
-          if (timedOut) {
-            finishAnimation();
-          }
-        }, 3000);
-
-      } else {
-        done();
       }
 
-      return function(isCancelled) {
+      function onStateChangeError() {
+        if(animation.leave) {
+          element.removeClass(animation.leave);
+        }
 
-      };
+        resetParent(); //reset parent if state change fails
+      }
+
+      function onStateChangeSuccess() {
+        resetParent();
+        if ($state.includes(getState()) && animation.enter) {
+          element.addClass(animation.enter);
+        }
+      }
+
+      function onViewContentAnimationEnded(event) {
+        if (event.targetScope === scope && animation.enter) {
+          element.removeClass(animation.enter);
+        }
+        
+        animationEnded = true;
+
+      }
+
+      function getState() {
+        var view  = element.data('$uiView');
+        var state = view && view.state && view.state.self;
+
+        if (state) {
+          angular.extend(animation, state.animation);
+        }
+
+        return state;
+      }
+
+      function resetParent() {
+        element.parent().removeClass('position-absolute');
+        if(presetHeight !== true) {
+          element.parent()[0].style.height = null;
+        }
+      }
+
+      function prepareParent() {
+        var parentHeight = parseInt(element.parent()[0].style.height);
+        var elHeight = parseInt(window.getComputedStyle(element[0], null).getPropertyValue('height'));
+        var tempHeight = parentHeight > 0 ? parentHeight : elHeight > 0 ? elHeight : '';
+
+        if(parentHeight > 0) {
+          presetHeight = true;
+        }
+
+        element.parent()[0].style.height = tempHeight + 'px';
+        element.parent().addClass('position-absolute');
+      }
     }
   }
 
 })();
-
 (function() {
   'use strict';
 
@@ -37450,9 +37362,11 @@ angular.module('markdown', [])
           var state = {
             url: page.url,
             templateUrl: page.path,
+            abstract: page.abstract || false,
             parent: page.parent || '',
             controller: getController(page),
             data: getData(page),
+            animation: buildAnimations(page),
           };
           
           $stateProvider.state(page.name, state);
@@ -37463,7 +37377,9 @@ angular.module('markdown', [])
           var state = {
             url: page.url,
             parent: page.parent || '',
+            abstract: page.abstract || false,
             data: getData(page),
+            animation: buildAnimations(page),
             views: {
               '': buildState(page.path, page)
             }
@@ -37508,6 +37424,20 @@ angular.module('markdown', [])
       }
 
       return ctrl;
+    }
+
+    function buildAnimations(state) {
+      var animations = {};
+
+      if (state.animationIn) {
+        animations.enter = state.animationIn;
+      }
+
+      if (state.animationOut) {
+        animations.leave = state.animationOut;
+      }
+
+      return animations;
     }
   }
 
@@ -37744,6 +37674,119 @@ angular.module('markdown', [])
   }
 })();
 
+angular.module('markdown', [])
+  .directive('markdown', function() {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs, controller) {
+        element.html(marked(element.html()));
+      }
+    };
+
+});
+
+'use strict';
+
+(function(){
+  var svgDirectives = {};
+
+  angular.forEach([
+      'clipPath',
+      'colorProfile',
+      'src',
+      'cursor',
+      'fill',
+      'filter',
+      'marker',
+      'markerStart',
+      'markerMid',
+      'markerEnd',
+      'mask',
+      'stroke'
+    ],
+    function(attr) {
+      svgDirectives[attr] = [
+          '$rootScope',
+          '$location',
+          '$interpolate',
+          '$sniffer',
+          'urlResolve',
+          'computeSVGAttrValue',
+          'svgAttrExpressions',
+          function(
+              $rootScope,
+              $location,
+              $interpolate,
+              $sniffer,
+              urlResolve,
+              computeSVGAttrValue,
+              svgAttrExpressions) {
+            return {
+              restrict: 'A',
+              link: function(scope, element, attrs) {
+                var initialUrl;
+
+                //Only apply to svg elements to avoid unnecessary observing
+                //Check that is in html5Mode and that history is supported
+                if ((!svgAttrExpressions.SVG_ELEMENT.test(element[0] &&
+                    element[0].toString())) ||
+                  !$location.$$html5 ||
+                  !$sniffer.history) return;
+
+                //Assumes no expressions, since svg is unforgiving of xml violations
+                initialUrl = attrs[attr];
+                attrs.$observe(attr, updateValue);
+                $rootScope.$on('$locationChangeSuccess', updateValue);
+
+                function updateValue () {
+                  var newVal = computeSVGAttrValue(initialUrl);
+                  //Prevent recursive updating
+                  if (newVal && attrs[attr] !== newVal) attrs.$set(attr, newVal);
+                }
+              }
+            };
+          }];
+  });
+
+  angular.module('ngSVGAttributes', []).
+    factory('urlResolve', [function() {
+      //Duplicate of urlResolve & urlParsingNode in angular core
+      var urlParsingNode = document.createElement('a');
+      return function urlResolve(url) {
+        urlParsingNode.setAttribute('href', url);
+        return urlParsingNode;
+      };
+    }]).
+    value('svgAttrExpressions', {
+      FUNC_URI: /^url\((.*)\)$/,
+      SVG_ELEMENT: /SVG[a-zA-Z]*Element/,
+      HASH_PART: /#.*/
+    }).
+    factory('computeSVGAttrValue', [
+                '$location', '$sniffer', 'svgAttrExpressions', 'urlResolve',
+        function($location,   $sniffer,   svgAttrExpressions,   urlResolve) {
+          return function computeSVGAttrValue(url) {
+            var match, fullUrl;
+            if (match = svgAttrExpressions.FUNC_URI.exec(url)) {
+              //hash in html5Mode, forces to be relative to current url instead of base
+              if (match[1].indexOf('#') === 0) {
+                fullUrl = $location.absUrl().
+                  replace(svgAttrExpressions.HASH_PART, '') +
+                  match[1];
+              }
+              //Presumably links to external SVG document
+              else {
+                fullUrl = urlResolve(match[1]);
+              }
+            }
+            return fullUrl ? 'url(' + fullUrl + ')' : null;
+          };
+        }
+      ]
+    ).
+    directive(svgDirectives);
+}());
+
 (function() {
   'use strict';
 
@@ -37926,6 +37969,11 @@ angular.module('markdown', [])
       } while ((el = el.parentNode));
 
       if(!insideActionSheet) {
+        // if the element has a toggle attribute, do nothing
+        if (e.target.attributes['zf-toggle'] || e.target.attributes['zf-hard-toggle']) {
+          return;
+        };
+        // if the element is outside the action sheet and is NOT a toggle element, hide
         hide();
       }
     }
@@ -38028,7 +38076,6 @@ angular.module('markdown', [])
 
       scope.toggle = function() {
         scope.active = !scope.active;
-
         if(scope.active) {
           controller.registerListener();
         } else {
@@ -38247,32 +38294,62 @@ angular.module('markdown', [])
 
 })();
 
-(function() {
+(function () {
   'use strict';
 
   angular.module('foundation.iconic', [])
-    .service('Iconic', iconic)
+    .provider('Iconic', Iconic)
     .directive('zfIconic', zfIconic)
   ;
 
-  //iconic wrapper
-  function iconic() {
-    var iconicObject = IconicJS();
+  // iconic wrapper
+  function Iconic() {
+    // default path
+    var assetPath = 'assets/img/iconic/';
 
-    var service = {};
+    /**
+     * Sets the path used to locate the iconic SVG files
+     * @param {string} path - the base path used to locate the iconic SVG files
+     */
+    this.setAssetPath = function (path) {
+      assetPath = angular.isString(path) ? path : assetPath;
+    };
 
-    service.getAccess = getAccess;
+    /**
+     * Service implementation
+     * @returns {{}}
+     */
+    this.$get = function () {
+      var iconicObject = new IconicJS();
 
-    return service;
+      var service = {
+        getAccess: getAccess,
+        getAssetPath: getAssetPath
+      };
 
-    function getAccess() {
-      return iconicObject;
-    }
+      return service;
+
+      /**
+       *
+       * @returns {Window.IconicJS}
+       */
+      function getAccess() {
+        return iconicObject;
+      }
+
+      /**
+       *
+       * @returns {string}
+       */
+      function getAssetPath() {
+        return assetPath;
+      }
+    };
   }
 
-  zfIconic.$inject = ['Iconic', 'FoundationApi', '$compile', '$location']
+  zfIconic.$inject = ['Iconic', 'FoundationApi', '$compile'];
 
-  function zfIconic(iconic, foundationApi, $compile, $location) {
+  function zfIconic(iconic, foundationApi, $compile) {
     var directive = {
       restrict: 'A',
       template: '<img ng-transclude>',
@@ -38292,27 +38369,29 @@ angular.module('markdown', [])
 
     function compile() {
       var contents, assetPath;
-      
+
       return {
         pre: preLink,
         post: postLink
       };
 
-      function preLink(scope, element, attrs, ctrl, transclude) {
+      function preLink(scope, element, attrs) {
+
         if (scope.iconDir) {
-          // make sure ends with /
+          // path set via attribute
           assetPath = scope.iconDir;
-          if (assetPath.charAt(assetPath.length - 1) !== '/') {
-            assetPath += '/';
-          }
         } else {
           // default path
-          assetPath = 'assets/img/iconic/';
+          assetPath = iconic.getAssetPath();
         }
-        
-        if(scope.dynSrc) {
+        // make sure ends with /
+        if (assetPath.charAt(assetPath.length - 1) !== '/') {
+          assetPath += '/';
+        }
+
+        if (scope.dynSrc) {
           attrs.$set('data-src', scope.dynSrc);
-        } else if(scope.dynIcon) {
+        } else if (scope.dynIcon) {
           attrs.$set('data-src', assetPath + scope.dynIcon + '.svg');
         } else {
           if (scope.icon) {
@@ -38324,26 +38403,24 @@ angular.module('markdown', [])
         }
 
         // check if size already added as class
-        if (!element.hasClass('iconic-sm') && 
-            !element.hasClass('iconic-md') &&
-            !element.hasClass('iconic-lg')) {
+        if (!element.hasClass('iconic-sm') && !element.hasClass('iconic-md') && !element.hasClass('iconic-lg')) {
           var iconicClass;
           switch (scope.size) {
             case 'small':
-              iconicClass = 'iconic-sm'
+              iconicClass = 'iconic-sm';
               break;
             case 'medium':
-              iconicClass = 'iconic-md'
+              iconicClass = 'iconic-md';
               break;
             case 'large':
-              iconicClass = 'iconic-lg'
+              iconicClass = 'iconic-lg';
               break;
             default:
-              iconicClass = 'iconic-fluid'
+              iconicClass = 'iconic-fluid';
           }
           element.addClass(iconicClass);
         }
-        
+
         // save contents of un-inject html, to use for dynamic re-injection
         contents = element[0].outerHTML;
       }
@@ -38353,37 +38430,37 @@ angular.module('markdown', [])
 
         injectSvg(element[0]);
 
-        foundationApi.subscribe('resize', function() {
+        foundationApi.subscribe('resize', function () {
           // only run update on current element
           ico.update(element[0]);
         });
 
         // handle dynamic updating of src
-        if(scope.dynSrc) {
-          scope.$watch('dynSrc', function(newVal, oldVal) {
-            if (newVal && newVal != oldVal) {
+        if (scope.dynSrc) {
+          scope.$watch('dynSrc', function (newVal, oldVal) {
+            if (newVal && newVal !== oldVal) {
               reinjectSvg(scope.dynSrc);
             }
           });
         }
         // handle dynamic updating of icon
         if (scope.dynIcon) {
-          scope.$watch('dynIcon', function(newVal, oldVal) {
-            if (newVal && newVal != oldVal) {
+          scope.$watch('dynIcon', function (newVal, oldVal) {
+            if (newVal && newVal !== oldVal) {
               reinjectSvg(assetPath + scope.dynIcon + '.svg');
             }
           });
         }
-        
+
         function reinjectSvg(newSrc) {
           if (svgElement) {
             // set html
             svgElement.empty();
             svgElement.append(angular.element(contents));
-            
+
             // set new source
             svgElement.attr('data-src', newSrc);
-            
+
             // reinject
             injectSvg(svgElement[0]);
           }
@@ -38391,7 +38468,7 @@ angular.module('markdown', [])
 
         function injectSvg(element) {
           ico.inject(element, {
-            each: function(injectedElem) {
+            each: function (injectedElem) {
               // compile injected svg
               var angElem = angular.element(injectedElem);
               svgElement = $compile(angElem)(angElem.scope());
@@ -38403,6 +38480,7 @@ angular.module('markdown', [])
   }
 
 })();
+
 (function() {
   'use strict';
 
@@ -38569,6 +38647,7 @@ angular.module('markdown', [])
 
         var animationIn = attrs.animationIn || 'fadeIn';
         var animationOut = attrs.animationOut || 'fadeOut';
+
         var overlayIn = 'fadeIn';
         var overlayOut = 'fadeOut';
 
@@ -38610,7 +38689,7 @@ angular.module('markdown', [])
             scope.toggle();
           }
 
-          if (!scope.$root.$$phase) {
+          if (scope.$root && !scope.$root.$$phase) {
             scope.$apply();
           }
 
@@ -38636,9 +38715,9 @@ angular.module('markdown', [])
     }
   }
 
-  ModalFactory.$inject = ['$http', '$templateCache', '$rootScope', '$compile', '$timeout', 'FoundationApi'];
+  ModalFactory.$inject = ['$http', '$templateCache', '$rootScope', '$compile', '$timeout', '$q', 'FoundationApi'];
 
-  function ModalFactory($http, $templateCache, $rootScope, $compile, $timeout, foundationApi) {
+  function ModalFactory($http, $templateCache, $rootScope, $compile, $timeout, $q, foundationApi) {
     return modalFactory;
 
     function modalFactory(config) {
@@ -38649,7 +38728,9 @@ angular.module('markdown', [])
           destroyed = false,
           html,
           element,
-          scope
+          fetched,
+          scope,
+          contentScope
       ;
 
       var props = [
@@ -38661,7 +38742,7 @@ angular.module('markdown', [])
 
       if(config.templateUrl) {
         //get template
-        $http.get(config.templateUrl, {
+        fetched = $http.get(config.templateUrl, {
           cache: $templateCache
         }).then(function (response) {
           html = response.data;
@@ -38670,6 +38751,7 @@ angular.module('markdown', [])
 
       } else if(config.template) {
         //use provided template
+        fetched = true;
         html = config.template;
         assembleDirective();
       }
@@ -38718,25 +38800,54 @@ angular.module('markdown', [])
       }
 
       function init(state) {
-        if(!attached && html.length > 0) {
-          var modalEl = container.append(element);
+        $q.when(fetched).then(function() {
+          if(!attached && html.length > 0) {
+            var modalEl = container.append(element);
 
-          scope.active = state;
-          $compile(element)(scope);
-          attached = true;
-        }
+            scope.active = state;
+            $compile(element)(scope);
+
+            attached = true;
+          }
+        });
       }
 
       function assembleDirective() {
+        // check for duplicate elements to prevent factory from cloning modals
+        if (document.getElementById(id)) {
+          return;
+        }
+
         html = '<zf-modal id="' + id + '">' + html + '</zf-modal>';
 
         element = angular.element(html);
 
         scope = $rootScope.$new();
 
-        for(var prop in props) {
+        // account for directive attributes
+        for(var i = 0; i < props.length; i++) {
+          var prop = props[i];
+
           if(config[prop]) {
-            element.attr(prop, config[prop]);
+            switch (prop) {
+              case 'animationIn':
+                element.attr('animation-in', config[prop]);
+                break;
+              case 'animationOut':
+                element.attr('animation-out', config[prop]);
+                break;
+              default:
+                element.attr(prop, config[prop]);
+            }
+          }
+        }
+        // access view scope variables
+        if (config.contentScope) {
+          contentScope = config.contentScope;
+          for (var prop in config.contentScope) {
+            if (config.contentScope.hasOwnProperty(prop)) {
+              scope[prop] = config.contentScope[prop];
+            }
           }
         }
       }
@@ -38748,146 +38859,11 @@ angular.module('markdown', [])
           element.remove();
           destroyed = true;
         }, 3000);
+        foundationApi.unsubscribe(id);
       }
 
     }
 
-  }
-
-})();
-
-(function() {
-  'use strict';
-
-  angular.module('foundation.panel', ['foundation.core'])
-    .directive('zfPanel', zfPanel)
-    .service('FoundationPanel', FoundationPanel)
-  ;
-
-  FoundationPanel.$inject = ['FoundationApi'];
-
-  function FoundationPanel(foundationApi) {
-    var service    = {};
-
-    service.activate = activate;
-    service.deactivate = deactivate;
-
-    return service;
-
-    //target should be element ID
-    function activate(target) {
-      foundationApi.publish(target, 'show');
-    }
-
-    //target should be element ID
-    function deactivate(target) {
-      foundationApi.publish(target, 'hide');
-    }
-  }
-
-  zfPanel.$inject = ['FoundationApi'];
-
-  function zfPanel(foundationApi) {
-    var directive = {
-      restrict: 'EA',
-      templateUrl: 'components/panel/panel.html',
-      transclude: true,
-      scope: {
-        position: '@?'
-      },
-      replace: true,
-      compile: compile
-    };
-
-    return directive;
-
-    function compile(tElement, tAttrs, transclude) {
-      var type = 'panel';
-
-      return {
-        pre: preLink,
-        post: postLink
-      };
-
-      function preLink(scope, iElement, iAttrs, controller) {
-        iAttrs.$set('zf-closable', type);
-        scope.position = scope.position || 'left';
-        scope.positionClass = 'panel-' + scope.position;
-      }
-
-      function postLink(scope, element, attrs) {
-        scope.active = false;
-        var animationIn, animationOut;
-        var globalQueries = foundationApi.getSettings().mediaQueries;
-
-        //urgh, there must be a better way
-        if(scope.position === 'left') {
-          animationIn  = attrs.animationIn || 'slideInRight';
-          animationOut = attrs.animationOut || 'slideOutLeft';
-        } else if (scope.position === 'right') {
-          animationIn  = attrs.animationIn || 'slideInLeft';
-          animationOut = attrs.animationOut || 'slideOutRight';
-        } else if (scope.position === 'top') {
-          animationIn  = attrs.animationIn || 'slideInDown';
-          animationOut = attrs.animationOut || 'slideOutUp';
-        } else if (scope.position === 'bottom') {
-          animationIn  = attrs.animationIn || 'slideInUp';
-          animationOut = attrs.animationOut || 'slideOutBottom';
-        }
-
-
-        //setup
-        foundationApi.subscribe(attrs.id, function(msg) {
-          if(msg == 'show' || msg == 'open') {
-            scope.show();
-          } else if (msg == 'close' || msg == 'hide') {
-            scope.hide();
-          } else if (msg == 'toggle') {
-            scope.toggle();
-          }
-
-          scope.$apply();
-
-          return;
-        });
-
-        scope.hide = function() {
-          if(scope.active){
-            scope.active = false;
-            foundationApi.animate(element, scope.active, animationIn, animationOut);
-          }
-
-          return;
-        };
-
-        scope.show = function() {
-          if(!scope.active){
-            scope.active = true;
-            foundationApi.animate(element, scope.active, animationIn, animationOut);
-          }
-
-          return;
-        };
-
-        scope.toggle = function() {
-          scope.active = !scope.active;
-          foundationApi.animate(element, scope.active, animationIn, animationOut);
-          
-          return;
-        };
-
-        element.on('click', function(e) {
-          //check sizing
-          var srcEl = e.srcElement;
-
-          if(!matchMedia(globalQueries.medium).matches && srcEl.href && srcEl.href.length > 0) {
-            //hide element if it can't match at least medium
-            scope.hide();
-            foundationApi.animate(element, scope.active, animationIn, animationOut);
-          }
-        });
-      }
-    }
   }
 
 })();
@@ -39051,9 +39027,11 @@ angular.module('markdown', [])
         };
 
         // close if autoclose
-        if (scope.autoclose && scope.active) {
+        if (scope.autoclose) {
           setTimeout(function() {
-            scope.hide();
+            if (scope.active) {
+              scope.hide();
+            }
           }, parseInt(scope.autoclose));
         };
 
@@ -39122,7 +39100,9 @@ angular.module('markdown', [])
             // close if autoclose
             if (scope.autoclose) {
               setTimeout(function() {
-                scope.hide();
+                if (scope.active) {
+                  scope.hide();
+                }
               }, parseInt(scope.autoclose));
             };
           } else if (msg == 'close' || msg == 'hide') {
@@ -39132,7 +39112,9 @@ angular.module('markdown', [])
             // close if autoclose
             if (scope.autoclose) {
               setTimeout(function() {
-                scope.toggle();
+                if (scope.active) {
+                  scope.toggle();
+                }
               }, parseInt(scope.autoclose));
             };
           }
@@ -39209,7 +39191,8 @@ angular.module('markdown', [])
           destroyed = false,
           html,
           element,
-          scope
+          scope,
+          contentScope
       ;
 
       var props = [
@@ -39237,7 +39220,6 @@ angular.module('markdown', [])
       function addNotification(notification) {
         checkStatus();
         $timeout(function() {
-          init(true, notification);
           foundationApi.publish(id, notification);
         }, 0, false);
       }
@@ -39249,28 +39231,44 @@ angular.module('markdown', [])
         }, 0, false);
       }
 
-      function init(state, notification) {
+      function init(state) {
         if(!attached && html.length > 0) {
           var modalEl = container.append(element);
 
-          scope.notifications = [ notification ];
+          scope.active = state;
           $compile(element)(scope);
+
           attached = true;
         }
       }
 
       function assembleDirective() {
+        // check for duplicate element to prevent factory from cloning notification sets
+        if (document.getElementById(id)) {
+          return;
+        }
         html = '<zf-notification-set id="' + id + '"></zf-notification-set>';
 
         element = angular.element(html);
 
         scope = $rootScope.$new();
-
-        for(var prop in props) {
-          if(config[prop]) {
-            element.attr(prop, config[prop]);
+        
+        for(var i = 0; i < props.length; i++) {
+          if(config[props[i]]) {
+            element.attr(props[i], config[props[i]]);
           }
         }
+
+        // access view scope variables
+        if (config.contentScope) {
+          contentScope = config.contentScope;
+          for (var prop in contentScope) {
+            if (contentScope.hasOwnProperty(prop)) {
+              scope[prop] = contentScope[prop];
+            }
+          }
+        }
+        init(true);
       }
 
       function destroy() {
@@ -39280,11 +39278,421 @@ angular.module('markdown', [])
           element.remove();
           destroyed = true;
         }, 3000);
+        foundationApi.unsubscribe(id);
       }
 
     }
 
   }
+})();
+
+(function() {
+  'use strict';
+
+  angular.module('foundation.offcanvas', ['foundation.core'])
+    .directive('zfOffcanvas', zfOffcanvas)
+    .service('FoundationOffcanvas', FoundationOffcanvas)
+  ;
+
+  FoundationOffcanvas.$inject = ['FoundationApi'];
+
+  function FoundationOffcanvas(foundationApi) {
+    var service    = {};
+
+    service.activate = activate;
+    service.deactivate = deactivate;
+
+    return service;
+
+    //target should be element ID
+    function activate(target) {
+      foundationApi.publish(target, 'show');
+    }
+
+    //target should be element ID
+    function deactivate(target) {
+      foundationApi.publish(target, 'hide');
+    }
+
+    function toggle(target) {
+      foundationApi.publish(target, 'toggle');
+    }
+  }
+
+  zfOffcanvas.$inject = ['FoundationApi'];
+
+  function zfOffcanvas(foundationApi) {
+    var directive = {
+      restrict: 'EA',
+      templateUrl: 'components/offcanvas/offcanvas.html',
+      transclude: true,
+      scope: {
+        position: '@'
+      },
+      replace: true,
+      compile: compile
+    };
+
+    return directive;
+
+    function compile(tElement, tAttrs, transclude) {
+      var type = 'offcanvas';
+
+      return {
+        pre: preLink,
+        post: postLink
+      }
+
+      function preLink(scope, iElement, iAttrs, controller) {
+        iAttrs.$set('zf-closable', type);
+        document.body.classList.add('has-off-canvas');
+      }
+
+      function postLink(scope, element, attrs) {
+        scope.position = scope.position || 'left';
+
+        scope.active = false;
+        //setup
+        foundationApi.subscribe(attrs.id, function(msg) {
+          if(msg === 'show' || msg === 'open') {
+            scope.show();
+          } else if (msg === 'close' || msg === 'hide') {
+            scope.hide();
+          } else if (msg === 'toggle') {
+            scope.toggle();
+          }
+
+          if (!scope.$root.$$phase) {
+            scope.$apply();
+          }
+          
+          return;
+        });
+
+        scope.hide = function() {
+          scope.active = false;
+          return;
+        };
+
+        scope.show = function() {
+          scope.active = true;
+          return;
+        };
+
+        scope.toggle = function() {
+          scope.active = !scope.active;
+          return;
+        };
+      }
+    }
+  }
+
+})();
+
+(function() {
+  'use strict';
+
+  angular.module('foundation.panel', ['foundation.core'])
+    .directive('zfPanel', zfPanel)
+    .service('FoundationPanel', FoundationPanel)
+  ;
+
+  FoundationPanel.$inject = ['FoundationApi'];
+
+  function FoundationPanel(foundationApi) {
+    var service    = {};
+
+    service.activate = activate;
+    service.deactivate = deactivate;
+
+    return service;
+
+    //target should be element ID
+    function activate(target) {
+      foundationApi.publish(target, 'show');
+    }
+
+    //target should be element ID
+    function deactivate(target) {
+      foundationApi.publish(target, 'hide');
+    }
+  }
+
+  zfPanel.$inject = ['FoundationApi', '$window'];
+
+  function zfPanel(foundationApi, $window) {
+    var directive = {
+      restrict: 'EA',
+      templateUrl: 'components/panel/panel.html',
+      transclude: true,
+      scope: {
+        position: '@?'
+      },
+      replace: true,
+      compile: compile
+    };
+
+    return directive;
+
+    function compile(tElement, tAttrs, transclude) {
+      var type = 'panel';
+
+      return {
+        pre: preLink,
+        post: postLink
+      };
+
+      function preLink(scope, iElement, iAttrs, controller) {
+        iAttrs.$set('zf-closable', type);
+        scope.position = scope.position || 'left';
+        scope.positionClass = 'panel-' + scope.position;
+      }
+
+      function postLink(scope, element, attrs) {
+        scope.active = false;
+        var animationIn, animationOut;
+        var globalQueries = foundationApi.getSettings().mediaQueries;
+
+        //urgh, there must be a better way
+        if(scope.position === 'left') {
+          animationIn  = attrs.animationIn || 'slideInRight';
+          animationOut = attrs.animationOut || 'slideOutLeft';
+        } else if (scope.position === 'right') {
+          animationIn  = attrs.animationIn || 'slideInLeft';
+          animationOut = attrs.animationOut || 'slideOutRight';
+        } else if (scope.position === 'top') {
+          animationIn  = attrs.animationIn || 'slideInDown';
+          animationOut = attrs.animationOut || 'slideOutUp';
+        } else if (scope.position === 'bottom') {
+          animationIn  = attrs.animationIn || 'slideInUp';
+          animationOut = attrs.animationOut || 'slideOutBottom';
+        }
+
+
+        //setup
+        foundationApi.subscribe(attrs.id, function(msg) {
+          var panelPosition = $window.getComputedStyle(element[0]).getPropertyValue("position");
+
+          // patch to prevent panel animation on larger screen devices
+          if (panelPosition !== 'absolute') {
+            return;
+          }
+
+          if(msg == 'show' || msg == 'open') {
+            scope.show();
+          } else if (msg == 'close' || msg == 'hide') {
+            scope.hide();
+          } else if (msg == 'toggle') {
+            scope.toggle();
+          }
+          
+          if (!scope.$root.$$phase) {
+            scope.$apply();
+          }
+
+          return;
+        });
+
+        scope.hide = function() {
+          if(scope.active){
+            scope.active = false;
+            foundationApi.animate(element, scope.active, animationIn, animationOut);
+          }
+
+          return;
+        };
+
+        scope.show = function() {
+          if(!scope.active){
+            scope.active = true;
+            foundationApi.animate(element, scope.active, animationIn, animationOut);
+          }
+
+          return;
+        };
+
+        scope.toggle = function() {
+          scope.active = !scope.active;
+          foundationApi.animate(element, scope.active, animationIn, animationOut);
+          
+          return;
+        };
+
+        element.on('click', function(e) {
+          //check sizing
+          var srcEl = e.srcElement;
+
+          if(!matchMedia(globalQueries.medium).matches && srcEl.href && srcEl.href.length > 0) {
+            //hide element if it can't match at least medium
+            scope.hide();
+            foundationApi.animate(element, scope.active, animationIn, animationOut);
+          }
+        });
+      }
+    }
+  }
+
+})();
+
+(function() {
+  'use strict';
+
+  angular.module('foundation.popup', ['foundation.core'])
+    .directive('zfPopup', zfPopup)
+    .directive('zfPopupToggle', zfPopupToggle)
+    .service('FoundationPopup', FoundationPopup)
+  ;
+
+  FoundationPopup.$inject = ['FoundationApi'];
+
+  function FoundationPopup(foundationApi) {
+    var service    = {};
+
+    service.activate = activate;
+    service.deactivate = deactivate;
+
+    return service;
+
+    //target should be element ID
+    function activate(target) {
+      foundationApi.publish(target, 'show');
+    }
+
+    //target should be element ID
+    function deactivate(target) {
+      foundationApi.publish(target, 'hide');
+    }
+
+    function toggle(target, popupTarget) {
+      foundationApi.publish(target, ['toggle', popupTarget]);
+    }
+  }
+
+  zfPopup.$inject = ['FoundationApi'];
+
+  function zfPopup(foundationApi) {
+    var directive = {
+      restrict: 'EA',
+      transclude: true,
+      replace: true,
+      templateUrl: 'components/popup/popup.html',
+      scope: {
+        pinTo: '@?',
+        pinAt: '@?',
+        target: '@?'
+      },
+      compile: compile
+    };
+
+    return directive;
+
+    function compile() {
+      return {
+        pre: preLink,
+        post: postLink
+      };
+
+      function preLink(scope, iElement, iAttrs) {
+        iAttrs.$set('zf-closable', 'popup');
+      }
+
+      function postLink(scope, element, attrs) {
+        scope.active = false;
+        scope.target = scope.target || false;
+
+        var attachment = scope.pinTo || 'top center';
+        var targetAttachment = scope.pinAt || 'bottom center';
+        var tetherInit = false;
+        var tether     = {};
+
+        //setup
+        foundationApi.subscribe(attrs.id, function(msg) {
+          if(msg[0] === 'show' || msg[0] === 'open') {
+            scope.show(msg[1]);
+          } else if (msg[0] === 'close' || msg[0] === 'hide') {
+            scope.hide();
+          } else if (msg[0] === 'toggle') {
+            scope.toggle(msg[1]);
+          }
+
+          scope.$apply();
+
+          return;
+        });
+
+
+        scope.hide = function() {
+          scope.active = false;
+          tetherElement();
+          tether.disable();
+          return;
+        };
+
+        scope.show = function(newTarget) {
+          scope.active = true;
+          tetherElement(newTarget);
+          tether.enable();
+
+          return;
+        };
+
+        scope.toggle = function(newTarget) {
+          scope.active = !scope.active;
+          tetherElement(newTarget);
+
+          if(scope.active) {
+            tether.enable();
+          } else  {
+            tether.disable();
+          }
+
+          return;
+        };
+
+        function tetherElement(target) {
+          if(tetherInit) {
+            return;
+          }
+
+          scope.target = scope.target ? document.getElementById(scope.target) : document.getElementById(target);
+
+          tether = new Tether({
+            element: element[0],
+            target: scope.target,
+            attachment: attachment,
+            targetAttachment: targetAttachment,
+            enable: false
+          });
+
+          tetherInit = true;
+        }
+
+      }
+    }
+  }
+
+  zfPopupToggle.$inject = ['FoundationApi'];
+
+  function zfPopupToggle(foundationApi) {
+    var directive = {
+      restrict: 'A',
+      link: link
+    };
+
+    return directive;
+
+    function link(scope, element, attrs) {
+      var target = attrs.zfPopupToggle;
+      var id = attrs.id || foundationApi.generateUuid();
+      attrs.$set('id', id);
+
+      element.on('click', function(e) {
+        foundationApi.publish(target, ['toggle', id]);
+        e.preventDefault();
+      });
+    }
+  }
+
 })();
 
 (function() {
@@ -39593,268 +40001,6 @@ angular.module('markdown', [])
           }
 
         });
-      }
-    }
-  }
-
-})();
-
-(function() {
-  'use strict';
-
-  angular.module('foundation.popup', ['foundation.core'])
-    .directive('zfPopup', zfPopup)
-    .directive('zfPopupToggle', zfPopupToggle)
-    .service('FoundationPopup', FoundationPopup)
-  ;
-
-  FoundationPopup.$inject = ['FoundationApi'];
-
-  function FoundationPopup(foundationApi) {
-    var service    = {};
-
-    service.activate = activate;
-    service.deactivate = deactivate;
-
-    return service;
-
-    //target should be element ID
-    function activate(target) {
-      foundationApi.publish(target, 'show');
-    }
-
-    //target should be element ID
-    function deactivate(target) {
-      foundationApi.publish(target, 'hide');
-    }
-
-    function toggle(target, popupTarget) {
-      foundationApi.publish(target, ['toggle', popupTarget]);
-    }
-  }
-
-  zfPopup.$inject = ['FoundationApi'];
-
-  function zfPopup(foundationApi) {
-    var directive = {
-      restrict: 'EA',
-      transclude: true,
-      replace: true,
-      templateUrl: 'components/popup/popup.html',
-      scope: {
-        pinTo: '@?',
-        pinAt: '@?',
-        target: '@?'
-      },
-      compile: compile
-    };
-
-    return directive;
-
-    function compile() {
-      return {
-        pre: preLink,
-        post: postLink
-      };
-
-      function preLink(scope, iElement, iAttrs) {
-        iAttrs.$set('zf-closable', 'popup');
-      }
-
-      function postLink(scope, element, attrs) {
-        scope.active = false;
-        scope.target = scope.target || false;
-
-        var attachment = scope.pinTo || 'top center';
-        var targetAttachment = scope.pinAt || 'bottom center';
-        var tetherInit = false;
-        var tether     = {};
-
-        //setup
-        foundationApi.subscribe(attrs.id, function(msg) {
-          if(msg[0] === 'show' || msg[0] === 'open') {
-            scope.show(msg[1]);
-          } else if (msg[0] === 'close' || msg[0] === 'hide') {
-            scope.hide();
-          } else if (msg[0] === 'toggle') {
-            scope.toggle(msg[1]);
-          }
-
-          scope.$apply();
-
-          return;
-        });
-
-
-        scope.hide = function() {
-          scope.active = false;
-          tetherElement();
-          tether.disable();
-          return;
-        };
-
-        scope.show = function(newTarget) {
-          scope.active = true;
-          tetherElement(newTarget);
-          tether.enable();
-
-          return;
-        };
-
-        scope.toggle = function(newTarget) {
-          scope.active = !scope.active;
-          tetherElement(newTarget);
-
-          if(scope.active) {
-            tether.enable();
-          } else  {
-            tether.disable();
-          }
-
-          return;
-        };
-
-        function tetherElement(target) {
-          if(tetherInit) {
-            return;
-          }
-
-          scope.target = scope.target ? document.getElementById(scope.target) : document.getElementById(target);
-
-          tether = new Tether({
-            element: element[0],
-            target: scope.target,
-            attachment: attachment,
-            targetAttachment: targetAttachment,
-            enable: false
-          });
-
-          tetherInit = true;
-        }
-
-      }
-    }
-  }
-
-  zfPopupToggle.$inject = ['FoundationApi'];
-
-  function zfPopupToggle(foundationApi) {
-    var directive = {
-      restrict: 'A',
-      link: link
-    };
-
-    return directive;
-
-    function link(scope, element, attrs) {
-      var target = attrs.zfPopupToggle;
-      var id = attrs.id || foundationApi.generateUuid();
-      attrs.$set('id', id);
-
-      element.on('click', function(e) {
-        foundationApi.publish(target, ['toggle', id]);
-        e.preventDefault();
-      });
-    }
-  }
-
-})();
-
-(function() {
-  'use strict';
-
-  angular.module('foundation.offcanvas', ['foundation.core'])
-    .directive('zfOffcanvas', zfOffcanvas)
-    .service('FoundationOffcanvas', FoundationOffcanvas)
-  ;
-
-  FoundationOffcanvas.$inject = ['FoundationApi'];
-
-  function FoundationOffcanvas(foundationApi) {
-    var service    = {};
-
-    service.activate = activate;
-    service.deactivate = deactivate;
-
-    return service;
-
-    //target should be element ID
-    function activate(target) {
-      foundationApi.publish(target, 'show');
-    }
-
-    //target should be element ID
-    function deactivate(target) {
-      foundationApi.publish(target, 'hide');
-    }
-
-    function toggle(target) {
-      foundationApi.publish(target, 'toggle');
-    }
-  }
-
-  zfOffcanvas.$inject = ['FoundationApi'];
-
-  function zfOffcanvas(foundationApi) {
-    var directive = {
-      restrict: 'EA',
-      templateUrl: 'components/offcanvas/offcanvas.html',
-      transclude: true,
-      scope: {
-        position: '@'
-      },
-      replace: true,
-      compile: compile
-    };
-
-    return directive;
-
-    function compile(tElement, tAttrs, transclude) {
-      var type = 'offcanvas';
-
-      return {
-        pre: preLink,
-        post: postLink
-      }
-
-      function preLink(scope, iElement, iAttrs, controller) {
-        iAttrs.$set('zf-closable', type);
-        document.body.classList.add('has-off-canvas');
-      }
-
-      function postLink(scope, element, attrs) {
-        scope.position = scope.position || 'left';
-
-        scope.active = false;
-        //setup
-        foundationApi.subscribe(attrs.id, function(msg) {
-          if(msg === 'show' || msg === 'open') {
-            scope.show();
-          } else if (msg === 'close' || msg === 'hide') {
-            scope.hide();
-          } else if (msg === 'toggle') {
-            scope.toggle();
-          }
-
-          scope.$apply();
-
-          return;
-        });
-
-        scope.hide = function() {
-          scope.active = false;
-          return;
-        };
-
-        scope.show = function() {
-          scope.active = true;
-          return;
-        };
-
-        scope.toggle = function() {
-          scope.active = !scope.active;
-          return;
-        };
       }
     }
   }

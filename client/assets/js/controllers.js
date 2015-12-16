@@ -78,9 +78,11 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 		
 		$scope.wpMsg = "";
 		$scope.matchShareURL = "";
+		$scope.cleanMatchShareURL = "";
 		$scope.currentURL = "";
 		$scope.renderMatch = function(){
 			return Matches.get({id: $routeParams.matchId}, function(){
+				$scope.cleanMatchShareURL = $sanitize("http://" + $location.host() + "/?token=" + $scope.match.token);
 				$scope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "/?token=" + $scope.match.token));
 				$scope.currentURL = $sanitize("http://" + $location.host() + "/#/match/" + $scope.match.id);
 				$scope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $scope.matchShareURL);
@@ -501,9 +503,10 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    //match Share
 	    $scope.shareFB = function(){
 	    	var url = decodeURIComponent($scope.matchShareURL);
-	    	FB.ui( {
-				//method: 'feed',
-				method: 'share',
+			window.open('http://www.facebook.com/sharer/sharer.php?u='+url,'sharer','toolbar=0,status=0');
+	    	/*
+			FB.ui( {
+				method: 'feed',
 				name: fbShareTitle,
 				link: url,
 				href: url,
@@ -513,6 +516,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 			}, function( response ) {
 				// do nothing
 			} );
+			*/
 	    };
 }]);
 

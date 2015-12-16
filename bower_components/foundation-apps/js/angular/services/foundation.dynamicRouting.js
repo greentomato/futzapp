@@ -42,9 +42,11 @@
           var state = {
             url: page.url,
             templateUrl: page.path,
+            abstract: page.abstract || false,
             parent: page.parent || '',
             controller: getController(page),
             data: getData(page),
+            animation: buildAnimations(page),
           };
           
           $stateProvider.state(page.name, state);
@@ -55,7 +57,9 @@
           var state = {
             url: page.url,
             parent: page.parent || '',
+            abstract: page.abstract || false,
             data: getData(page),
+            animation: buildAnimations(page),
             views: {
               '': buildState(page.path, page)
             }
@@ -100,6 +104,20 @@
       }
 
       return ctrl;
+    }
+
+    function buildAnimations(state) {
+      var animations = {};
+
+      if (state.animationIn) {
+        animations.enter = state.animationIn;
+      }
+
+      if (state.animationOut) {
+        animations.leave = state.animationOut;
+      }
+
+      return animations;
     }
   }
 

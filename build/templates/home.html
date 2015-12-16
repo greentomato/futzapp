@@ -10,12 +10,12 @@
 	<div class="primary ftz-title-bar">
 		<div class="center title app-logo-title">
 			<a ui-sref="landing">
-				<img src="assets/img/futzapp-logo.svg" alt="Futzapp">
-				Futzapp <span>Beta</span>
+				<img src="assets/img/futzapp-logo.svg" alt="FutzApp">
+				Futz<span class="thin">App</span> <span class="beta">Beta</span>
 			</a>
 		</div>
 		<span class="left">
-			<a href="#" zf-hard-toggle="panelMenu">
+			<a href="#" zf-toggle="panelMenu">
 				<i class="fa fa-bars"></i>
 			</a>
 		</span>
@@ -33,7 +33,7 @@
 				<div class="grid-block shrink medium-12 grid-container">
 					<div class="grid-content">
 						<div class="sub-title-bar">
-							<a class="success expand button" ng-click="$root.goToStep1(null)">Armá un Futzapp</a>
+							<a class="success expand button" ng-click="$root.goToStep1(null)">Armá tú Partido</a>
 						</div>
 					</div>
 				</div>
@@ -42,6 +42,25 @@
 				<div class="grid-block shrink grid-container">
 					<div class="grid-content">
 						<header><i class="fa fa-calendar"></i> Próximos Partidos</header>
+					</div>
+				</div>
+
+				<!-- MatchCard PlaceHolder -->
+				<div ng-if="matches.length == 0" class="grid-block shrink grid-container">
+					<div class="grid-content">
+						<div class="card my-match-card my-match-card-placeholder ">
+							<div class="card-section clearfix">
+								<a ng-click="$root.goToStep1(null)" class="match-card-info">
+									<div class="date-block">
+										<span class="day"><i class="fa fa-soccer-ball-o"></i></span>
+									</div>
+									<div class="text">
+										<h4>No tenés partidos</h4>
+										<p>¡Armá uno ya!</p>
+									</div>
+								</a>
+							</div>
+						</div>	
 					</div>
 				</div>
 
@@ -61,7 +80,7 @@
 									<div class="text"><i class="fa fa-thumbs-up"></i></div>
 								</div>
 							</div>
-							<!--<a ng-if="match.admin.id != $root.user.id && match.pivot.confirmed != null && match.pivot.confirmed == 1" class="dismiss-match-card" ng-click="answerNo(match)"><i class="fa fa-trash-o"></i></a>-->
+							<!-- <a ng-if="match.admin.id != $root.user.id && match.pivot.confirmed != null && match.pivot.confirmed == 1" class="dismiss-match-card" ng-click="answerNo(match)"><i class="fa fa-trash-o"></i></a> -->
 
 							<div class="card-section clearfix">
 								<a ng-href="#/match/{{match.id}}" class="match-card-info">
@@ -73,7 +92,7 @@
 
 									<div class="text">
 										<h4>{{match.type.name}}</h4>
-										<p><span class="capitalize">{{match.date | dateFormat:'dddd'}}</span> a las <strong>{{match.date | dateFormat:'hh:mm a'}}</strong></p>
+										<p><span class="capitalize">{{match.date | dateFormat:'dddd'}}</span> a las <strong>{{match.date | dateFormat:'HH:mm'}}</strong></p>
 										<p>{{match.field.name}}<span ng-show="($root.fields | getById:match.fieldId).town != undefined">, {{($root.fields | getById:match.fieldId).town.name}}</span></p>
 									</div>
 								</a>
