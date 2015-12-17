@@ -17,12 +17,12 @@
 	bottom:0;
 	text-align: left;
 
-.landing-container{
+	.landing-container{
 		padding: 20px;
 		overflow-y:auto;
-}
+	}
 
-	h1{
+	h1 {
 		color: #fff;
 		font-weight: bold;
 		font-size: 3rem;
@@ -35,8 +35,6 @@
 		}
 
 	}
-
-
 
 	h3{
 		color: #fff;
@@ -153,20 +151,27 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	&.safari {
-		.landing-homescreen-arrow.fa {
-			top: auto;
-			bottom: 10px;
-			right: auto;
-			left: 50%;
-			margin-left: -10px;
-			&:before {
-    		content: "\f175";
-			}
+	display: none;
+}
+
+html.is-mobile-landing {
+	.landing-homescreen {
+		display: block;
+	}
+}
+html.safari-browser {
+	.landing-homescreen-arrow.fa {
+		top: auto;
+		bottom: 10px;
+		right: auto;
+		left: 50%;
+		margin-left: -10px;
+		&:before {
+			content: "\f175";
 		}
-		.landing-homescreen-icon-menu {
-			background-image: url(../img/safari-menu.png);
-		}
+	}
+	.landing-homescreen-icon-menu {
+		background-image: url(../img/safari-menu.png);
 	}
 }
 

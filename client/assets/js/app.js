@@ -109,6 +109,8 @@
 			$rootScope.states = States.query();
 			$rootScope.history = [];
 
+			$rootScope.aurevar = 'aure';
+
 			/* NEW/EDIT MATCH VARIABLES */
 			$rootScope.newMatch = {
 				date: '',
