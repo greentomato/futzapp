@@ -1,7 +1,7 @@
 'use strict';
 
 /* Services */
-var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://futbolizados.dev/"; //DEV
+var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://www.futzapp.com/back/public/"; //DEV
 //var serverURL = prd ? "http://www.futzapp.com/back/public/" : "http://local.gt/admin.futzapp.com/public/"; //DEV
 var fulboServices = angular.module('fulboServices', ['ngResource']);
 
@@ -36,8 +36,8 @@ fulboServices.factory('MandrillHelper', ['MandrillAPI', function(Mandrill) {
 		checkSetup: function(successCallBack, errorCallBack){
 			var _self = this;
 			Mandrill.ping(
-			  {"key": _self.setup.apiKey}, 
-				function(data,status,headers,config){ 
+			  {"key": _self.setup.apiKey},
+				function(data,status,headers,config){
 					successCallBack();
 				},
 				function(data,status,headers,config){
@@ -74,7 +74,7 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 		juego: function(match, userName){
 			var message = juegoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
 			var subject = juegoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
-			MandrillHelper.checkSetup(function(){	
+			MandrillHelper.checkSetup(function(){
 				MandrillHelper.sendMessage(subject, message, [{email: match.admin.email}], function(data){
 					console.log("Mail enviado!" + data);
 				}, function(data) {
@@ -87,7 +87,7 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 		meBajo: function(match, userName){
 			var message = meBajoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
 			var subject = meBajoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id)).replace("%6$s", userName);
-			MandrillHelper.checkSetup(function(){	
+			MandrillHelper.checkSetup(function(){
 				MandrillHelper.sendMessage(subject, message, [{email: match.admin.email}], function(data){
 					console.log("Mail enviado!" + data);
 				}, function(data) {
@@ -109,8 +109,8 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 			mails.push({email: $rootScope.user.email});
 			if($rootScope.user.email != match.admin.email)
 				mails.push({email: match.admin.email});
-	    	
-			MandrillHelper.checkSetup(function(){	
+
+			MandrillHelper.checkSetup(function(){
 				MandrillHelper.sendMessage(subject, message, mails, function(data){
 					console.log("Mail enviado!" + data);
 				}, function(data) {
@@ -123,8 +123,8 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 		teBajaron: function(match, userMail){
 			var message = teBajaronMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
 			var subject = teBajaronSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
-			
-			MandrillHelper.checkSetup(function(){	
+
+			MandrillHelper.checkSetup(function(){
 				MandrillHelper.sendMessage(subject, message, [{email: userMail}], function(data){
 					console.log("Mail enviado!" + data);
 				}, function(data) {
@@ -137,15 +137,15 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 		cancelado: function(match, guests){
 			var message = canceladoMessage.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
 			var subject = canceladoSubject.replace("%1$s", $filter('dateFormat')(match.date, 'dddd d')).replace("%2$s", $filter('dateFormat')(match.date, 'MMMM')).replace("%3$s", $filter('dateFormat')(match.date, 'HH:mm')).replace("%4$s", match.field.name).replace("%5$s", $sanitize("http://" + $location.host() + "/#/match/" + match.id));
-			
+
 			var mails = [];
 			for(var i = 0; i < guests.length; i++) {
 				if(guests[i].pivot.confirmed == "1" && guests[i].id != match.admin.id && guests[i].email != null) {
 					mails.push({email: guests[i].email});
 				}
 	        }
-	    	
-			MandrillHelper.checkSetup(function(){	
+
+			MandrillHelper.checkSetup(function(){
 				MandrillHelper.sendMessage(subject, message, mails, function(data){
 					console.log("Mail enviado!" + data);
 				}, function(data) {
@@ -156,7 +156,7 @@ fulboServices.factory('Notifications', ['$rootScope', '$filter', '$sanitize', '$
 			});
 		}
 	};
-	
+
 	return sdo;
 }]);
 /* End Notifications Services */
@@ -166,7 +166,7 @@ fulboServices.factory('Facebook', ['$rootScope', 'Users', function($rootScope, U
 	var sdo = {
 		getPlaceIdByLatLong: function(town, lat, long, callback){
 			FB.api(
-					'/search?q=' + town + '&type=place&center=' + lat + ',' + long + '&distance=8000', 
+					'/search?q=' + town + '&type=place&center=' + lat + ',' + long + '&distance=8000',
 					'GET',
 			        function(response) {
 						if(response.data != undefined && response.data.length > 0 && response.data[0].id != undefined){
@@ -175,7 +175,7 @@ fulboServices.factory('Facebook', ['$rootScope', 'Users', function($rootScope, U
                             for(var i = 0; i<response.data.length; i++){
                             	if(foundResult)
                             		break;
-                            	for(var j = 0; j <  response.data[i].category_list.length; j++){       
+                            	for(var j = 0; j <  response.data[i].category_list.length; j++){
                             		if(response.data[i].category_list[j].name == "City"){
                             			result = response.data[i];
                             			foundResult = true;
@@ -183,7 +183,7 @@ fulboServices.factory('Facebook', ['$rootScope', 'Users', function($rootScope, U
                             		}
                             	}
                             }
-                            
+
                             if(foundResult) callback(result.id);
                             else callback(-1);
 						}
@@ -229,7 +229,7 @@ fulboServices.factory('Facebook', ['$rootScope', 'Users', function($rootScope, U
 				if (response && !response.error) {
 					/* handle the result */
 					console.log("User profile pic retrieved");
-					$rootScope.$apply(function() { 
+					$rootScope.$apply(function() {
 						var authedUser = $rootScope.user;
 						authedUser.photo_url = response.data.url;
 						Users.update(authedUser, function(){
@@ -238,7 +238,7 @@ fulboServices.factory('Facebook', ['$rootScope', 'Users', function($rootScope, U
 							$rootScope.loading = false;
 						}, function(){
 							console.log("user save failed!");
-							authedUser.photo_url = "assets/img/profile-placeholder.png"; 
+							authedUser.photo_url = "assets/img/profile-placeholder.png";
 							$rootScope.user = authedUser;
 							$rootScope.loading = false;
 						});
@@ -247,7 +247,7 @@ fulboServices.factory('Facebook', ['$rootScope', 'Users', function($rootScope, U
 			});
 		}
 	};
-	
+
 	return sdo;
 }]);
 /* End Facebook API Services */
@@ -258,7 +258,7 @@ fulboServices.factory('Users', ['$resource',
     return $resource(serverURL+'usersAPI/:dest/:id', {}, {
     	query: {method:'GET', params:{id:''}, isArray:true},
     	update: {
-    	    method: 'PUT', 
+    	    method: 'PUT',
     	    params: {id: '@id'}
     	},
     	getMatches: {
@@ -275,12 +275,12 @@ fulboServices.factory('Users', ['$resource',
 
 /*  Login Services */
 fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Facebook', 'Matches', 'redirectToUrlAfterLogin', function($rootScope, $location, Users, Facebook, Matches, redirectToUrlAfterLogin) {
-	
+
 	var sdo = {
 		isLogged: false,
 		user: null,
 		fbToken: null,
-		
+
 		saveAttemptUrl: function() {
 			if($location.path().toLowerCase() != '/' && $location.path().toLowerCase() != '') {
 				redirectToUrlAfterLogin.url = $location.path();
@@ -297,8 +297,8 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 		getUserInfo: function(fbToken) {
 			var _self = this;
 			FB.api('/me', function(response) {
-				$rootScope.$apply(function() { 
-					var fbInfo = response; 
+				$rootScope.$apply(function() {
+					var fbInfo = response;
 					Users.get({id: fbInfo.id}, function(storedUser){
 						//update user token
 						storedUser.fbId = fbInfo.id.toString();
@@ -307,7 +307,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 							$rootScope.user = _self.user = storedUser;
 							console.log("user updated!");
 							Facebook.getPhoto();
-							
+
 							if($rootScope.matchToken != undefined && $rootScope.matchToken != null)
 								_self.addToMatchByToken($rootScope.matchToken);
 							else
@@ -335,7 +335,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 								$rootScope.user = _self.user = newUser;
 								console.log("user saved!");
 								Facebook.getPhoto();
-								
+
 								if($rootScope.matchToken != undefined && $rootScope.matchToken != null)
 									_self.addToMatchByToken($rootScope.matchToken);
 								else
@@ -353,13 +353,13 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 		},
 		login: function(callback) {
 			FB.login(function(response) {
-		    }, {scope: 'public_profile,email,user_friends,friends_photos'});/*,user_friends,friends_photos,publish_actions*/
+		    }, {scope: 'public_profile,email,user_friends'});/*,user_friends,friends_photos,publish_actions*/
 		},
 		logout: function() {
 			var _self = this;
 			FB.logout(function(response) {
 				$rootScope.loading = false;
-				
+
 				//erase fbToken
 				var authedUser = _self.user;
 				if(authedUser != null){
@@ -376,7 +376,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 			});
 		},
 		eraseUserSession: function(){
-			$rootScope.user = this.user = null; 
+			$rootScope.user = this.user = null;
 			this.isLogged = false;
 			this.fbToken = null;
 			$location.path("/");
@@ -390,7 +390,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 					var fbToken = response.authResponse.accessToken;
 					_self.getUserInfo(fbToken);
 					_self.isLogged = true;
-				} 
+				}
 				else {
 					$rootScope.loading = false;
 					console.log('User logged out.');
@@ -410,7 +410,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 					users: [],
 					matchId: match.id
 				};
-				
+
 				var userExists = false;
 				//add existing guests
 				for(var i = 0; i < match.guests.length; i++){
@@ -424,7 +424,7 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 					};
 					data.users.push(userItem);
 				}
-				    	
+
 				//add new members
 				if(!userExists) {
 					var newUserItem = {
@@ -432,12 +432,12 @@ fulboServices.factory('UsersAuth', ['$rootScope', '$location', 'Users', 'Faceboo
 						confirmed: null
 					};
 					data.users.push(newUserItem);
-					
+
 					Matches.updateGuests(data, function(response){
 						console.log("Player " + $rootScope.user.id + " invited!");
 					});
 				}
-				
+
 				$location.path( "match/" + match.id );
 			}, function(response){
 				alert(response.data);
@@ -455,12 +455,12 @@ fulboServices.factory('Matches', ['$resource',
     return $resource(serverURL+'matchesAPI/:dest/:id', {}, {
     	query: {method:'GET', params:{id:''}, isArray:true},
       	update: {
-	  	    method: 'PUT', 
+	  	    method: 'PUT',
 	  	    params: {id: '@id'}
 	  	},
 	  	getByToken: {
 	  		method: 'GET',
-	  		params: {dest: 'getByToken', id: '@id'}, 
+	  		params: {dest: 'getByToken', id: '@id'},
 	  		isArray:false
 	  	},
 	  	getAdminUser: {
@@ -469,27 +469,27 @@ fulboServices.factory('Matches', ['$resource',
 	  	},
 	  	getTeams: {
 	  		method: 'GET',
-	  		params: {dest: 'getTeams', id: '@id'}, 
+	  		params: {dest: 'getTeams', id: '@id'},
 	  		isArray:true
 	  	},
 	  	getSubs: {
 	  		method: 'GET',
-	  		params: {dest: 'getSubs', id: '@id'}, 
+	  		params: {dest: 'getSubs', id: '@id'},
 	  		isArray:true
 	  	},
 	  	getGuests: {
 	  		method: 'GET',
-	  		params: {dest: 'getGuests', id: '@id'}, 
+	  		params: {dest: 'getGuests', id: '@id'},
 	  		isArray:true
 	  	},
 	  	updateSubs: {
 	  		method: 'POST',
-	  		params: {dest: 'updateSubs'}, 
+	  		params: {dest: 'updateSubs'},
 	  		isArray:true
 	  	},
 	  	updateGuests: {
 	  		method: 'POST',
-	  		params: {dest: 'updateGuests'}, 
+	  		params: {dest: 'updateGuests'},
 	  		isArray:true
 	  	}
     });
@@ -503,7 +503,7 @@ fulboServices.factory('Fields', ['$resource',
       query: {method:'GET', params:{id:''}, isArray:true},
 	  getUploadedByGT: {
 		method: 'GET',
-		params: {dest: 'getUploadedByGT', id: '1'}, 
+		params: {dest: 'getUploadedByGT', id: '1'},
 		isArray:true
 	  }
     });
@@ -525,7 +525,7 @@ fulboServices.factory('Groups', ['$resource',
     return $resource(serverURL+'groupsAPI/:dest/:id', {}, {
     	query: {method:'GET', params:{id:''}, isArray:true},
       	update: {
-	  	    method: 'PUT', 
+	  	    method: 'PUT',
 	  	    params: {id: '@id'}
 	  	},
     	getUsers: {
@@ -546,7 +546,7 @@ fulboServices.factory('Teams', ['$resource',
     return $resource(serverURL+'teamsAPI/:dest/:id', {}, {
     	query: {method:'GET', params:{id:''}, isArray:true},
     	update: {
-	  	    method: 'PUT', 
+	  	    method: 'PUT',
 	  	    params: {id: '@id'}
 	  	},
     	getUsers: {

@@ -1,5 +1,5 @@
 .splash-bg {
-	background: url(../img/ftz-splash-bg.jpg) no-repeat center center fixed; 
+	background: url(../img/ftz-splash-bg.jpg) no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -36,7 +36,7 @@
 
 	}
 
-	
+
 
 	h3{
 		color: #fff;
@@ -72,7 +72,7 @@
 	width: 100%;
 	margin: 0;
 	margin-left: -5px;
-	
+
 }
 
 
@@ -107,7 +107,7 @@
 
 	}
 
-	
+
 
 	h3{
 		font-size: 22px;
@@ -126,7 +126,7 @@
 		padding: rem-calc(20) 0;
 		max-width: 300px;
 		width: 100%;
-		
+
 	}
 
 	.smartphone-mockup {
@@ -139,4 +139,121 @@
 	}
 }
 
+}
+
+/*--------------------*/
+/* ADD TO HOME SCREEN */
+/*--------------------*/
+.landing-homescreen {
+	background-image: url(../img/mobile-to-home-bg.jpg);
+	background-size: cover;
+	background-position: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	&.safari {
+		.landing-homescreen-arrow.fa {
+			top: auto;
+			bottom: 10px;
+			right: auto;
+			left: 50%;
+			margin-left: -10px;
+			&:before {
+    		content: "\f175";
+			}
+		}
+		.landing-homescreen-icon-menu {
+			background-image: url(../img/safari-menu.png);
+		}
+	}
+}
+
+.landing-homescreen-overlay {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,.2);
+	padding: 0;
+	display: table;
+	.center {
+		display: table-cell;
+		vertical-align: middle;
+		padding: 20px;
+	}
+}
+
+.landing-homescreen-arrow.fa {
+	width: 20px;
+	text-align: center;
+	color: #FFF;
+	position: absolute;
+	top: 15px;
+	right: 10px;
+	font-size: 40px;
+}
+
+.landing-homescreen-continue {
+	display: block;
+	margin: 0 auto;
+	border: none;
+	padding: 10px 15px;
+	color: #C0C0C0;
+	background: none;
+	&:focus {
+		outline: none;
+	}
+}
+
+.landing-homescreen-continue-text {
+	display: inline-block;
+	font-size: 13px;
+	line-height: 18px;
+	border-bottom: 1px solid #C0C0C0;
+}
+
+.landing-homescreen-logo {
+		display: block;
+		margin: 15px auto 0;
+    width: 176px;
+    height: 60px;
+		@media screen and (min-height: 460px) { margin-top: 25px; }
+}
+
+.landing-homescreen-caption {
+	text-align: center;
+	font-size: 14px;
+	color: #FFF;
+}
+
+.landing-homescreen-hr {
+	width: 160px;
+	margin: 25px auto;
+	border-color: #FFF;
+	@media screen and (min-height: 460px) { margin: 50px auto; }
+}
+
+.landing-homescreen-instructions {
+	text-align: center;
+	color: #FFF;
+	max-width: 270px;
+	margin: 0 auto 20px;
+	@media screen and (min-height: 460px) { margin-bottom: 30px; }
+}
+
+.landing-homescreen-icon-menu {
+	background-image: url(../img/chrome-menu.png);
+	width: 19px;
+	height: 26px;
+	background-size: 100%;
+	vertical-align: text-bottom;
+	margin: 0 5px;
+	display: inline-block;
+}
+
+.landing-homescreen-hook {
+	text-align: center;
+	color: #FFF;
+	max-width: 270px;
+	margin: 0 auto;
 }
