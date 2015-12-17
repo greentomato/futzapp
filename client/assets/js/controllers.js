@@ -8,9 +8,6 @@ fulboControllers.controller('HomeController', ['$rootScope', '$scope', '$locatio
   function($rootScope, $scope, $location, Fields, Matches, UsersAuth) {
     $scope.matchToSave = false;
 
-    var landing_homescreen = document.querySelector('.landing-homescreen');
-    console.log(landing_homescreen);
-
     $scope.login = function() {
     	UsersAuth.login();
     };

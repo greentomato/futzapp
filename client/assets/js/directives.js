@@ -47,7 +47,7 @@ fulboDirectives.directive('dateFuture', ['$rootScope', function ($rootScope) {
         restrict: 'A',
         link: function (scope, elem, attrs) {
             var today = new Date().toISOString().split('T')[0];
-						elem.attr("min", today);
+			elem.attr("min", today);
         }
     };
 }]);
