@@ -1,19 +1,19 @@
 ﻿/*
  * Set PRD or DEV mode
  */
-var prd = false;
+var prd = true;
 
 /*
  * Set PRD or DEV mode
  */
-var fbAppIdDEV = "1517377388534738";
+var fbAppIdDEV = "1663178463954629";
 //var fbAppIdDEV = "1573351059604037";
 var fbAppIdPRD = "1450926871846457";
 
-/* 
- * Facebook share message 
+/*
+ * Facebook share message
  *
- * 
+ *
  * @parameters fbShareMsg
  * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
  * %2$s: hora [HH:mm a]
@@ -25,20 +25,20 @@ var fbShareCaption = "Ya reservaste cancha y te faltan jugadores? Armar un parti
 var fbShareImage = "http://futzapp.com/images/field.jpg";
 var fbShareTitle = "Futzapp";
 
-/* 
- * Whatsapp share message 
+/*
+ * Whatsapp share message
  *
- * 
+ *
  * @parameters wpShareMessage
  * %s: URL del partido a compartir
  *
- */ 
+ */
 var wpShareMessage = "Sale Futzapp %s!";
 
-/* 
+/*
  * 'Me bajo' email template
  *
- * 
+ *
  * @parameters
  * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
  * %2$s: mes en que se juega el partido [Enero - Diciembre]
@@ -50,11 +50,11 @@ var wpShareMessage = "Sale Futzapp %s!";
  */
 var meBajoSubject = "%6$s - Me bajo!";
 var meBajoMessage = "Me bajo del partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
-			
-/* 
+
+/*
  * 'Juego' email template
  *
- * 
+ *
  * @parameters
  * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
  * %2$s: mes en que se juega el partido [Enero - Diciembre]
@@ -67,10 +67,10 @@ var meBajoMessage = "Me bajo del partido del día %1$s de %2$s a las %3$s en %4$
 var juegoSubject = "%6$s - Juego!";
 var juegoMessage = "Juego el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
 
-/* 
+/*
  * 'Partido completo' email template
  *
- * 
+ *
  * @parameters
  * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
  * %2$s: mes en que se juega el partido [Enero - Diciembre]
@@ -82,10 +82,10 @@ var juegoMessage = "Juego el partido del día %1$s de %2$s a las %3$s en %4$s<br
 var completoSubject = "Partido completo!";
 var completoMessage = "Ya estamos todos para el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y mira como quedaron los equipos: %5$s";
 
-/* 
+/*
  * 'Partido cancelado' email template
  *
- * 
+ *
  * @parameters
  * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
  * %2$s: mes en que se juega el partido [Enero - Diciembre]
@@ -97,10 +97,10 @@ var completoMessage = "Ya estamos todos para el partido del día %1$s de %2$s a 
 var canceladoSubject = "Partido cancelado!";
 var canceladoMessage = "Se cancela el partido del día %1$s de %2$s a las %3$s en %4$s<br/>Entra a Futzapp y organiza uno nuevo!";
 
-/* 
+/*
  * 'Te dieron de baja' email template
  *
- * 
+ *
  * @parameters
  * %1$s: fecha y día en que se juega el partido [lunes - viernes] [1 - 31]
  * %2$s: mes en que se juega el partido [Enero - Diciembre]

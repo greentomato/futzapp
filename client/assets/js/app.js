@@ -6,26 +6,26 @@
 		'ngRoute',
 		'ngAnimate',
 		'ngSanitize',
-		
+
 		'fulboControllers',
 		'fulboFilters',
 		'fulboServices',
 		'fulboDirectives',
 		'flow',
 		'angucomplete-alt',
-		
+
 		//foundation
 		'foundation',
 		//'foundation.dynamicRouting',
 		//'foundation.dynamicRouting.animations'
 	]);
-	
+
 	futzApp.value('redirectToUrlAfterLogin', { url: '/home' });
-	
-	futzApp.config(['$routeProvider', '$locationProvider', '$compileProvider', 'flowFactoryProvider', 
+
+	futzApp.config(['$routeProvider', '$locationProvider', '$compileProvider', 'flowFactoryProvider',
 		function($routeProvider, $locationProvider, $compileProvider, flowFactoryProvider) {
 			$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|whatsapp|tel):/);
-		
+
 			$routeProvider.
 			  when('/', {
 				templateUrl: 'templates/landing.html',
@@ -66,14 +66,14 @@
 				controller: 'ProfileController'
 			  }).
 			  otherwise('/');
-		
+
 			$locationProvider.html5Mode({
 			  enabled:false,
 			  requireBase: false
 			});
 
 			//$locationProvider.hashPrefix('!');
-		
+
 			flowFactoryProvider.defaults = {
 				target: 'upload.php',
 				permanentErrors: [404, 500, 501],
@@ -87,19 +87,19 @@
 			});
 		}
 	]);
-	
-	futzApp.run(['$rootScope', '$filter', '$sanitize', '$window', '$location', 'Fields', 'Matches', 'MatchTypes', 'UsersAuth', 'Towns', 'States', 
+
+	futzApp.run(['$rootScope', '$filter', '$sanitize', '$window', '$location', 'Fields', 'Matches', 'MatchTypes', 'UsersAuth', 'Towns', 'States',
      	function($rootScope, $filter, $sanitize, $window, $location, Fields, Matches, MatchTypes, UsersAuth, Towns, States) {
 			FastClick.attach(document.body);
-			
+
 			/* ROUTING LOGIC */
 			$rootScope.routeChanges = 0;
-		
+
 			/* FACEBOOK LOGIN VARIABLES */
 			$rootScope.fbUser = null;
 			$rootScope.user = null;
 			$rootScope.fbAppId = prd ? fbAppIdPRD : fbAppIdDEV;
-			
+
 			/* GLOBAL VARIABLES */
 			$rootScope.loading = true;
 			$rootScope.fields = Fields.query();
@@ -108,6 +108,8 @@
 			$rootScope.towns = Towns.query();
 			$rootScope.states = States.query();
 			$rootScope.history = [];
+
+			$rootScope.aurevar = 'aure';
 
 			/* NEW/EDIT MATCH VARIABLES */
 			$rootScope.newMatch = {
@@ -127,7 +129,7 @@
 			$rootScope.wpMsg = "";
 			$rootScope.matchShareURL = "";
 			$rootScope.cleanMatchShareURL = "";
-			
+
 			/* NEW/EDIT MATCH METHODS */
 			$rootScope.fieldSelected = function(selected){
 				if(selected != undefined){
@@ -136,13 +138,13 @@
 						var field = {
 							name: selected.originalObject.name
 						};
-							
+
 						Fields.save(field, function(newField){
 							console.log("Field saved, id:" + newField.id);
-							
+
 							$rootScope.newMatch.fieldId = newField.id;
 							$rootScope.newMatch.fieldName = newField.name;
-							
+
 							$rootScope.fields = Fields.query();
 						}, function(){
 							console.log("Failed saving field!");
@@ -155,13 +157,13 @@
 			};
 
 			$rootScope.$watch('newMatch.partialDate', function() {
-			   tryCombineDateTime(); 
+			   tryCombineDateTime();
 			});
 
 			$rootScope.$watch('newMatch.partialTime', function() {
 			   tryCombineDateTime();
 			});
-			
+
 			function tryCombineDateTime() {
 				if($rootScope.newMatch.partialDate && $rootScope.newMatch.partialTime) {
 					var dateParts = $rootScope.newMatch.partialDate;
@@ -169,26 +171,26 @@
 					var mm = (dateParts.getMonth()+1).toString(); // getMonth() is zero-based
 					var dd  = dateParts.getDate().toString();
 					var fullDate = yyyy + "-" + (mm[1]?mm:"0"+mm[0])+ "-" + (dd[1]?dd:"0"+dd[0]); // padding
-										
+
 					var timeParts = $rootScope.newMatch.partialTime;
 					var HH = timeParts.getHours().toString();
 					var MM = timeParts.getMinutes().toString();
 					var ss = timeParts.getSeconds().toString();
 					fullDate += " " + (HH[1]?HH:"0"+HH[0]) + ":" + (MM[1]?MM:"0"+MM[0]) + ":" + (ss[1]?ss:"0"+ss[0]);
-					
+
 					$rootScope.newMatch.date = fullDate;
 				}
 			}
-			
+
 			$rootScope.filteredMatchTypes = $rootScope.matchTypes;
 			$rootScope.$watch('newMatch.fieldId', function() {
 				$rootScope.filteredMatchTypes = $filter('filter')($rootScope.fields, {id: $rootScope.newMatch.fieldId})[0].types;
 			});
-			
-			
+
+
 			$rootScope.updateMatch = function(){
 				$rootScope.newMatch.admin_userId = $rootScope.user.id;
-				
+
 				Matches.update($rootScope.newMatch, function(updatedMatch){
 					$rootScope.newMatch = updatedMatch;
 					$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "/?token=" + $rootScope.newMatch.token));
@@ -201,10 +203,10 @@
 					showAlert("Error", "Hubo un error al actualizar el partido! Intente nuevamente.");
 				});
 			};
-			
+
 			$rootScope.createMatch = function(){
 				$rootScope.newMatch.admin_userId = $rootScope.user.id;
-				
+
 				Matches.save($rootScope.newMatch, function(newMatch){
 					$rootScope.newMatch = newMatch;
 					$rootScope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "/?token=" + $rootScope.newMatch.token));
@@ -217,7 +219,7 @@
 					showAlert("Error", "Hubo un error al crear el partido! Intente nuevamente.");
 				});
 			};
-			
+
 			$rootScope.shareFB = function(match){
 				var url = decodeURIComponent($rootScope.matchShareURL);
 				var field = {};
@@ -227,7 +229,7 @@
 						break;
 					}
 				}
-				
+
 				window.open('http://www.facebook.com/sharer/sharer.php?u='+url,'sharer','toolbar=0,status=0');
 				/*
 				FB.ui( {
@@ -243,7 +245,7 @@
 				} );
 				*/
 			};
-			
+
 			/* GLOBAL METHODS */
 			$rootScope.editMatch = function(match) {
 				$rootScope.newMatch = {
@@ -262,7 +264,7 @@
 				};
 				$location.path( "/edit" );
 			}
-			
+
 			$rootScope.goToStep1 = function(match) {
 				if(match == null){
 					$rootScope.newMatch = {
@@ -301,7 +303,7 @@
 			$rootScope.logout = function() {
 				UsersAuth.logout();
 			};
-			
+
 			/* USER AUTH METHODS */
 			$rootScope.$on('$routeChangeStart', function (event, next) {
 				$rootScope.loading = true;
@@ -310,38 +312,38 @@
 					var token = getURLParameter('token');
 					$rootScope.matchToken = token;
 				}
-				
+
 				if (!UsersAuth.isLogged) {
 					//event.preventDefault();
 					$location.path( "/" );
 					$rootScope.routeChanges++;
 				}
 			});
-			
+
 			/* HISTORY METHODS */
 			$rootScope.$on('$routeChangeSuccess', function() {
 				$rootScope.history.push($location.$$path);
 				if($location.$$path != "/")
 					$rootScope.loading = false;
 				else {
-					setTimeout(function(){ 
+					setTimeout(function(){
 						$rootScope.$apply(function(){
 							$rootScope.loading = false;
 						});
 					}, 5000);
 				}
 			});
-			
+
 			/* FB METHODS SDK */
 			$window.fbAsyncInit = function() {
 				// Executed when the SDK is loaded
 
-				FB.init({ 
-					appId: $rootScope.fbAppId, 
-					channelUrl: '../../channel.html', 
-					status: true, 
-					cookie: true, 
-					xfbml: true 
+				FB.init({
+					appId: $rootScope.fbAppId,
+					channelUrl: '../../channel.html',
+					status: true,
+					cookie: true,
+					xfbml: true
 				});
 				UsersAuth.watchAuthenticationStatusChange();
 			};
@@ -351,16 +353,16 @@
 			(function(d){
 				// load the Facebook javascript SDK
 
-				var js, 
-				id = 'facebook-jssdk', 
+				var js,
+				id = 'facebook-jssdk',
 				ref = d.getElementsByTagName('script')[0];
 
 				if (d.getElementById(id)) {
 					return;
 				}
 
-				js = d.createElement('script'); 
-				js.id = id; 
+				js = d.createElement('script');
+				js.id = id;
 				js.async = true;
 				js.src = "//connect.facebook.net/en_US/all.js";
 
@@ -369,11 +371,9 @@
 			}(document));
 		}
 	]);
- 
+
 	function currentUrlPath(){
 		$scope.currentPath = $location.path();
 	}
 
 })();
-
-

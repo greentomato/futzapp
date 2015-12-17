@@ -7,19 +7,19 @@ var fulboControllers = angular.module('fulboControllers', []);
 fulboControllers.controller('HomeController', ['$rootScope', '$scope', '$location', 'Fields', 'Matches', 'UsersAuth',
   function($rootScope, $scope, $location, Fields, Matches, UsersAuth) {
     $scope.matchToSave = false;
-    
+
     $scope.login = function() {
     	UsersAuth.login();
     };
   }]);
 
-fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$location', 'Users', 'Matches', 'Teams', 'Notifications', 
+fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$location', 'Users', 'Matches', 'Teams', 'Notifications',
 	function($rootScope, $scope, $location, Users, Matches, Teams, Notifications) {
 		$scope.selectedUser = {};
 		$scope.changeSelectedUser = function(user){
 	    	$scope.selectedUser = user;
 	    };
-		
+
 		$scope.matches = [];
 		$scope.renderMatches = function(){
 			$scope.matches = [];
@@ -37,21 +37,21 @@ fulboControllers.controller('MatchesController', ['$rootScope', '$scope', '$loca
 
 fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeParams', '$filter', '$sanitize', '$location', 'Matches', 'Teams', 'Users', 'Notifications',
     function($rootScope, $scope, $routeParams,  $filter, $sanitize, $location, Matches, Teams, Users, Notifications) {
-		
+
 		$scope.totalPlayers = 0;
 		$scope.friendsSelected = [];
 		$scope.modoVersus = false;
 		$scope.adminMode = false;
-		
+
 		$scope.selectedUser = {};
 		$scope.changeSelectedUser = function(user){
 	    	$scope.selectedUser = user;
 	    };
-		
+
 		$scope.getNumber = function(num) {
-		    return new Array(num);   
+		    return new Array(num);
 		};
-		
+
 		$scope.teamA = {
 				team: null,
 				positions: [],
@@ -62,7 +62,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				positions: [],
 				missingPlayers: 0
 		};
-		
+
 		$scope.setTeamAColor = function(color){
 			$scope.teamA.team.shirtColor = color;
 			Teams.update($scope.teamA.team, function(response){
@@ -75,7 +75,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				$scope.teamB.team = response;
     		});
 		};
-		
+
 		$scope.wpMsg = "";
 		$scope.matchShareURL = "";
 		$scope.cleanMatchShareURL = "";
@@ -86,7 +86,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				$scope.matchShareURL = $sanitize(encodeURIComponent("http://" + $location.host() + "/?token=" + $scope.match.token));
 				$scope.currentURL = $sanitize("http://" + $location.host() + "/#/match/" + $scope.match.id);
 				$scope.wpMsg = "whatsapp://send?text=" + wpShareMessage.replace("%s", $scope.matchShareURL);
-				
+
 				if($rootScope.user.id == $scope.match.admin.id) $scope.adminMode = true;
 				var teams = Matches.getTeams({id: $routeParams.matchId}, function(){
 					if(teams.length == 1)
@@ -94,7 +94,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 					if(!$scope.modoVersus) $scope.totalPlayers = $scope.match.type.totalPlayers / 2;
 					else $scope.totalPlayers = $scope.match.type.totalPlayers;
 					var positions = $scope.match.type.formation.split(";");
-					
+
 					if(teams.length == 0) {
 						$scope.teamA.missingPlayers = $scope.totalPlayers;
 						$scope.teamB.missingPlayers = $scope.totalPlayers;
@@ -102,7 +102,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 					if(teams.length > 0) {
 						$scope.teamA.team = teams[0];
 						$scope.teamA.missingPlayers = $scope.totalPlayers - teams[0].users.length;
-						
+
 						//map positions
 						$scope.teamA.positions = [];
 						for(var i = 0; i < $scope.totalPlayers; i++){
@@ -117,7 +117,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 					if(teams.length > 1) {
 						$scope.teamB.team = teams[1];
 						$scope.teamB.missingPlayers = $scope.totalPlayers - teams[1].users.length;
-						
+
 						//map positions
 						$scope.teamB.positions = [];
 						for(var i = $scope.totalPlayers; i <  $scope.totalPlayers * 2; i++){
@@ -130,9 +130,9 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 						}
 					}
 				});
-			});	
+			});
 		};
-		
+
 		$scope.renderGuests = function(){
 			return Matches.getGuests({id: $routeParams.matchId}, function(){
 				for(var i = 0; i < $scope.guests.length; i++){
@@ -143,7 +143,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				}
 			});
 		};
-		
+
 		$scope.renderGoogleMap = function(){
 			//field map
 			var fieldPos = new google.maps.LatLng($scope.match.field.latitude, $scope.match.field.longitude);
@@ -153,20 +153,20 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 			var map = new google.maps.Map(document.getElementById("map_canvas"),
-							mapOptions); 
+							mapOptions);
 			var marker = new google.maps.Marker({
 							position: fieldPos,
 							map: map,
 							title: '$scope.match.field.name'
 			});
 		};
-		
+
 		$scope.match = $scope.renderMatch();
 		$scope.subs = Matches.getSubs({id: $routeParams.matchId});
-		
+
 		$scope.userConfirmed = null;
 		$scope.guests = $scope.renderGuests();
-		
+
 		$scope.cancelMatch = function(){
 	    	$scope.match.cancelled = 1;
 	    	Matches.update($scope.match, function(){
@@ -175,10 +175,10 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 				$location.path( "/home" );
 	    	});
 	    };
-		
+
 		$scope.deletePlayer = function(userId){
 			var userMail = "";
-			
+
 			//mark as rejected
 	    	var data = {
 			   	users: [],
@@ -216,21 +216,21 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 			   	if(dataTeamB != null)
 			   		$scope.updateTeamB(dataTeamB,  userId);
 			   	$scope.updateSubs(dataSubs,  userId);
-			   	
+
 			   	/* envio mail al usuario que di de baja */
 				if(userMail != undefined && userMail != "")
 					Notifications.teBajaron($scope.match, userMail);
-			   	
+
 			   	$scope.match = $scope.renderMatch();
 				$scope.guests = $scope.renderGuests();
 		    });
 		};
-		
+
 		$scope.answerYes = function(){
 	    	var teamAUpdated = false;
 	    	var teamBUpdated = false;
 	    	var subsUpdated = false;
-	    	
+
 			//mark as confirmed
 	    	var data = {
 		    	users: [],
@@ -262,7 +262,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 			    	   	userIds: [],
 			    	   	teamId: $scope.teamB.team.id
 			    	};
-		    	
+
 		    	if(dataTeamB != null && $scope.teamB.missingPlayers > 0 && $scope.teamB.missingPlayers > $scope.teamA.missingPlayers){ //add to teamB
 		    		dataTeamB.userIds.push($rootScope.user.fbId);
 		    		teamBUpdated = true;
@@ -273,30 +273,30 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 		    		dataSubs.userIds.push($rootScope.user.fbId);
 		    		subsUpdated = true;
 		    	}
-		    	
+
 		    	if(teamAUpdated)
 			   		$scope.updateTeamA(dataTeamA);
 			   	if(teamBUpdated)
 			   		$scope.updateTeamB(dataTeamB);
 			   	if(subsUpdated)
 			   		$scope.updateSubs(dataSubs);
-		    	
+
 		    	$scope.userConfirmed = 1;
-				
+
 				/* si se llenaron los 2 equipos envio mail a todos */
 				if(parseInt($scope.teamA.missingPlayers) + parseInt($scope.teamB.missingPlayers) == 1)
 					Notifications.completo($scope.match, $scope.guests);
 				/* envio mail al admin */
 				Notifications.juego($scope.match, $rootScope.user.name + " " + $rootScope.user.lastname);
-		    	
+
 		    	$scope.match = $scope.renderMatch();
 				$scope.guests = $scope.renderGuests();
 	    	});
 	    };
-	    
+
 	    $scope.answerNo = function(){
 			var wasConfirmed = false;
-			
+
 	    	//mark as rejected
 	    	var data = {
 			   	users: [],
@@ -334,18 +334,18 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 			   	if(dataTeamB != null)
 			   		$scope.updateTeamB(dataTeamB,  $rootScope.user.id);
 			   	$scope.updateSubs(dataSubs,  $rootScope.user.id);
-			   	
+
 			   	$scope.userConfirmed = 0;
-				
+
 				/* si estaba anotado, y se bajó => envio mail al admin */
 				if(wasConfirmed)
 					Notifications.meBajo($scope.match, $rootScope.user.name + " " + $rootScope.user.lastname);
-			   	
+
 			   	$scope.match = $scope.renderMatch();
 				$scope.guests = $scope.renderGuests();
 		    });
 	    };
-	    
+
 		$scope.selectedTeam = "";
 		$scope.changeSelectedTeam = function(team){
 	    	$scope.selectedTeam = team;
@@ -358,7 +358,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    	} else {
 				//crear usuario con solo nombre
 	    		var user = {
-	    			"name": playerName	
+	    			"name": playerName
 	    		};
 	    		Users.save(user, function(response){
 	    			//agregar usuario como invitado
@@ -385,7 +385,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 							var teamAUpdated = false;
 							var teamBUpdated = false;
 							var subsUpdated = false;
-							
+
 							//add player to team or subs
 							var dataSubs = {
 								userIds: [],
@@ -401,7 +401,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 									userIds: [],
 									teamId: $scope.teamB.team.id
 								};
-							
+
 							if(dataTeamB != null && $scope.teamB.missingPlayers > 0 && $scope.teamB.missingPlayers > $scope.teamA.missingPlayers){ //add to teamB
 								dataTeamB.userIds.push(response.id);
 								teamBUpdated = true;
@@ -412,7 +412,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 								dataSubs.userIds.push(response.id);
 								subsUpdated = true;
 							}
-							
+
 							if(teamAUpdated)
 								$scope.updateTeamA(dataTeamA);
 							if(teamBUpdated)
@@ -437,11 +437,11 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 								$scope.updateTeamB(dataTeamB);
 							}
 						}
-						
+
 						/* si se llenaron los 2 equipos envio mail a todos */
 						if(parseInt($scope.teamA.missingPlayers) + parseInt($scope.teamB.missingPlayers) == 1)
 							Notifications.completo($scope.match, $scope.guests);
-						
+
 						$scope.selectedTeam = "";
 						$scope.match = $scope.renderMatch();
 						$scope.guests = $scope.renderGuests();
@@ -449,7 +449,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    		});
 	    	}
 	    };
-	    
+
 	    $scope.updateSubs = function(data, toRemoveUserId){
 	    	var update = toRemoveUserId == undefined ? true : false;
 	    	//add existing subs
@@ -473,7 +473,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    			update = true;
 	    			continue;
 	    		}
-	    		var id = $scope.teamA.team.users[i].fbId != undefined ? $scope.teamA.team.users[i].fbId.toString() : $scope.teamA.team.users[i].id.toString(); 
+	    		var id = $scope.teamA.team.users[i].fbId != undefined ? $scope.teamA.team.users[i].fbId.toString() : $scope.teamA.team.users[i].id.toString();
 	    		data.userIds.push(id);
 	    	}
 	    	if(update)
@@ -499,7 +499,7 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 					$scope.teamB.missingPlayers = $scope.totalPlayers - response.users.length;
 		    	});
 	    };
-	    
+
 	    //match Share
 	    $scope.shareFB = function(){
 	    	var url = decodeURIComponent($scope.matchShareURL);
@@ -520,11 +520,11 @@ fulboControllers.controller('MatchController', ['$rootScope', '$scope', '$routeP
 	    };
 }]);
 
-fulboControllers.controller('ProfileController', ['$rootScope', '$scope', '$location', 'UsersAuth', 'Users', 
+fulboControllers.controller('ProfileController', ['$rootScope', '$scope', '$location', 'UsersAuth', 'Users',
   function($rootScope, $scope, $location, UsersAuth, Users) {
 	//TODO: calculate games played
 	$scope.gamesPlayed = 0;
-	
+
 	$scope.saveUserData = function() {
 		Users.update($rootScope.user, function(){
 			console.log("user updated!");
@@ -533,9 +533,8 @@ fulboControllers.controller('ProfileController', ['$rootScope', '$scope', '$loca
 			console.log("user update failed!");
 		});
 	};
-	
+
 	$scope.logout = function() {
     	UsersAuth.logout();
     };
 }]);
-

@@ -144,7 +144,7 @@ fulboDirectives.directive('matchMenu', function() {
     return {
         restrict: 'E',
         templateUrl: 'partials/match-menu.html', // markup for template
-        scope: { 
+        scope: {
 					'step2': '=step2',
 					'step3': '=step3'
 				}
@@ -155,7 +155,7 @@ fulboDirectives.directive('formTitleBar', function() {
     return {
         restrict: 'E',
         templateUrl: 'partials/form-title-bar.html', // markup for template
-        scope: { 
+        scope: {
 			'title': '=title',
 			'cancelUrl': '=cancelUrl'
 		}
@@ -177,12 +177,12 @@ fulboDirectives.directive('modalField', function() {
         scope: false,
 		link: function link(scope, element, attrs) {
 			/*var field;
-		
+
 			scope.$watch(scope.match.field, function(value) {
 			  field = value;
 			  renderGoogleMap();
 			});
-			
+
 			function renderGoogleMap() {
 				//field map
 				var fieldPos = new google.maps.LatLng(field.latitude, field.longitude);
@@ -192,7 +192,7 @@ fulboDirectives.directive('modalField', function() {
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
 				var map = new google.maps.Map(document.getElementById("map_canvas"),
-								mapOptions); 
+								mapOptions);
 				var marker = new google.maps.Marker({
 					position: fieldPos,
 					map: map,
@@ -215,9 +215,9 @@ fulboDirectives.directive('playerProfile', function() {
     return {
         restrict: 'E',
         templateUrl: 'partials/modal-player-profile.html', // markup for template
-        scope: { 
-			'selectedUser': '=player', 
-			'matchesPlayed': '=matchesPlayed', 
+        scope: {
+			'selectedUser': '=player',
+			'matchesPlayed': '=matchesPlayed',
 			'matchesOrganized': '=matchesOrganized',
 			'adminMode': '=adminMode'
 		}
